@@ -93,9 +93,10 @@ public class Tank {
 
         for (int y = 0; y < bf.getDimentionY(); y++) {
             for (int x = 0; x < bf.getDimentionX(); x++) {
-                if (bf.isBrick(y,x)) {
-                    moveToQuadrant(y + 1, x + 1);
+                if (bf.isBrick(y, x)) {
+                    moveToQuadrant(++y , x);
                     if (af.howManyBricksInDirection(TankDirection.values()[getDirection()]) > 0) {
+                        turn(getDirection());
                         fire();
                     }
                 }

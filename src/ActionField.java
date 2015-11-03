@@ -90,11 +90,12 @@ public class ActionField extends JPanel{
     public void runTheGame() throws Exception{
 
         //tank.move();
-        tank.fire();
-        tank.fire();
-        tank.turn(4);
-        tank.move();
+        //tank.fire();
+        //tank.fire();
+        //tank.turn(4);
+       // tank.move();
         //tank.moveRandom();
+        //tank.moveToQuadrant(1,1);
         tank.clean();
 
     }
@@ -222,8 +223,9 @@ public class ActionField extends JPanel{
 
 
         if (y >= 0 && y < 9 && x >= 0 && x < 9) {
-            if (!battleField.scanQuadrant(y, x).trim().isEmpty()) {
+            if (battleField.isBrick(y,x)) {
                 battleField.updateQuadrant(y, x, "");
+                battleField.setCountOfBriks(battleField.getCountOfBriks() - 1);
                 return true;
             }
         }
