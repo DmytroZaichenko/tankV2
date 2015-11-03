@@ -74,40 +74,67 @@ public class Tank {
 
     public void moveToQuadrant(int v, int h) throws Exception {
 
-//        String coordinates = actionField.getQuadrantXY(v, h);
-//
-//        int y = Integer.parseInt(coordinates.split("_")[0]);
-//        int x = Integer.parseInt(coordinates.split("_")[1]);
-//
-//        boolean key = true;
-//
-//        while (key) {
-//
-//            if (x != this.x && x >= 0 && x <= 576) {
-//                if (x > this.x) {
-//                    move(RIGHT);
-//                } else {
-//                    move(LEFT);
-//                }
-//            } else {
-//                break;
-//            }
-//        }
-//
-//        key = true;
-//
-//        while (key) {
-//
-//            if (y != tankY && y >= 0 && y <= max_limit_y) {
-//                if (y > tankY) {
-//                    key = move(BOTTOM);
-//                } else {
-//                    key = move(UP);
-//                }
-//            } else {
-//                break;
-//            }
-//        }
+            String coordinates = af.getQuadrantXY(v, h);
+
+            int y = Integer.parseInt(coordinates.split("_")[0]);
+            int x = Integer.parseInt(coordinates.split("_")[1]);
+
+            boolean key = true;
+
+            while (key) {
+
+                if (x != this.x && x >= 0 && x <= 576) {
+                    if (x > this.x) {
+                        turn(TankDirection.RIGHT.getValue());
+                    } else {
+                        turn(TankDirection.LEFT.getValue());
+                    }
+                    move();
+                } else {
+                    break;
+                }
+            }
+
+            key = true;
+
+            while (key) {
+
+                if (y != this.y && y >= 0 && y <= 576) {
+                    if (y > this.y) {
+                        turn(TankDirection.BOTTOM.getValue());
+                    } else {
+                        turn(TankDirection.UP.getValue());
+                    }
+                    move();
+                } else {
+                    break;
+                }
+            }
+        }
+
+        public void moveRandom() throws Exception {
+
+            while (true) {
+
+                long time = System.currentTimeMillis();
+                String s = String.valueOf(time);
+                String lastChar = s.substring(s.length() - 5);
+
+                char[] ch = lastChar.toCharArray();
+
+                for (char lt : ch) {
+
+                    int direction = Integer.parseInt(String.valueOf(lt));
+
+                    if (direction > 0 && direction < 5) {
+
+                        move(direction);
+                    }
+                }
+
+            }
+
+        }
 
     }
 }
