@@ -94,6 +94,8 @@ public class ActionField extends JPanel{
         tank.fire();
         tank.turn(4);
         tank.move();
+        //tank.moveRandom();
+        tank.clean();
 
     }
 
@@ -228,6 +230,46 @@ public class ActionField extends JPanel{
 
         return false;
     }
+
+    public int howManyBricksInDirection(TankDirection direction) {
+
+        int result = 0;
+
+        String coordinates = getQuadrant(tank.getX(), tank.getY());
+        int y = Integer.parseInt(coordinates.split("_")[0]);
+        int x = Integer.parseInt(coordinates.split("_")[1]);
+
+        if (direction == TankDirection.UP) {
+            for (int j = 0; j <= y; j++) {
+                if (battleField.isBrick(j, x)) {
+                    result++;
+                }
+            }
+
+        } else if (direction == TankDirection.BOTTOM) {
+            for (int j = y; j <= 8; j++) {
+                if (battleField.isBrick(j, x)) {
+                    result++;
+                }
+            }
+        } else if (direction == TankDirection.LEFT) {
+            for (int j = x; j >= 0; j--) {
+                if (battleField.isBrick(y, j)) {
+                    result++;
+                }
+            }
+
+        } else if (direction == TankDirection.RIGHT) {
+            for (int j = x; j <= 8; j++) {
+                if (battleField.isBrick(y, j)) {
+                    result++;
+                }
+            }
+        }
+
+        return result;
+    }
+
 
 
 }
