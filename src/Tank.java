@@ -16,7 +16,7 @@ public class Tank {
     BattleField bf;
 
     public Tank(ActionField af, BattleField bf) {
-        this(af, bf, 64, 512, 1);
+        this(af, bf, 0, 512, 1);
     }
 
     public Tank(ActionField af, BattleField bf, int x, int y, int direction) {
@@ -131,31 +131,31 @@ public class Tank {
 
     public void moveRandom() throws Exception {
 
-            while (true) {
+        while (true) {
 
-                long time = System.currentTimeMillis();
-                String s = String.valueOf(time);
-                String lastChar = s.substring(s.length() - 5);
+            long time = System.currentTimeMillis();
+            String s = String.valueOf(time);
+            String lastChar = s.substring(s.length() - 5);
 
-                char[] ch = lastChar.toCharArray();
+            char[] ch = lastChar.toCharArray();
 
-                for (char lt : ch) {
+            for (char lt : ch) {
 
-                    int direction = Integer.parseInt(String.valueOf(lt));
+                int direction = Integer.parseInt(String.valueOf(lt));
 
-                    if (direction > 0 && direction < 5) {
-                        turn(direction);
-                        move();
-                    }
+                if (direction > 0 && direction < 5) {
+                    turn(direction);
+                    move();
                 }
-
             }
 
         }
 
+    }
+
     public void clean() throws Exception {
 
-        int rBrick = 3;
+        int rBrick = 10;
         Random rand = new Random();
         int countBricks = bf.getCountOfBriks();
 
