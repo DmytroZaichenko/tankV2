@@ -95,7 +95,7 @@ public class ActionField extends JPanel{
         //tank.turn(4);
        // tank.move();
         //tank.moveRandom();
-        //tank.moveToQuadrant(1,1);
+        //tank.moveToQuadrant(5,2);
         tank.clean();
 
     }

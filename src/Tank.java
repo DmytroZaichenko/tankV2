@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -77,7 +80,6 @@ public class Tank {
     public void shootingBrick(TankDirection direction) throws Exception {
 
         int howShots = af.howManyBricksInDirection(direction);
-        bf.setCountOfBriks(bf.getCountOfBriks() - howShots);
         while (howShots > 0) {
             fire();
             howShots--;
@@ -89,21 +91,6 @@ public class Tank {
 
     }
 
-    private void cleanRemainderBricks() throws Exception {
-
-        for (int y = 0; y < bf.getDimentionY(); y++) {
-            for (int x = 0; x < bf.getDimentionX(); x++) {
-                if (bf.isBrick(y, x)) {
-                    moveToQuadrant(++y , x);
-                    if (af.howManyBricksInDirection(TankDirection.values()[getDirection()]) > 0) {
-                        turn(getDirection());
-                        fire();
-                    }
-                }
-            }
-        }
-
-    }
 
     public void moveToQuadrant(int v, int h) throws Exception {
 
@@ -175,25 +162,82 @@ public class Tank {
         Random rand = new Random();
         int countBricks = bf.getCountOfBriks();
 
-        while (countBricks  > 0) {
+        while (countBricks > 0) {
 
-            for (TankDirection direction : TankDirection.values()) {
-
-                turn(direction.getValue());
-                this.shootingBrick(direction);
-            }
+            spinningAroundAndShoot();
 
             int r;
 
-            if (bf.getCountOfBriks() > rBrick){
+            if (bf.getCountOfBriks() > rBrick) {
                 r = rand.nextInt(5);
                 r = r == 4 ? 1 : r;
                 turn(TankDirection.values()[r].getValue());
                 move();
             } else {
-                cleanRemainderBricks();
+                spinningAroundAndShoot();
+                cleanRemainderBricks(rBrick);
+                break;
             }
 
+        }
+    }
+
+    private void cleanRemainderBricks(int countRtaminderBricks) throws Exception {
+
+        int[][]coordinatsBrik = new int[bf.getCountOfBriks()][2];
+        int idy = 0;
+        for (int y = 0; y < bf.getDimentionY(); y++) {
+            for (int x = 0; x < bf.getDimentionX(); x++) {
+                if (bf.isBrick(y, x)) {
+                    coordinatsBrik[idy][0] = y ;
+                    coordinatsBrik[idy][1] = x ;
+                    idy++;
+                }
+            }
+        }
+
+        String coordinates = af.getQuadrant(this.x, this.y);
+        int y = Integer.parseInt(coordinates.split("_")[0]);
+        int x = Integer.parseInt(coordinates.split("_")[1]);
+
+        int yMin = coordinatsBrik[0][0];
+        int yMax = coordinatsBrik[coordinatsBrik.length - 1][0];
+
+        TankDirection directionMove = TankDirection.UP;
+        int board = 0;
+
+        if (y > yMin && y < yMax || y < yMin) {
+            directionMove = TankDirection.BOTTOM;
+            board = yMax * 64;
+            turn(TankDirection.UP.getValue());
+            while (this.y != yMin * 64) {
+                move();
+            }
+        } else if (y > yMax) {
+            directionMove = TankDirection.UP;
+            board = yMin * 64;
+            turn(TankDirection.UP.getValue());
+            while (this.y != yMax * 64) {
+                move();
+            }
+        }
+
+        while (board != this.y) {
+            spinningAroundAndShoot();
+            turn(directionMove.getValue());
+            move();
+        }
+
+        spinningAroundAndShoot();
+
+    }
+
+    private void spinningAroundAndShoot() throws Exception {
+
+        for (TankDirection direction : TankDirection.values()) {
+
+            turn(direction.getValue());
+            shootingBrick(direction);
         }
     }
 
