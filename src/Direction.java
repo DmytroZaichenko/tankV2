@@ -1,13 +1,13 @@
 /**
  * Created by DmitryZ on 28.10.2015.
  */
-public enum TankDirection {
+public enum Direction {
 
     UP(1),BOTTOM(2),LEFT(3),RIGHT(4);
 
     private int value;
 
-    private TankDirection(int value){
+    private Direction(int value){
         this.value = value;
     }
 

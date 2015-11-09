@@ -10,16 +10,17 @@ public class Tank {
     private int x;
     private int y;
 
-    private int direction;
+    private Direction direction;
+
 
     ActionField af;
     BattleField bf;
 
     public Tank(ActionField af, BattleField bf) {
-        this(af, bf, 0, 512, 1);
+        this(af, bf, 0, 512, Direction.UP);
     }
 
-    public Tank(ActionField af, BattleField bf, int x, int y, int direction) {
+    public Tank(ActionField af, BattleField bf, int x, int y, Direction direction) {
         this.af = af;
         this.bf = bf;
         this.x = x;
@@ -47,11 +48,11 @@ public class Tank {
         this.y = y;
     }
 
-    public int getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void turn(int direction) throws Exception {
+    public void turn(Direction direction) throws Exception {
         this.direction = direction;
         af.processTurn(this);
     }
@@ -74,14 +75,14 @@ public class Tank {
         this.y += y;
     }
 
-    public void shootingBrick(TankDirection direction) throws Exception {
+    public void shootingBrick(Direction direction) throws Exception {
 
         int howShots = af.howManyBricksInDirection(direction);
         while (howShots > 0) {
             fire();
             howShots--;
             if (howShots > 0) {
-                turn(direction.getValue());
+                turn(direction);
                 move();
             }
         }
@@ -100,11 +101,11 @@ public class Tank {
 
         while (key) {
 
-            if (x != this.x && x >= 0 && x <= 576) {
+            if (x != this.x && x >= 0 && x <= bf.getDimentionX()) {
                 if (x > this.x) {
-                    turn(TankDirection.RIGHT.getValue());
+                    turn(Direction.RIGHT);
                 } else {
-                    turn(TankDirection.LEFT.getValue());
+                    turn(Direction.LEFT);
                 }
                 move();
             } else {
@@ -116,11 +117,11 @@ public class Tank {
 
         while (key) {
 
-            if (y != this.y && y >= 0 && y <= 576) {
+            if (y != this.y && y >= 0 && y <= bf.getDimentionY()) {
                 if (y > this.y) {
-                    turn(TankDirection.BOTTOM.getValue());
+                    turn(Direction.BOTTOM);
                 } else {
-                    turn(TankDirection.UP.getValue());
+                    turn(Direction.UP);
                 }
                 move();
             } else {
@@ -144,7 +145,7 @@ public class Tank {
                 int direction = Integer.parseInt(String.valueOf(lt));
 
                 if (direction > 0 && direction < 5) {
-                    turn(direction);
+                    turn(Direction.values()[direction]);
                     move();
                 }
             }
@@ -168,18 +169,18 @@ public class Tank {
             if (bf.getCountOfBriks() > rBrick) {
                 r = rand.nextInt(5);
                 r = r == 4 ? 1 : r;
-                turn(TankDirection.values()[r].getValue());
+                turn(Direction.values()[r]);
                 move();
             } else {
                 spinningAroundAndShoot();
-                cleanRemainderBricks(rBrick);
+                cleanRemainderBricks();
                 break;
             }
 
         }
     }
 
-    private void cleanRemainderBricks(int countRtaminderBricks) throws Exception {
+    private void cleanRemainderBricks() throws Exception {
 
         int[][]coordinatsBrik = new int[bf.getCountOfBriks()][2];
         int idy = 0;
@@ -200,20 +201,20 @@ public class Tank {
         int yMin = coordinatsBrik[0][0];
         int yMax = coordinatsBrik[coordinatsBrik.length - 1][0];
 
-        TankDirection directionMove = TankDirection.UP;
+        Direction directionMove = Direction.UP;
         int board = 0;
 
         if (y > yMin && y < yMax || y < yMin) {
-            directionMove = TankDirection.BOTTOM;
+            directionMove = Direction.BOTTOM;
             board = yMax * 64;
-            turn(TankDirection.UP.getValue());
+            turn(Direction.UP);
             while (this.y != yMin * 64) {
                 move();
             }
         } else if (y > yMax) {
-            directionMove = TankDirection.UP;
+            directionMove = Direction.UP;
             board = yMin * 64;
-            turn(TankDirection.UP.getValue());
+            turn(Direction.UP);
             while (this.y != yMax * 64) {
                 move();
             }
@@ -221,7 +222,7 @@ public class Tank {
 
         while (board != this.y) {
             spinningAroundAndShoot();
-            turn(directionMove.getValue());
+            turn(directionMove);
             move();
         }
 
@@ -231,11 +232,19 @@ public class Tank {
 
     private void spinningAroundAndShoot() throws Exception {
 
-        for (TankDirection direction : TankDirection.values()) {
+        for (Direction direction : Direction.values()) {
 
-            turn(direction.getValue());
+            turn(direction);
             shootingBrick(direction);
         }
+    }
+
+    public void destroy() throws Exception {
+
+        updateX(-100);
+        updateY(-100);
+        af.processDestroy(this);
+
     }
 
 }

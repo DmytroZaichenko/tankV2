@@ -14,7 +14,7 @@ public class ActionField extends JPanel{
 
         battleField = new BattleField();
         tank = new Tank(this, battleField);
-        bullet = new Bullet(-100, -100, -1);
+        bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
         JFrame frame = new JFrame("BATTLE FIELD, DAY 4");
         frame.setLocation(750, 150);
@@ -73,11 +73,11 @@ public class ActionField extends JPanel{
 
         g.setColor(new Color(0, 255, 0));
 
-        if (tank.getDirection() == 1) {
+        if (tank.getDirection() == Direction.UP) {
             g.fillRect(tank.getX() + 20, tank.getY(), 24, 34);
-        } else if (tank.getDirection() == 2) {
+        } else if (tank.getDirection() == Direction.BOTTOM) {
             g.fillRect(tank.getX() + 20, tank.getY() + 30, 24, 34);
-        } else if (tank.getDirection() == 3) {
+        } else if (tank.getDirection() == Direction.LEFT) {
             g.fillRect(tank.getX(), tank.getY() + 20, 34, 24);
         } else {
             g.fillRect(tank.getX() + 30, tank.getY() + 20, 34, 24);
@@ -89,14 +89,15 @@ public class ActionField extends JPanel{
 
     public void runTheGame() throws Exception{
 
-        //tank.move();
-        //tank.fire();
+        tank.move();
+        tank.fire();
         //tank.fire();
         //tank.turn(4);
        // tank.move();
         //tank.moveRandom();
         //tank.moveToQuadrant(5,2);
-        tank.clean();
+        //tank.clean();
+        tank.destroy();
 
     }
 
@@ -112,10 +113,14 @@ public class ActionField extends JPanel{
         repaint();
     }
 
+    public void processDestroy(Tank tank) throws Exception{
+        repaint();
+    }
+
     public void processMove(Tank tank) throws Exception{
 
         this.tank = tank;
-        int direction = tank.getDirection();
+        Direction direction = tank.getDirection();
         int step = 1;
         int covered = 0;
 
@@ -125,13 +130,13 @@ public class ActionField extends JPanel{
 
         while (covered < 64) {
 
-            if (direction == 1) {
+            if (direction == Direction.UP) {
                 tank.updateY(-step);
-            } else if (direction == 2) {
+            } else if (direction == Direction.BOTTOM) {
                 tank.updateY(step);
-            } else if (direction == 3) {
+            } else if (direction == Direction.LEFT) {
                tank.updateX(-step);
-            } else {
+            } else if (direction == Direction.RIGHT) {
                 tank.updateX(step);
             }
 
@@ -144,13 +149,12 @@ public class ActionField extends JPanel{
 
     public boolean checkLimits(Tank tank) {
 
-        int direction = tank.getDirection();
+        Direction direction = tank.getDirection();
 
-        if ((direction == 1 && tank.getY() == 0)
-                || (direction == 2 && tank.getY() >= 512)
-                || (direction == 3 && tank.getX() == 0)
-                || (direction == 4 && tank.getX() >= 512)
-                || (direction < 1 || direction > 4)
+        if ((direction == Direction.UP && tank.getY() == 0)
+                || (direction == Direction.BOTTOM && tank.getY() >= battleField.getDimentionY())
+                || (direction == Direction.LEFT && tank.getX() == 0)
+                || (direction == Direction.RIGHT && tank.getX() >= battleField.getDimentionX())
                 || (nextQuadrantBrik(direction))
                 ) {
             return true;
@@ -158,18 +162,18 @@ public class ActionField extends JPanel{
         return false;
     }
 
-    private boolean nextQuadrantBrik(int direction) {
+    private boolean nextQuadrantBrik(Direction direction) {
 
         int tmpTankX = tank.getX();
         int tmpTankY = tank.getY();
 
-        if (direction == 1) {
+        if (direction == Direction.UP) {
             tmpTankY -= 64;
-        } else if (direction == 2) {
+        } else if (direction == Direction.BOTTOM) {
             tmpTankY += 64;
-        } else if (direction == 3) {
+        } else if (direction == Direction.LEFT) {
             tmpTankX -= 64;
-        } else {
+        } else if (direction == Direction.RIGHT){
             tmpTankX += 64;
         }
 
@@ -194,13 +198,13 @@ public class ActionField extends JPanel{
         while ((bullet.getX() > -14 && bullet.getX() < 590)
                 && (bullet.getY() > -14 && bullet.getY() < 590)) {
 
-            if (bullet.getDirection() == 1) {
+            if (bullet.getDirection() == Direction.UP) {
                 bullet.updateY(-step) ;
-            } else if (bullet.getDirection() == 2) {
+            } else if (bullet.getDirection() == Direction.BOTTOM) {
                 bullet.updateY(step) ;
-            } else if (bullet.getDirection() == 3) {
+            } else if (bullet.getDirection() == Direction.LEFT) {
                 bullet.updateX(-step) ;
-            } else {
+            } else if (bullet.getDirection() == Direction.RIGHT) {
                 bullet.updateX(step);
             }
 
@@ -233,7 +237,7 @@ public class ActionField extends JPanel{
         return false;
     }
 
-    public int howManyBricksInDirection(TankDirection direction) {
+    public int howManyBricksInDirection(Direction direction) {
 
         int result = 0;
 
@@ -241,27 +245,27 @@ public class ActionField extends JPanel{
         int y = Integer.parseInt(coordinates.split("_")[0]);
         int x = Integer.parseInt(coordinates.split("_")[1]);
 
-        if (direction == TankDirection.UP) {
+        if (direction == Direction.UP) {
             for (int j = 0; j <= y; j++) {
                 if (battleField.isBrick(j, x)) {
                     result++;
                 }
             }
 
-        } else if (direction == TankDirection.BOTTOM) {
+        } else if (direction == Direction.BOTTOM) {
             for (int j = y; j <= 8; j++) {
                 if (battleField.isBrick(j, x)) {
                     result++;
                 }
             }
-        } else if (direction == TankDirection.LEFT) {
+        } else if (direction == Direction.LEFT) {
             for (int j = x; j >= 0; j--) {
                 if (battleField.isBrick(y, j)) {
                     result++;
                 }
             }
 
-        } else if (direction == TankDirection.RIGHT) {
+        } else if (direction == Direction.RIGHT) {
             for (int j = x; j <= 8; j++) {
                 if (battleField.isBrick(y, j)) {
                     result++;
