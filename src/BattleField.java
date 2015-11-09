@@ -114,8 +114,8 @@ public class BattleField {
         for (int y = 0; y < maxY; y++) {
             for (int x = 0; x < maxX; x++){
                 if (!isBrick(y, x) && !isCoordinatesOtherTank(tanks, y, x)){
-                    coordinatesTank[idx][0] = y;
-                    coordinatesTank[idx][1] = x;
+                    coordinatesTank[idx][0] = y * SIZE_QUADRANT;
+                    coordinatesTank[idx][1] = x * SIZE_QUADRANT;
                     idx ++;
                 }
             }

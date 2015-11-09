@@ -81,10 +81,10 @@ public class ActionField extends JPanel{
         }
 
         //defender
-        g.setColor(new Color(255, 0, 0));
+        g.setColor(new Color(0, 255, 0));
         g.fillRect(defender.getX(), defender.getY(), sizeQuadrant, sizeQuadrant);
 
-        g.setColor(new Color(0, 255, 0));
+        g.setColor(new Color(255, 0, 0));
 
         if (defender.getDirection() == Direction.UP) {
             g.fillRect(defender.getX() + 20, defender.getY(), 24, 34);
@@ -97,10 +97,10 @@ public class ActionField extends JPanel{
         }
 
         //aggressor
-        g.setColor(new Color(0, 255, 0));
+        g.setColor(new Color(255, 0, 0));
         g.fillRect(aggressor.getX(), aggressor.getY(), sizeQuadrant, sizeQuadrant);
 
-        g.setColor(new Color(255, 0, 0));
+        g.setColor(new Color(0, 255, 0));
 
         if (aggressor.getDirection() == Direction.UP) {
             g.fillRect(aggressor.getX() + 20, aggressor.getY(), 24, 34);
