@@ -92,15 +92,8 @@ public class ActionField extends JPanel{
 
     public void runTheGame() throws Exception{
 
-        tank.move();
-        tank.fire();
-        //tank.fire();
-        //tank.turn(4);
-       // tank.move();
-        //tank.moveRandom();
-        //tank.moveToQuadrant(5,2);
         tank.clean();
-        //tank.destroy();
+
 
     }
 
