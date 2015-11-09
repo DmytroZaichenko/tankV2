@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class ActionField extends JPanel{
 
@@ -13,8 +14,8 @@ public class ActionField extends JPanel{
     public ActionField() throws  Exception{
 
         battleField = new BattleField();
-        tank = new Tank(this, battleField);
-        bullet = new Bullet(-100, -100, Direction.BOTTOM);
+        //tank = new Tank(this, battleField);
+        //bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
         JFrame frame = new JFrame("BATTLE FIELD, DAY 4");
         frame.setLocation(750, 150);
@@ -71,33 +72,42 @@ public class ActionField extends JPanel{
             }
         }
 
+        if (tank != null) {
+            g.setColor(new Color(255, 0, 0));
+            g.fillRect(tank.getX(), tank.getY(), sizeQuadrant, sizeQuadrant);
 
-        g.setColor(new Color(255, 0, 0));
-        g.fillRect(tank.getX(), tank.getY(), sizeQuadrant, sizeQuadrant);
+            g.setColor(new Color(0, 255, 0));
 
-        g.setColor(new Color(0, 255, 0));
-
-        if (tank.getDirection() == Direction.UP) {
-            g.fillRect(tank.getX() + 20, tank.getY(), 24, 34);
-        } else if (tank.getDirection() == Direction.BOTTOM) {
-            g.fillRect(tank.getX() + 20, tank.getY() + 30, 24, 34);
-        } else if (tank.getDirection() == Direction.LEFT) {
-            g.fillRect(tank.getX(), tank.getY() + 20, 34, 24);
-        } else {
-            g.fillRect(tank.getX() + 30, tank.getY() + 20, 34, 24);
+            if (tank.getDirection() == Direction.UP) {
+                g.fillRect(tank.getX() + 20, tank.getY(), 24, 34);
+            } else if (tank.getDirection() == Direction.BOTTOM) {
+                g.fillRect(tank.getX() + 20, tank.getY() + 30, 24, 34);
+            } else if (tank.getDirection() == Direction.LEFT) {
+                g.fillRect(tank.getX(), tank.getY() + 20, 34, 24);
+            } else {
+                g.fillRect(tank.getX() + 30, tank.getY() + 20, 34, 24);
+            }
         }
 
-        g.setColor(new Color(255, 255, 0));
-        g.fillRect(bullet.getX(), bullet.getY(), 14, 14);
+        if (bullet != null) {
+            g.setColor(new Color(255, 255, 0));
+            g.fillRect(bullet.getX(), bullet.getY(), 14, 14);
+        }
     }
 
     public void runTheGame() throws Exception{
 
-//        Aggressor ag = new Aggressor(this,battleField);
-//        ag.addCoordinatesWithOutBrickAndTank();
+        Aggressor tank = new Aggressor(this,battleField);
 
+        int[] cc = tank.addCoordinatesWithOutBrickAndTank();
+        tank.updateX(cc[1] * battleField.SIZE_QUADRANT);
+        tank.updateY(cc[0] * battleField.SIZE_QUADRANT);
+        repaint();
+
+
+        //System.out.println(Arrays.deepToString(cc));
         //tank.clean();
-
+        //int c = 9;
 
     }
 
