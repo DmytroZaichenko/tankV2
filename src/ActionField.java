@@ -57,7 +57,8 @@ public class ActionField extends JPanel{
 
         for (int j = 0; j < battleField.getDimentionY(); j++) {
             for (int k = 0; k < battleField.getDimentionX(); k++) {
-                if (battleField.scanQuadrant(j,k).equals("B")) {
+                //if (battleField.scanQuadrant(j,k).equals("B")) {
+                if (battleField.isBrick(j,k)) {
                     String coordinates = getQuadrantXY(j + 1, k + 1);
                     int separator = coordinates.indexOf("_");
                     int y = Integer.parseInt(coordinates
@@ -92,7 +93,10 @@ public class ActionField extends JPanel{
 
     public void runTheGame() throws Exception{
 
-        tank.clean();
+//        Aggressor ag = new Aggressor(this,battleField);
+//        ag.addCoordinatesWithOutBrickAndTank();
+
+        //tank.clean();
 
 
     }

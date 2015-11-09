@@ -10,8 +10,8 @@ public class Tank {
     private Direction direction;
 
 
-    ActionField af;
-    BattleField bf;
+    protected ActionField af;
+    protected BattleField bf;
 
     public Tank(ActionField af, BattleField bf) {
         this(af, bf, 0, 512, Direction.UP);
