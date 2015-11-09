@@ -1,21 +1,29 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class ActionField extends JPanel{
 
     private boolean COLORED_MODE = false;
 
     private BattleField battleField;
-    private Tank tank;
+
+    private Tank defender;
+    private Tank aggressor;
+
     private Bullet bullet;
 
 
     public ActionField() throws  Exception{
 
         battleField = new BattleField();
-        //tank = new Tank(this, battleField);
-        //bullet = new Bullet(-100, -100, Direction.BOTTOM);
+        defender = new Tank(this, battleField);
+        Tank[] tanks = {defender};
+
+        int[] locAggressor = battleField.getAggressorLocation(tanks);
+
+        aggressor = new Tank(this,battleField,locAggressor[1],locAggressor[0],Direction.UP);
+
+        bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
         JFrame frame = new JFrame("BATTLE FIELD, DAY 4");
         frame.setLocation(750, 150);
@@ -72,42 +80,45 @@ public class ActionField extends JPanel{
             }
         }
 
-        if (tank != null) {
-            g.setColor(new Color(255, 0, 0));
-            g.fillRect(tank.getX(), tank.getY(), sizeQuadrant, sizeQuadrant);
+        //defender
+        g.setColor(new Color(255, 0, 0));
+        g.fillRect(defender.getX(), defender.getY(), sizeQuadrant, sizeQuadrant);
 
-            g.setColor(new Color(0, 255, 0));
+        g.setColor(new Color(0, 255, 0));
 
-            if (tank.getDirection() == Direction.UP) {
-                g.fillRect(tank.getX() + 20, tank.getY(), 24, 34);
-            } else if (tank.getDirection() == Direction.BOTTOM) {
-                g.fillRect(tank.getX() + 20, tank.getY() + 30, 24, 34);
-            } else if (tank.getDirection() == Direction.LEFT) {
-                g.fillRect(tank.getX(), tank.getY() + 20, 34, 24);
-            } else {
-                g.fillRect(tank.getX() + 30, tank.getY() + 20, 34, 24);
-            }
+        if (defender.getDirection() == Direction.UP) {
+            g.fillRect(defender.getX() + 20, defender.getY(), 24, 34);
+        } else if (defender.getDirection() == Direction.BOTTOM) {
+            g.fillRect(defender.getX() + 20, defender.getY() + 30, 24, 34);
+        } else if (defender.getDirection() == Direction.LEFT) {
+            g.fillRect(defender.getX(), defender.getY() + 20, 34, 24);
+        } else {
+            g.fillRect(defender.getX() + 30, defender.getY() + 20, 34, 24);
         }
 
-        if (bullet != null) {
-            g.setColor(new Color(255, 255, 0));
-            g.fillRect(bullet.getX(), bullet.getY(), 14, 14);
+        //aggressor
+        g.setColor(new Color(0, 255, 0));
+        g.fillRect(aggressor.getX(), aggressor.getY(), sizeQuadrant, sizeQuadrant);
+
+        g.setColor(new Color(255, 0, 0));
+
+        if (aggressor.getDirection() == Direction.UP) {
+            g.fillRect(aggressor.getX() + 20, aggressor.getY(), 24, 34);
+        } else if (aggressor.getDirection() == Direction.BOTTOM) {
+            g.fillRect(aggressor.getX() + 20, aggressor.getY() + 30, 24, 34);
+        } else if (aggressor.getDirection() == Direction.LEFT) {
+            g.fillRect(aggressor.getX(), aggressor.getY() + 20, 34, 24);
+        } else {
+            g.fillRect(aggressor.getX() + 30, aggressor.getY() + 20, 34, 24);
         }
+
+
+        g.setColor(new Color(255, 255, 0));
+        g.fillRect(bullet.getX(), bullet.getY(), 14, 14);
+
     }
 
     public void runTheGame() throws Exception{
-
-        Aggressor tank = new Aggressor(this,battleField);
-
-        int[] cc = tank.addCoordinatesWithOutBrickAndTank();
-        tank.updateX(cc[1] * battleField.SIZE_QUADRANT);
-        tank.updateY(cc[0] * battleField.SIZE_QUADRANT);
-        repaint();
-
-
-        //System.out.println(Arrays.deepToString(cc));
-        //tank.clean();
-        //int c = 9;
 
     }
 
@@ -129,7 +140,7 @@ public class ActionField extends JPanel{
 
     public void processMove(Tank tank) throws Exception{
 
-        this.tank = tank;
+       //this.tank = tank;
         Direction direction = tank.getDirection();
         int step = 1;
         int covered = 0;
@@ -165,14 +176,14 @@ public class ActionField extends JPanel{
                 || (direction == Direction.BOTTOM && tank.getY() >= battleField.getBfHeight())
                 || (direction == Direction.LEFT && tank.getX() == 0)
                 || (direction == Direction.RIGHT && tank.getX() >= battleField.getBfWidth())
-                || (nextQuadrantBrik(direction))
+                || (nextQuadrantBrik(tank, direction))
                 ) {
             return true;
         }
         return false;
     }
 
-    private boolean nextQuadrantBrik(Direction direction) {
+    private boolean nextQuadrantBrik(Tank tank, Direction direction) {
 
         int tmpTankX = tank.getX();
         int tmpTankY = tank.getY();
@@ -247,7 +258,7 @@ public class ActionField extends JPanel{
         return false;
     }
 
-    public int howManyBricksInDirection(Direction direction) {
+    public int howManyBricksInDirection(Tank tank, Direction direction) {
 
         int result = 0;
 

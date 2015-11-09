@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Created by DmitryZ on 02.11.2015.
  */
@@ -99,6 +101,46 @@ public class BattleField {
 
     public boolean isBrick(int y, int x){
         return scanQuadrant(y,x).equals("B");
+    }
+
+    public int[] getAggressorLocation(Tank[] tanks){
+
+        int maxY = getDimentionY();
+        int maxX = getDimentionX();
+
+        int[][] coordinatesTank = new int[maxY * maxX][2];
+        int idx = 0;
+
+        for (int y = 0; y < maxY; y++) {
+            for (int x = 0; x < maxX; x++){
+                if (!isBrick(y, x) && !isCoordinatesOtherTank(tanks, y, x)){
+                    coordinatesTank[idx][0] = y;
+                    coordinatesTank[idx][1] = x;
+                    idx ++;
+                }
+            }
+        }
+
+        Random r = new Random();
+        int rand = r.nextInt(idx - 1);
+        return coordinatesTank[rand];
+
+    }
+
+    private boolean isCoordinatesOtherTank( Tank[] tanks, int y, int x) {
+
+        boolean result = false;
+
+        x *= SIZE_QUADRANT;
+        y *= SIZE_QUADRANT;
+
+        for (Tank tank : tanks){
+            if(tank.getX() == x && tank.getY() == y){
+                return true;
+            }
+        }
+
+        return result;
     }
 
 

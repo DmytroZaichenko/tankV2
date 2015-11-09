@@ -1,7 +1,6 @@
 import java.util.Random;
 
 public class Tank {
-
     protected int speed = 10;
 
     private int x;
@@ -74,7 +73,7 @@ public class Tank {
 
     public void shootingBrick(Direction direction) throws Exception {
 
-        int howShots = af.howManyBricksInDirection(direction);
+        int howShots = af.howManyBricksInDirection(this, direction);
         while (howShots > 0) {
             fire();
             howShots--;
