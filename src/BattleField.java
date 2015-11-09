@@ -4,6 +4,8 @@
 public class BattleField {
 
     public final boolean COLORED_MODE = false;
+    public final int SIZE_QUADRANT = 64;
+
     private String[][] battleField = {
             { "B", "B", " ", "B", " ", "B", " ", "B", "B" },
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
@@ -15,23 +17,25 @@ public class BattleField {
             { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
             { " ", " ", "B", " ", " ", " ", "B", " ", " " } };
 
-//        private String[][] battleField = {
-//            { " ", " ", " ", " ", " ", " ", " ", " ", " " },
-//            { " ", " ", " ", " ", " ", " ", " ", " ", " " },
-//            { " ", " ", " ", " ", " ", " ", " ", " ", " " },
-//            { " ", " ", " ", " ", " ", " ", " ", " ", " " },
-//            { " ", " ", " ", "B", " ", " ", " ", "B", " " },
-//            { " ", "B", " ", "B", " ", " ", " ", " ", " " },
-//            { " ", "B", " ", " ", " ", " ", "B", " ", " " },
-//            { " ", " ", " ", " ", " ", " ", " ", " ", " " },
-//            { " ", " ", " ", " ", " ", " ", " ", " ", " " } };
 
-    private int bfWidth = 576;
-    private int bfHeight = 576;
+    private int bfWidth;
+    private int bfHeight;
     private int countOfBriks;
 
     public BattleField(){
+
         setCountOfBriks(howManyBricksInField());
+        setBfHeight(SIZE_QUADRANT * battleField.length);
+        setBfWidth(SIZE_QUADRANT * battleField.length);
+
+    }
+
+    private void setBfWidth(int bfWidth) {
+        this.bfWidth = bfWidth;
+    }
+
+    private void setBfHeight(int bfHeight) {
+        this.bfHeight = bfHeight;
     }
 
     public int getCountOfBriks() {

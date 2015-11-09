@@ -1,8 +1,5 @@
 import java.util.Random;
 
-/**
- * Created by DmitryZ on 02.11.2015.
- */
 public class Tank {
 
     private int speed = 10;
@@ -167,7 +164,7 @@ public class Tank {
             int r;
 
             if (bf.getCountOfBriks() > rBrick) {
-                r = rand.nextInt(5);
+                r = rand.nextInt(4);
                 r = r == 4 ? 1 : r;
                 turn(Direction.values()[r]);
                 move();
@@ -206,16 +203,16 @@ public class Tank {
 
         if (y > yMin && y < yMax || y < yMin) {
             directionMove = Direction.BOTTOM;
-            board = yMax * 64;
+            board = yMax * bf.SIZE_QUADRANT;
             turn(Direction.UP);
-            while (this.y != yMin * 64) {
+            while (this.y != yMin * bf.SIZE_QUADRANT) {
                 move();
             }
         } else if (y > yMax) {
             directionMove = Direction.UP;
-            board = yMin * 64;
+            board = yMin * bf.SIZE_QUADRANT;
             turn(Direction.UP);
-            while (this.y != yMax * 64) {
+            while (this.y != yMax * bf.SIZE_QUADRANT) {
                 move();
             }
         }
@@ -233,6 +230,10 @@ public class Tank {
     private void spinningAroundAndShoot() throws Exception {
 
         for (Direction direction : Direction.values()) {
+
+            if (direction == Direction.NONE){
+                continue;
+            }
 
             turn(direction);
             shootingBrick(direction);

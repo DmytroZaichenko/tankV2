@@ -33,8 +33,10 @@ public class ActionField extends JPanel{
         int i = 0;
         Color cc;
 
-        for (int v = 0; v < 9; v++) {
-            for (int h = 0; h < 9; h++) {
+        int sizeQuadrant = battleField.SIZE_QUADRANT;
+
+        for (int v = 0; v < battleField.getDimentionY(); v++) {
+            for (int h = 0; h < battleField.getDimentionX(); h++) {
                 if (battleField.COLORED_MODE) {
                     if (i % 2 == 0) {
                         cc = new Color(252, 241, 177);
@@ -46,7 +48,8 @@ public class ActionField extends JPanel{
                 }
                 i++;
                 g.setColor(cc);
-                g.fillRect(h * 64, v * 64, 64, 64);
+
+                g.fillRect(h * sizeQuadrant, v * sizeQuadrant, sizeQuadrant, sizeQuadrant);
             }
         }
 
@@ -62,14 +65,14 @@ public class ActionField extends JPanel{
                     int x = Integer.parseInt(coordinates
                             .substring(separator + 1));
                     g.setColor(new Color(0, 0, 255));
-                    g.fillRect(x, y, 64, 64);
+                    g.fillRect(x, y, sizeQuadrant, sizeQuadrant);
                 }
             }
         }
 
 
         g.setColor(new Color(255, 0, 0));
-        g.fillRect(tank.getX(), tank.getY(), 64, 64);
+        g.fillRect(tank.getX(), tank.getY(), sizeQuadrant, sizeQuadrant);
 
         g.setColor(new Color(0, 255, 0));
 
@@ -96,17 +99,17 @@ public class ActionField extends JPanel{
        // tank.move();
         //tank.moveRandom();
         //tank.moveToQuadrant(5,2);
-        //tank.clean();
-        tank.destroy();
+        tank.clean();
+        //tank.destroy();
 
     }
 
     public String getQuadrant(int x, int y){
-        return y / 64 + "_" + x / 64;
+        return y / battleField.SIZE_QUADRANT + "_" + x / battleField.SIZE_QUADRANT;
     }
 
     public String getQuadrantXY(int v, int h){
-        return (v - 1) * 64 + "_" + (h - 1) * 64;
+        return (v - 1) * battleField.SIZE_QUADRANT + "_" + (h - 1) * battleField.SIZE_QUADRANT;
     }
 
     public void processTurn(Tank tank) throws Exception{
@@ -128,7 +131,7 @@ public class ActionField extends JPanel{
 
         tank.turn(direction);
 
-        while (covered < 64) {
+        while (covered < battleField.SIZE_QUADRANT) {
 
             if (direction == Direction.UP) {
                 tank.updateY(-step);
@@ -152,9 +155,9 @@ public class ActionField extends JPanel{
         Direction direction = tank.getDirection();
 
         if ((direction == Direction.UP && tank.getY() == 0)
-                || (direction == Direction.BOTTOM && tank.getY() >= battleField.getDimentionY())
+                || (direction == Direction.BOTTOM && tank.getY() >= battleField.getBfHeight())
                 || (direction == Direction.LEFT && tank.getX() == 0)
-                || (direction == Direction.RIGHT && tank.getX() >= battleField.getDimentionX())
+                || (direction == Direction.RIGHT && tank.getX() >= battleField.getBfWidth())
                 || (nextQuadrantBrik(direction))
                 ) {
             return true;
@@ -168,20 +171,20 @@ public class ActionField extends JPanel{
         int tmpTankY = tank.getY();
 
         if (direction == Direction.UP) {
-            tmpTankY -= 64;
+            tmpTankY -= battleField.SIZE_QUADRANT;
         } else if (direction == Direction.BOTTOM) {
-            tmpTankY += 64;
+            tmpTankY += battleField.SIZE_QUADRANT;
         } else if (direction == Direction.LEFT) {
-            tmpTankX -= 64;
+            tmpTankX -= battleField.SIZE_QUADRANT;
         } else if (direction == Direction.RIGHT){
-            tmpTankX += 64;
+            tmpTankX += battleField.SIZE_QUADRANT;
         }
 
         String coordinates = getQuadrant(tmpTankX, tmpTankY);
         int y = Integer.parseInt(coordinates.split("_")[0]);
         int x = Integer.parseInt(coordinates.split("_")[1]);
 
-        if (y >= 0 && y < 9 && x >= 0 && x < 9) {
+        if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             if (!battleField.scanQuadrant(y,x).trim().isEmpty()) {
                 return true;
             }
@@ -226,7 +229,7 @@ public class ActionField extends JPanel{
         int x = Integer.parseInt(coordinates.split("_")[1]);
 
 
-        if (y >= 0 && y < 9 && x >= 0 && x < 9) {
+        if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             if (battleField.isBrick(y,x)) {
                 battleField.updateQuadrant(y, x, "");
                 battleField.setCountOfBriks(battleField.getCountOfBriks() - 1);
@@ -253,7 +256,7 @@ public class ActionField extends JPanel{
             }
 
         } else if (direction == Direction.BOTTOM) {
-            for (int j = y; j <= 8; j++) {
+            for (int j = y; j <= battleField.getDimentionY() - 1; j++) {
                 if (battleField.isBrick(j, x)) {
                     result++;
                 }
@@ -266,7 +269,7 @@ public class ActionField extends JPanel{
             }
 
         } else if (direction == Direction.RIGHT) {
-            for (int j = x; j <= 8; j++) {
+            for (int j = x; j <= battleField.getDimentionX() - 1; j++) {
                 if (battleField.isBrick(y, j)) {
                     result++;
                 }

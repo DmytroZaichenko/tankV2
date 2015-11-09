@@ -3,7 +3,7 @@
  */
 public enum Direction {
 
-    UP(1),BOTTOM(2),LEFT(3),RIGHT(4);
+    UP(1),BOTTOM(2),LEFT(3),RIGHT(4),NONE(5);
 
     private int value;
 
