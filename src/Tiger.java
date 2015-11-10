@@ -15,4 +15,13 @@ public class Tiger extends Tank {
         super(af, bf, x, y, direction);
         setArmor(armor);
     }
+
+    @Override
+    public void destroy() throws Exception {
+        if (armor > 0){
+            armor --;
+        }else {
+            super.destroy();
+        }
+    }
 }

@@ -274,16 +274,17 @@ public class ActionField extends JPanel{
             }
 
             if (aggressor.bullet != bullet && battleField.isCoordinatesTank(aggressor,y,x)){
-                int armorAggressor = aggressor.getArmor();
+                aggressor.destroy();
+//                int armorAggressor = aggressor.getArmor();
 
-                if (armorAggressor == 0){
-                    aggressor.destroy();
+//                if (armorAggressor == 0){
+//                    aggressor.destroy();
 //                    Thread.sleep(200);
 //                    createAggressor();
-                } else {
-                    aggressor.setArmor(armorAggressor - 1);
+//                } else {
+//                    aggressor.setArmor(armorAggressor - 1);
 
-                }
+//                }
                 return true;
             }
         }
