@@ -121,26 +121,24 @@ public class BattleField {
             }
         }
 
-        Random r = new Random();
-        int rand = r.nextInt(idx - 1);
-        return coordinatesTank[rand];
+        if (idx != 0){
+            Random r = new Random();
+            int rand = r.nextInt(idx - 1);
+            return coordinatesTank[rand];
+        }
 
+        return null;
     }
 
     private boolean isCoordinatesOtherTank( Tank[] tanks, int y, int x) {
 
-        boolean result = false;
-
-        x *= SIZE_QUADRANT;
-        y *= SIZE_QUADRANT;
-
         for (Tank tank : tanks){
-            if(tank.getX() == x && tank.getY() == y){
+            if(tank.getX() == x * SIZE_QUADRANT && tank.getY() == y * SIZE_QUADRANT){
                 return true;
             }
         }
 
-        return result;
+        return false;
     }
 
 

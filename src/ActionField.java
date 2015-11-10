@@ -21,7 +21,9 @@ public class ActionField extends JPanel{
 
         int[] locAggressor = battleField.getAggressorLocation(tanks);
 
-        aggressor = new Tank(this,battleField,locAggressor[1],locAggressor[0],Direction.UP);
+        if (locAggressor != null) {
+            aggressor = new Tank(this, battleField, locAggressor[1], locAggressor[0], Direction.UP);
+        }
 
         bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
@@ -140,7 +142,6 @@ public class ActionField extends JPanel{
 
     public void processMove(Tank tank) throws Exception{
 
-       //this.tank = tank;
         Direction direction = tank.getDirection();
         int step = 1;
         int covered = 0;
