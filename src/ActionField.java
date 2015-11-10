@@ -17,13 +17,8 @@ public class ActionField extends JPanel{
 
         battleField = new BattleField();
         defender = new Tank(this, battleField);
-        Tank[] tanks = {defender};
 
-        int[] locAggressor = battleField.getAggressorLocation(tanks);
-
-        if (locAggressor != null) {
-            aggressor = new Tank(this, battleField, locAggressor[1], locAggressor[0], Direction.UP);
-        }
+        createAggressor();
 
         bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
@@ -35,6 +30,16 @@ public class ActionField extends JPanel{
         frame.pack();
         frame.setVisible(true);
 
+    }
+
+    public void createAggressor() {
+
+        Tank[] tanks = {defender};
+        int[] locAggressor = battleField.getAggressorLocation(tanks);
+
+        if (locAggressor != null) {
+            aggressor = new Tank(this, battleField, locAggressor[1], locAggressor[0], Direction.UP);
+        }
     }
 
     @Override
@@ -241,7 +246,7 @@ public class ActionField extends JPanel{
 
     }
 
-    private boolean processInterception() {
+    private boolean processInterception() throws Exception {
 
         String coordinates = getQuadrant(bullet.getX(), bullet.getY());
         int y = Integer.parseInt(coordinates.split("_")[0]);
@@ -253,6 +258,14 @@ public class ActionField extends JPanel{
                 battleField.updateQuadrant(y, x, "");
                 battleField.setCountOfBriks(battleField.getCountOfBriks() - 1);
                 return true;
+            }else if (battleField.isCoordinatesTank(defender,y,x)){
+
+                defender.destroy();
+                bullet.destroy();
+                aggressor.destroy();
+                Thread.sleep(3);
+                createAggressor();
+
             }
         }
 

@@ -113,7 +113,7 @@ public class BattleField {
 
         for (int y = 0; y < maxY; y++) {
             for (int x = 0; x < maxX; x++){
-                if (!isBrick(y, x) && !isCoordinatesOtherTank(tanks, y, x)){
+                if (!isBrick(y, x) && !isCoordinatesTank(tanks, y, x)){
                     coordinatesTank[idx][0] = y * SIZE_QUADRANT;
                     coordinatesTank[idx][1] = x * SIZE_QUADRANT;
                     idx ++;
@@ -130,14 +130,20 @@ public class BattleField {
         return null;
     }
 
-    private boolean isCoordinatesOtherTank( Tank[] tanks, int y, int x) {
+    public boolean isCoordinatesTank(Tank[] tanks, int y, int x) {
 
         for (Tank tank : tanks){
-            if(tank.getX() == x * SIZE_QUADRANT && tank.getY() == y * SIZE_QUADRANT){
-                return true;
-            }
+            return isCoordinatesTank(tank, y, x);
         }
 
+        return false;
+    }
+
+    public boolean isCoordinatesTank(Tank tank, int y, int x) {
+
+        if (tank.getX() == x * SIZE_QUADRANT && tank.getY() == y * SIZE_QUADRANT) {
+            return true;
+        }
         return false;
     }
 
