@@ -11,6 +11,7 @@ public class Tank {
 
     protected ActionField af;
     protected BattleField bf;
+    protected Bullet bullet;
 
     public Tank(ActionField af, BattleField bf) {
         this(af, bf, 0, 512, Direction.UP);
@@ -58,7 +59,8 @@ public class Tank {
     }
 
     public void fire() throws Exception {
-        Bullet bullet = new Bullet((x + 25), (y + 25), direction);
+        //Bullet bullet = new Bullet((x + 25), (y + 25), direction);
+        bullet = new Bullet((x + 25), (y + 25), direction);
         af.processFire(bullet);
     }
 

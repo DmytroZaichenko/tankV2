@@ -40,6 +40,7 @@ public class ActionField extends JPanel{
         if (locAggressor != null) {
             aggressor = new Tank(this, battleField, locAggressor[1], locAggressor[0], Direction.UP);
         }
+          //aggressor = new Tank(this, battleField, 0, 3*64, Direction.UP);
     }
 
     @Override
@@ -126,6 +127,13 @@ public class ActionField extends JPanel{
     }
 
     public void runTheGame() throws Exception{
+
+        defender.fire();
+        defender.fire();
+        defender.fire();
+        defender.fire();
+        defender.fire();
+        defender.fire();
 
     }
 
@@ -258,14 +266,18 @@ public class ActionField extends JPanel{
                 battleField.updateQuadrant(y, x, "");
                 battleField.setCountOfBriks(battleField.getCountOfBriks() - 1);
                 return true;
-            }else if (battleField.isCoordinatesTank(defender,y,x)){
+            }
 
+            if (defender.bullet != bullet && battleField.isCoordinatesTank(defender,y,x)){
                 defender.destroy();
-                bullet.destroy();
-                aggressor.destroy();
-                Thread.sleep(3);
-                createAggressor();
+                return true;
+            }
 
+            if (aggressor.bullet != bullet && battleField.isCoordinatesTank(aggressor,y,x)){
+                aggressor.destroy();
+                Thread.sleep(200);
+                createAggressor();
+                return true;
             }
         }
 
