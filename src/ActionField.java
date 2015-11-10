@@ -8,7 +8,7 @@ public class ActionField extends JPanel{
     private BattleField battleField;
 
     private Tank defender;
-    private Tank aggressor;
+    private Tiger aggressor;
 
     private Bullet bullet;
 
@@ -34,13 +34,13 @@ public class ActionField extends JPanel{
 
     public void createAggressor() {
 
-        Tank[] tanks = {defender};
-        int[] locAggressor = battleField.getAggressorLocation(tanks);
-
-        if (locAggressor != null) {
-            aggressor = new Tank(this, battleField, locAggressor[1], locAggressor[0], Direction.UP);
-        }
-          //aggressor = new Tank(this, battleField, 0, 3*64, Direction.UP);
+//        Tank[] tanks = {defender};
+//        int[] locAggressor = battleField.getAggressorLocation(tanks);
+//
+//        if (locAggressor != null) {
+//            aggressor = new Tiger(this, battleField, locAggressor[1], locAggressor[0], Direction.UP);
+//        }
+        aggressor = new Tiger(this, battleField, 0, 3*64, Direction.UP, 1);
     }
 
     @Override
@@ -274,9 +274,16 @@ public class ActionField extends JPanel{
             }
 
             if (aggressor.bullet != bullet && battleField.isCoordinatesTank(aggressor,y,x)){
-                aggressor.destroy();
-                Thread.sleep(200);
-                createAggressor();
+                int armorAggressor = aggressor.getArmor();
+
+                if (armorAggressor == 0){
+                    aggressor.destroy();
+//                    Thread.sleep(200);
+//                    createAggressor();
+                } else {
+                    aggressor.setArmor(armorAggressor - 1);
+
+                }
                 return true;
             }
         }
