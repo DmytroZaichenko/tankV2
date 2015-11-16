@@ -8,7 +8,7 @@ public class ActionField extends JPanel{
 
     private BattleField battleField;
 
-    private Tank defender;
+    private AbstraktTank defender;
     private Tiger aggressor;
 
     private Bullet bullet;
@@ -17,7 +17,7 @@ public class ActionField extends JPanel{
     public ActionField() throws  Exception{
 
         battleField = new BattleField();
-        defender = new BT7(this, battleField);
+        defender = new T34(this, battleField);
 
         createAggressor();
 
@@ -146,15 +146,15 @@ public class ActionField extends JPanel{
         return (v - 1) * battleField.SIZE_QUADRANT + "_" + (h - 1) * battleField.SIZE_QUADRANT;
     }
 
-    public void processTurn(Tank tank) throws Exception{
+    public void processTurn(AbstractTank tank) throws Exception{
         repaint();
     }
 
-    public void processDestroy(Tank tank) throws Exception{
+    public void processDestroy(AbstractTank tank) throws Exception{
         repaint();
     }
 
-    public void processMove(Tank tank) throws Exception{
+    public void processMove(AbstractTank tank) throws Exception{
 
         Direction direction = tank.getDirection();
         int step = 1;

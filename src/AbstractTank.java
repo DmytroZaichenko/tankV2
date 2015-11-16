@@ -1,29 +1,39 @@
-import java.util.Random;
-
-public abstract class Tank {
+public abstract class AbstractTank {
 
     protected int speed = 10;
 
     private int x;
     private int y;
 
-    private Direction direction;
-
-
+    protected Direction direction;
     protected ActionField af;
     protected BattleField bf;
     protected Bullet bullet;
 
-    public Tank(ActionField af, BattleField bf) {
+    public AbstractTank(ActionField af, BattleField bf) {
         this(af, bf, 0, 512, Direction.UP);
     }
 
-    public Tank(ActionField af, BattleField bf, int x, int y, Direction direction) {
+    public AbstractTank(ActionField af, BattleField bf, int x, int y, Direction direction) {
         this.af = af;
         this.bf = bf;
         this.x = x;
         this.y = y;
         this.direction = direction;
+    }
+
+    public void turn(Direction direction) throws Exception {
+        this.direction = direction;
+        af.processTurn(this);
+    }
+
+    public void move() throws Exception {
+        af.processMove(this);
+    }
+
+    public void fire() throws Exception {
+        bullet = new Bullet((getX() + 25), (getY() + 25), direction);
+        af.processFire(bullet);
     }
 
     public int getSpeed() {
@@ -49,21 +59,6 @@ public abstract class Tank {
     public Direction getDirection() {
         return direction;
     }
-
-    public void turn(Direction direction) throws Exception {
-        this.direction = direction;
-        af.processTurn(this);
-    }
-
-    public void move() throws Exception {
-        af.processMove(this);
-    }
-
-    public void fire() throws Exception {
-        bullet = new Bullet((x + 25), (y + 25), direction);
-        af.processFire(bullet);
-    }
-
 
     public void updateX(int x) {
         this.x += x;

@@ -1,8 +1,5 @@
 import java.util.Random;
 
-/**
- * Created by DmitryZ on 02.11.2015.
- */
 public class BattleField {
 
     public final boolean COLORED_MODE = false;
@@ -132,7 +129,7 @@ public class BattleField {
 
     public boolean isCoordinatesTank(Tank[] tanks, int y, int x) {
 
-        for (Tank tank : tanks){
+        for (AbstractTank tank : tanks){
             return isCoordinatesTank(tank, y, x);
         }
 

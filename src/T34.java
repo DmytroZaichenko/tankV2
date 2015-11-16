@@ -1,5 +1,5 @@
 
-public class T34 extends Tank {
+public class T34 extends AbstractTank {
 
     private int speed = super.getSpeed() * 2;
 

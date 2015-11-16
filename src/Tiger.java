@@ -1,5 +1,5 @@
 
-public class Tiger extends Tank {
+public class Tiger extends AbstractTank {
 
     private int armor = 1;
 
@@ -24,4 +24,5 @@ public class Tiger extends Tank {
             super.destroy();
         }
     }
+
 }
