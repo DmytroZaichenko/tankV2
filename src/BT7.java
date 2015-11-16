@@ -13,15 +13,5 @@ public class BT7 extends AbstractTank {
         speed = 5;
     }
 
-    public void turn(Direction direction) throws Exception {
-        this.direction = direction;
-        af.processTurn(this);
-    }
-
-    public void fire() throws Exception {
-        bullet = new Bullet((getX() + 25), (getY() + 25), direction);
-        af.processFire(bullet);
-    }
-
 
 }
