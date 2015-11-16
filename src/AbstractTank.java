@@ -2,8 +2,8 @@ public abstract class AbstractTank {
 
     protected int speed = 10;
 
-    private int x;
-    private int y;
+    protected int x;
+    protected int y;
 
     protected Direction direction;
     protected ActionField af;
@@ -44,16 +44,8 @@ public abstract class AbstractTank {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public Direction getDirection() {

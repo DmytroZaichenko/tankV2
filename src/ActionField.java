@@ -1,5 +1,7 @@
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.Color;
 import java.util.Random;
 
 public class ActionField extends JPanel{
@@ -8,7 +10,7 @@ public class ActionField extends JPanel{
 
     private BattleField battleField;
 
-    private AbstraktTank defender;
+    private AbstractTank defender;
     private Tiger aggressor;
 
     private Bullet bullet;
@@ -18,7 +20,6 @@ public class ActionField extends JPanel{
 
         battleField = new BattleField();
         defender = new T34(this, battleField);
-
         createAggressor();
 
         bullet = new Bullet(-100, -100, Direction.BOTTOM);
@@ -35,7 +36,7 @@ public class ActionField extends JPanel{
 
     public void createAggressor() {
 
-//        Tank[] tanks = {defender};
+//        AbstractTank[] tanks = {defender};
 //        int[] locAggressor = battleField.getAggressorLocation(tanks);
 //
 //        if (locAggressor != null) {
@@ -160,7 +161,9 @@ public class ActionField extends JPanel{
         int step = 1;
         int covered = 0;
 
-        if (checkLimits(tank)){return;}
+        if (checkLimits(tank)){
+            return;
+        }
 
         tank.turn(direction);
 
@@ -183,7 +186,7 @@ public class ActionField extends JPanel{
         }
     }
 
-    public boolean checkLimits(Tank tank) {
+    public boolean checkLimits(AbstractTank tank) {
 
         Direction direction = tank.getDirection();
 
@@ -198,7 +201,7 @@ public class ActionField extends JPanel{
         return false;
     }
 
-    private boolean nextQuadrantBrik(Tank tank, Direction direction) {
+    private boolean nextQuadrantBrik(AbstractTank tank, Direction direction) {
 
         int tmpTankX = tank.getX();
         int tmpTankY = tank.getY();
@@ -283,7 +286,7 @@ public class ActionField extends JPanel{
         return false;
     }
 
-    public int howManyBricksInDirection(Tank tank, Direction direction) {
+    public int howManyBricksInDirection(AbstractTank tank, Direction direction) {
 
         int result = 0;
 
@@ -322,7 +325,7 @@ public class ActionField extends JPanel{
         return result;
     }
 
-    public void shootingBrick(Tank tank, Direction direction) throws Exception {
+    public void shootingBrick(AbstractTank tank, Direction direction) throws Exception {
 
         int howShots = howManyBricksInDirection(tank, direction);
         while (howShots > 0) {
@@ -337,7 +340,7 @@ public class ActionField extends JPanel{
     }
 
 
-    public void moveToQuadrant(Tank tank, int v, int h) throws Exception {
+    public void moveToQuadrant(AbstractTank tank, int v, int h) throws Exception {
 
         String coordinates = getQuadrantXY(v, h);
 
@@ -379,7 +382,7 @@ public class ActionField extends JPanel{
         }
     }
 
-    public void moveRandom(Tank tank) throws Exception {
+    public void moveRandom(AbstractTank tank) throws Exception {
 
         while (true) {
 
@@ -403,7 +406,7 @@ public class ActionField extends JPanel{
 
     }
 
-    public void clean(Tank tank) throws Exception {
+    public void clean(AbstractTank tank) throws Exception {
 
         int rBrick = 10;
         Random rand = new Random();
@@ -429,7 +432,7 @@ public class ActionField extends JPanel{
         }
     }
 
-    private void cleanRemainderBricks(Tank tank) throws Exception {
+    private void cleanRemainderBricks(AbstractTank tank) throws Exception {
 
         int tankX = tank.getX();
         int tankY = tank.getY();
@@ -482,7 +485,7 @@ public class ActionField extends JPanel{
 
     }
 
-    private void spinningAroundAndShoot(Tank tank) throws Exception {
+    private void spinningAroundAndShoot(AbstractTank tank) throws Exception {
 
         for (Direction direction : Direction.values()) {
 

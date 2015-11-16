@@ -100,7 +100,7 @@ public class BattleField {
         return scanQuadrant(y,x).equals("B");
     }
 
-    public int[] getAggressorLocation(Tank[] tanks){
+    public int[] getAggressorLocation(AbstractTank[] tanks){
 
         int maxY = getDimentionY();
         int maxX = getDimentionX();
@@ -127,7 +127,7 @@ public class BattleField {
         return null;
     }
 
-    public boolean isCoordinatesTank(Tank[] tanks, int y, int x) {
+    public boolean isCoordinatesTank(AbstractTank[] tanks, int y, int x) {
 
         for (AbstractTank tank : tanks){
             return isCoordinatesTank(tank, y, x);
@@ -136,7 +136,7 @@ public class BattleField {
         return false;
     }
 
-    public boolean isCoordinatesTank(Tank tank, int y, int x) {
+    public boolean isCoordinatesTank(AbstractTank tank, int y, int x) {
 
         if (tank.getX() == x * SIZE_QUADRANT && tank.getY() == y * SIZE_QUADRANT) {
             return true;
