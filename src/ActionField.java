@@ -17,7 +17,7 @@ public class ActionField extends JPanel{
     public ActionField() throws  Exception{
 
         battleField = new BattleField();
-        defender = new Tank(this, battleField);
+        defender = new BT7(this, battleField);
 
         createAggressor();
 
