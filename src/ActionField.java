@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class ActionField extends JPanel{
 
@@ -275,16 +276,6 @@ public class ActionField extends JPanel{
 
             if (aggressor.bullet != bullet && battleField.isCoordinatesTank(aggressor,y,x)){
                 aggressor.destroy();
-//                int armorAggressor = aggressor.getArmor();
-
-//                if (armorAggressor == 0){
-//                    aggressor.destroy();
-//                    Thread.sleep(200);
-//                    createAggressor();
-//                } else {
-//                    aggressor.setArmor(armorAggressor - 1);
-
-//                }
                 return true;
             }
         }
@@ -329,6 +320,179 @@ public class ActionField extends JPanel{
         }
 
         return result;
+    }
+
+    public void shootingBrick(Tank tank, Direction direction) throws Exception {
+
+        int howShots = howManyBricksInDirection(tank, direction);
+        while (howShots > 0) {
+            tank.fire();
+            howShots--;
+            if (howShots > 0) {
+                tank.turn(direction);
+                tank.move();
+            }
+        }
+
+    }
+
+
+    public void moveToQuadrant(Tank tank, int v, int h) throws Exception {
+
+        String coordinates = getQuadrantXY(v, h);
+
+        int y = Integer.parseInt(coordinates.split("_")[0]);
+        int x = Integer.parseInt(coordinates.split("_")[1]);
+
+        boolean key = true;
+
+        while (key) {
+
+            if (x != tank.getX() && x >= 0 && x <= battleField.getDimentionX()) {
+                if (x > tank.getX()) {
+                    tank.turn(Direction.RIGHT);
+                } else {
+                    tank.turn(Direction.LEFT);
+                }
+                tank.move();
+            } else {
+                break;
+            }
+        }
+
+        key = true;
+
+        int tankY = tank.getY();
+
+        while (key) {
+
+            if (y != tankY && y >= 0 && y <= battleField.getDimentionY()) {
+                if (y > tank.getY()) {
+                    tank.turn(Direction.BOTTOM);
+                } else {
+                    tank.turn(Direction.UP);
+                }
+                tank.move();
+            } else {
+                break;
+            }
+        }
+    }
+
+    public void moveRandom(Tank tank) throws Exception {
+
+        while (true) {
+
+            long time = System.currentTimeMillis();
+            String s = String.valueOf(time);
+            String lastChar = s.substring(s.length() - 5);
+
+            char[] ch = lastChar.toCharArray();
+
+            for (char lt : ch) {
+
+                int direction = Integer.parseInt(String.valueOf(lt));
+
+                if (direction > 0 && direction < 5) {
+                    tank.turn(Direction.values()[direction]);
+                    tank.move();
+                }
+            }
+
+        }
+
+    }
+
+    public void clean(Tank tank) throws Exception {
+
+        int rBrick = 10;
+        Random rand = new Random();
+        int countBricks = battleField.getCountOfBriks();
+
+        while (countBricks > 0) {
+
+            spinningAroundAndShoot(tank);
+
+            int r;
+
+            if (battleField.getCountOfBriks() > rBrick) {
+                r = rand.nextInt(4);
+                r = r == 4 ? 1 : r;
+                tank.turn(Direction.values()[r]);
+                tank.move();
+            } else {
+                spinningAroundAndShoot(tank);
+                cleanRemainderBricks(tank);
+                break;
+            }
+
+        }
+    }
+
+    private void cleanRemainderBricks(Tank tank) throws Exception {
+
+        int tankX = tank.getX();
+        int tankY = tank.getY();
+
+        int[][]coordinatsBrik = new int[battleField.getCountOfBriks()][2];
+        int idy = 0;
+        for (int y = 0; y < battleField.getDimentionY(); y++) {
+            for (int x = 0; x < battleField.getDimentionX(); x++) {
+                if (battleField.isBrick(y, x)) {
+                    coordinatsBrik[idy][0] = y ;
+                    coordinatsBrik[idy][1] = x ;
+                    idy++;
+                }
+            }
+        }
+
+        String coordinates = getQuadrant(tankX, tankY);
+        int y = Integer.parseInt(coordinates.split("_")[0]);
+        int x = Integer.parseInt(coordinates.split("_")[1]);
+
+        int yMin = coordinatsBrik[0][0];
+        int yMax = coordinatsBrik[coordinatsBrik.length - 1][0];
+
+        Direction directionMove = Direction.UP;
+        int board = 0;
+
+        if (y > yMin && y < yMax || y < yMin) {
+            directionMove = Direction.BOTTOM;
+            board = yMax * battleField.SIZE_QUADRANT;
+            tank.turn(Direction.UP);
+            while (tankY != yMin * battleField.SIZE_QUADRANT) {
+                tank.move();
+            }
+        } else if (y > yMax) {
+            directionMove = Direction.UP;
+            board = yMin * battleField.SIZE_QUADRANT;
+            tank.turn(Direction.UP);
+            while (tankY != yMax * battleField.SIZE_QUADRANT) {
+                tank.move();
+            }
+        }
+
+        while (board != tankY) {
+            spinningAroundAndShoot(tank);
+            tank.turn(directionMove);
+            tank.move();
+        }
+
+        spinningAroundAndShoot(tank);
+
+    }
+
+    private void spinningAroundAndShoot(Tank tank) throws Exception {
+
+        for (Direction direction : Direction.values()) {
+
+            if (direction == Direction.NONE){
+                continue;
+            }
+
+            tank.turn(direction);
+            shootingBrick(tank,direction);
+        }
     }
 
 
