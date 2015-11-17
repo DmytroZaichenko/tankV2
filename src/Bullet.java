@@ -1,8 +1,6 @@
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Color;
 
-/**
- * Created by DmitryZ on 02.11.2015.
- */
 public class Bullet implements Drawable {
 
     private int speed = 10;

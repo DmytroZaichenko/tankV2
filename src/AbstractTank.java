@@ -1,6 +1,9 @@
-import java.awt.Graphics;
+import sun.security.krb5.internal.crypto.Des;
 
-public abstract class AbstractTank implements Drawable {
+import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
+
+public abstract class AbstractTank implements Drawable,Destroyable {
 
     protected int speed = 10;
 
@@ -64,11 +67,9 @@ public abstract class AbstractTank implements Drawable {
 
 
     public void destroy() throws Exception {
-
         updateX(-100);
         updateY(-100);
         af.processDestroy(this);
-
     }
 
     public abstract void draw(Graphics g);
