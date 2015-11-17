@@ -178,8 +178,6 @@ public class BattleField implements Drawable {
             }
         }
 
-
-
         for (int j = 0; j < getDimentionY(); j++) {
             for (int k = 0; k < getDimentionX(); k++) {
                 if (isBrick(j,k)) {

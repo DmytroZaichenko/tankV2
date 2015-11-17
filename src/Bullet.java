@@ -1,7 +1,9 @@
+import java.awt.*;
+
 /**
  * Created by DmitryZ on 02.11.2015.
  */
-public class Bullet {
+public class Bullet implements Drawable {
 
     private int speed = 10;
     private int x;
@@ -44,4 +46,10 @@ public class Bullet {
         y = -100;
     }
 
+    @Override
+    public void draw(Graphics g) {
+
+        g.setColor(new Color(255, 255, 0));
+        g.fillRect(getX(), getY(), 14, 14);
+    }
 }
