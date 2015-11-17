@@ -1,4 +1,6 @@
-public abstract class AbstractTank {
+import java.awt.Graphics;
+
+public abstract class AbstractTank implements Drawable {
 
     protected int speed = 10;
 
@@ -68,5 +70,8 @@ public abstract class AbstractTank {
         af.processDestroy(this);
 
     }
+
+    public abstract void draw(Graphics g);
+
 
 }

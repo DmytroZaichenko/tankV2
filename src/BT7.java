@@ -1,3 +1,6 @@
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class BT7 extends AbstractTank {
 
 
@@ -11,6 +14,11 @@ public class BT7 extends AbstractTank {
     public BT7(ActionField af, BattleField bf, int x, int y, Direction direction) {
         super(af, bf, x, y, direction);
         speed = 5;
+    }
+
+    @Override
+    public void draw(Graphics g) {
+
     }
 
 

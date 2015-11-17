@@ -1,6 +1,8 @@
+import java.awt.Graphics;
+import java.awt.Color;
 import java.util.Random;
 
-public class BattleField {
+public class BattleField implements Drawable {
 
     public final boolean COLORED_MODE = false;
     public final int SIZE_QUADRANT = 64;
@@ -144,5 +146,54 @@ public class BattleField {
         return false;
     }
 
+    public String getQuadrant(int x, int y){
+        return y / SIZE_QUADRANT + "_" + x / SIZE_QUADRANT;
+    }
 
+    public String getQuadrantXY(int v, int h){
+        return (v - 1) * SIZE_QUADRANT + "_" + (h - 1) * SIZE_QUADRANT;
+    }
+
+    @Override
+    public void draw(Graphics g) {
+
+        Color cc;
+        int i = 0;
+
+        for (int v = 0; v < getDimentionY(); v++) {
+            for (int h = 0; h < getDimentionX(); h++) {
+                if (COLORED_MODE) {
+                    if (i % 2 == 0) {
+                        cc = new Color(252, 241, 177);
+                    } else {
+                        cc = new Color(233, 243, 255);
+                    }
+                } else {
+                    cc = new Color(180, 180, 180);
+                }
+                i++;
+                g.setColor(cc);
+
+                g.fillRect(h * SIZE_QUADRANT, v * SIZE_QUADRANT, SIZE_QUADRANT, SIZE_QUADRANT);
+            }
+        }
+
+
+
+        for (int j = 0; j < getDimentionY(); j++) {
+            for (int k = 0; k < getDimentionX(); k++) {
+                if (isBrick(j,k)) {
+                    String coordinates = getQuadrantXY(j + 1, k + 1);
+                    int separator = coordinates.indexOf("_");
+                    int y = Integer.parseInt(coordinates
+                            .substring(0, separator));
+                    int x = Integer.parseInt(coordinates
+                            .substring(separator + 1));
+                    g.setColor(new Color(0, 0, 255));
+                    g.fillRect(x, y, SIZE_QUADRANT, SIZE_QUADRANT);
+                }
+            }
+        }
+
+    }
 }

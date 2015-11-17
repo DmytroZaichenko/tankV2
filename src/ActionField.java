@@ -42,7 +42,7 @@ public class ActionField extends JPanel{
 //        if (locAggressor != null) {
 //            aggressor = new Tiger(this, battleField, locAggressor[1], locAggressor[0], Direction.UP);
 //        }
-        aggressor = new Tiger(this, battleField, 0, 3*64, Direction.UP, 1);
+        aggressor = new Tiger(this, battleField, 0, 3*battleField.SIZE_QUADRANT, Direction.UP, 1);
     }
 
     @Override
@@ -89,38 +89,38 @@ public class ActionField extends JPanel{
                 }
             }
         }
+//
+//        //defender
+//        g.setColor(new Color(0, 255, 0));
+//        g.fillRect(defender.getX(), defender.getY(), sizeQuadrant, sizeQuadrant);
+//
+//        g.setColor(new Color(255, 0, 0));
+//
+//        if (defender.getDirection() == Direction.UP) {
+//            g.fillRect(defender.getX() + 20, defender.getY(), 24, 34);
+//        } else if (defender.getDirection() == Direction.BOTTOM) {
+//            g.fillRect(defender.getX() + 20, defender.getY() + 30, 24, 34);
+//        } else if (defender.getDirection() == Direction.LEFT) {
+//            g.fillRect(defender.getX(), defender.getY() + 20, 34, 24);
+//        } else {
+//            g.fillRect(defender.getX() + 30, defender.getY() + 20, 34, 24);
+//        }
 
-        //defender
-        g.setColor(new Color(0, 255, 0));
-        g.fillRect(defender.getX(), defender.getY(), sizeQuadrant, sizeQuadrant);
-
-        g.setColor(new Color(255, 0, 0));
-
-        if (defender.getDirection() == Direction.UP) {
-            g.fillRect(defender.getX() + 20, defender.getY(), 24, 34);
-        } else if (defender.getDirection() == Direction.BOTTOM) {
-            g.fillRect(defender.getX() + 20, defender.getY() + 30, 24, 34);
-        } else if (defender.getDirection() == Direction.LEFT) {
-            g.fillRect(defender.getX(), defender.getY() + 20, 34, 24);
-        } else {
-            g.fillRect(defender.getX() + 30, defender.getY() + 20, 34, 24);
-        }
-
-        //aggressor
-        g.setColor(new Color(255, 0, 0));
-        g.fillRect(aggressor.getX(), aggressor.getY(), sizeQuadrant, sizeQuadrant);
-
-        g.setColor(new Color(0, 255, 0));
-
-        if (aggressor.getDirection() == Direction.UP) {
-            g.fillRect(aggressor.getX() + 20, aggressor.getY(), 24, 34);
-        } else if (aggressor.getDirection() == Direction.BOTTOM) {
-            g.fillRect(aggressor.getX() + 20, aggressor.getY() + 30, 24, 34);
-        } else if (aggressor.getDirection() == Direction.LEFT) {
-            g.fillRect(aggressor.getX(), aggressor.getY() + 20, 34, 24);
-        } else {
-            g.fillRect(aggressor.getX() + 30, aggressor.getY() + 20, 34, 24);
-        }
+//        //aggressor
+//        g.setColor(new Color(255, 0, 0));
+//        g.fillRect(aggressor.getX(), aggressor.getY(), sizeQuadrant, sizeQuadrant);
+//
+//        g.setColor(new Color(0, 255, 0));
+//
+//        if (aggressor.getDirection() == Direction.UP) {
+//            g.fillRect(aggressor.getX() + 20, aggressor.getY(), 24, 34);
+//        } else if (aggressor.getDirection() == Direction.BOTTOM) {
+//            g.fillRect(aggressor.getX() + 20, aggressor.getY() + 30, 24, 34);
+//        } else if (aggressor.getDirection() == Direction.LEFT) {
+//            g.fillRect(aggressor.getX(), aggressor.getY() + 20, 34, 24);
+//        } else {
+//            g.fillRect(aggressor.getX() + 30, aggressor.getY() + 20, 34, 24);
+//        }
 
 
         g.setColor(new Color(255, 255, 0));
@@ -139,13 +139,6 @@ public class ActionField extends JPanel{
 
     }
 
-    public String getQuadrant(int x, int y){
-        return y / battleField.SIZE_QUADRANT + "_" + x / battleField.SIZE_QUADRANT;
-    }
-
-    public String getQuadrantXY(int v, int h){
-        return (v - 1) * battleField.SIZE_QUADRANT + "_" + (h - 1) * battleField.SIZE_QUADRANT;
-    }
 
     public void processTurn(AbstractTank tank) throws Exception{
         repaint();
