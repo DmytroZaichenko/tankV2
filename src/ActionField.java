@@ -10,18 +10,20 @@ public class ActionField extends JPanel{
 
     private BattleField battleField;
 
-    private AbstractTank defender;
+    private T34 defender;
     private Tiger aggressor;
-
     private Bullet bullet;
 
+    private AbstractTank[] tanksInGame;
 
 
     public ActionField() throws  Exception{
 
         battleField = new BattleField();
-        defender = new T34(this, battleField);
-        createAggressor();
+        defender  = new T34(this, battleField);
+        aggressor = new Tiger(this, battleField, 0, 3*battleField.SIZE_QUADRANT, Direction.UP, 1);
+        tanksInGame = new AbstractTank[] {defender, aggressor};
+
 
         bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
@@ -33,11 +35,6 @@ public class ActionField extends JPanel{
         frame.pack();
         frame.setVisible(true);
 
-    }
-
-    public void createAggressor() {
-
-        aggressor = new Tiger(this, battleField, 0, 3*battleField.SIZE_QUADRANT, Direction.UP, 1);
     }
 
     @Override
@@ -65,12 +62,7 @@ public class ActionField extends JPanel{
 
     }
 
-
     public void processTurn(AbstractTank tank) throws Exception{
-        repaint();
-    }
-
-    public void processDestroy(AbstractTank tank) throws Exception{
         repaint();
     }
 
@@ -148,6 +140,61 @@ public class ActionField extends JPanel{
         return false;
     }
 
+    public boolean isTankOnQuadrant( AbstractTank tankException, int y, int x){
+
+        boolean result = false;
+
+        for (AbstractTank tank : tanksInGame) {
+
+            if (!tank.equals(tankException) && battleField.isCoordinatesTank(tank, y, x)) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public int howManyBlockInDirection(AbstractTank tank, Direction direction) {
+
+        int result = 0;
+
+        String coordinates = battleField.getQuadrant(tank.getX(), tank.getY());
+        int y = Integer.parseInt(coordinates.split("_")[0]);
+        int x = Integer.parseInt(coordinates.split("_")[1]);
+
+        if (direction == Direction.UP) {
+            for (int j = 0; j <= y; j++) {
+                if (battleField.isBrick(j, x) || isTankOnQuadrant(tank, j, x)) {
+                    result++;
+                }
+            }
+
+        } else if (direction == Direction.BOTTOM) {
+            for (int j = y; j <= battleField.getDimentionY() - 1; j++) {
+                if (battleField.isBrick(j, x)  || isTankOnQuadrant(tank, j, x)) {
+                    result++;
+                }
+            }
+        } else if (direction == Direction.LEFT) {
+            for (int j = x; j >= 0; j--) {
+                if (battleField.isBrick(y, j)  || isTankOnQuadrant(tank, y, j)) {
+                    result++;
+                }
+            }
+
+        } else if (direction == Direction.RIGHT) {
+            for (int j = x; j <= battleField.getDimentionX() - 1; j++) {
+                if (battleField.isBrick(y, j)  || isTankOnQuadrant(tank, y, j)) {
+                    result++;
+                }
+            }
+        }
+
+        return result;
+    }
+
+
     public void processFire(Bullet bullet) throws Exception{
 
         this.bullet = bullet;
@@ -205,48 +252,10 @@ public class ActionField extends JPanel{
         return false;
     }
 
-    public int howManyBricksInDirection(AbstractTank tank, Direction direction) {
-
-        int result = 0;
-
-        String coordinates = battleField.getQuadrant(tank.getX(), tank.getY());
-        int y = Integer.parseInt(coordinates.split("_")[0]);
-        int x = Integer.parseInt(coordinates.split("_")[1]);
-
-        if (direction == Direction.UP) {
-            for (int j = 0; j <= y; j++) {
-                if (battleField.isBrick(j, x)) {
-                    result++;
-                }
-            }
-
-        } else if (direction == Direction.BOTTOM) {
-            for (int j = y; j <= battleField.getDimentionY() - 1; j++) {
-                if (battleField.isBrick(j, x)) {
-                    result++;
-                }
-            }
-        } else if (direction == Direction.LEFT) {
-            for (int j = x; j >= 0; j--) {
-                if (battleField.isBrick(y, j)) {
-                    result++;
-                }
-            }
-
-        } else if (direction == Direction.RIGHT) {
-            for (int j = x; j <= battleField.getDimentionX() - 1; j++) {
-                if (battleField.isBrick(y, j)) {
-                    result++;
-                }
-            }
-        }
-
-        return result;
-    }
 
     public void shootingBrick(AbstractTank tank, Direction direction) throws Exception {
 
-        int howShots = howManyBricksInDirection(tank, direction);
+        int howShots = howManyBlockInDirection(tank, direction);
         while (howShots > 0) {
             tank.fire();
             howShots--;
