@@ -16,6 +16,7 @@ public class ActionField extends JPanel{
     private Bullet bullet;
 
 
+
     public ActionField() throws  Exception{
 
         battleField = new BattleField();
@@ -52,12 +53,15 @@ public class ActionField extends JPanel{
 
     public void runTheGame() throws Exception{
 
-        defender.fire();
-        defender.fire();
-        defender.fire();
-        defender.fire();
-        defender.fire();
-        defender.fire();
+          clean(defender);
+//        defender.fire();
+//        defender.fire();
+//        defender.fire();
+//        defender.fire();
+//        defender.fire();
+//        defender.fire();
+
+
 
     }
 

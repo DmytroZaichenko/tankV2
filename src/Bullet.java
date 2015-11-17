@@ -1,7 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Color;
 
-public class Bullet implements Drawable {
+public class Bullet implements Drawable,Destroyable {
 
     private int speed = 10;
     private int x;
@@ -44,10 +44,11 @@ public class Bullet implements Drawable {
         y = -100;
     }
 
-    @Override
     public void draw(Graphics g) {
 
         g.setColor(new Color(255, 255, 0));
         g.fillRect(getX(), getY(), 14, 14);
     }
+
+
 }

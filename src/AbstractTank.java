@@ -1,7 +1,7 @@
 import sun.security.krb5.internal.crypto.Des;
 
 import java.awt.Graphics;
-import java.awt.geom.AffineTransform;
+import java.awt.Color;
 
 public abstract class AbstractTank implements Drawable,Destroyable {
 
@@ -14,6 +14,9 @@ public abstract class AbstractTank implements Drawable,Destroyable {
     protected ActionField af;
     protected BattleField bf;
     protected Bullet bullet;
+
+    protected Color tankColor;
+    protected Color towerColor;
 
     public AbstractTank(ActionField af, BattleField bf) {
         this(af, bf, 0, 512, Direction.UP);
@@ -69,10 +72,25 @@ public abstract class AbstractTank implements Drawable,Destroyable {
     public void destroy() throws Exception {
         updateX(-100);
         updateY(-100);
-        af.processDestroy(this);
     }
 
-    public abstract void draw(Graphics g);
+    public void draw(Graphics g){
+
+        g.setColor(tankColor);
+        g.fillRect(this.getX(), this.getY(), bf.SIZE_QUADRANT, bf.SIZE_QUADRANT);
+
+        g.setColor(towerColor);
+
+        if (this.getDirection() == Direction.UP) {
+            g.fillRect(this.getX() + 20, this.getY(), 24, 34);
+        } else if (this.getDirection() == Direction.BOTTOM) {
+            g.fillRect(this.getX() + 20, this.getY() + 30, 24, 34);
+        } else if (this.getDirection() == Direction.LEFT) {
+            g.fillRect(this.getX(), this.getY() + 20, 34, 24);
+        } else {
+            g.fillRect(this.getX() + 30, this.getY() + 20, 34, 24);
+        }
+    }
 
 
 }
