@@ -1,7 +1,11 @@
+import field.BattleField;
+import tanks.AbstractTank;
+import tanks.T34;
+import tanks.Tiger;
+
 import javax.swing.*;
 import java.awt.Graphics;
 import java.awt.Dimension;
-import java.awt.Color;
 import java.util.Random;
 
 public class ActionField extends JPanel{

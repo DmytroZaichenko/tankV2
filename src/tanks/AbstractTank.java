@@ -1,7 +1,9 @@
+package tanks;
+
 import java.awt.Graphics;
 import java.awt.Color;
 
-public abstract class AbstractTank implements Drawable,Destroyable {
+public abstract class AbstractTank implements Drawable, Destroyable {
 
     protected int speed = 10;
 

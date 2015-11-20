@@ -1,5 +1,6 @@
+package tanks;
+
 import java.awt.Color;
-import java.awt.Graphics;
 
 public class BT7 extends AbstractTank {
 

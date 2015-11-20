@@ -1,3 +1,7 @@
+package field;
+
+import tanks.AbstractTank;
+
 import java.awt.Graphics;
 import java.awt.Color;
 import java.util.Random;

@@ -1,3 +1,5 @@
+package tanks;
+
 import java.awt.Color;
 
 public class T34 extends AbstractTank {

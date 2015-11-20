@@ -1,3 +1,5 @@
+package tanks;
+
 import java.awt.Color;
 
 public class Tiger extends AbstractTank {
