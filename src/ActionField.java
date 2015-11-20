@@ -58,7 +58,10 @@ public class ActionField extends JPanel{
 //        defender.fire();
 //        defender.fire();
 
-
+//        Drawable[] draw = new Drawable[]{defender,aggressor,bullet};
+//        for (Drawable dr:draw) {
+//            dr.draw();
+//        }
 
     }
 
@@ -370,8 +373,8 @@ public class ActionField extends JPanel{
         for (int y = 0; y < battleField.getDimentionY(); y++) {
             for (int x = 0; x < battleField.getDimentionX(); x++) {
                 if (battleField.isBrick(y, x)) {
-                    coordinatsBrik[idy][0] = y ;
-                    coordinatsBrik[idy][1] = x ;
+                    coordinatsBrik[idy][0] = y;
+                    coordinatsBrik[idy][1] = x;
                     idy++;
                 }
             }

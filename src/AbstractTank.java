@@ -1,5 +1,3 @@
-import sun.security.krb5.internal.crypto.Des;
-
 import java.awt.Graphics;
 import java.awt.Color;
 
@@ -14,6 +12,7 @@ public abstract class AbstractTank implements Drawable,Destroyable {
     protected ActionField af;
     protected BattleField bf;
     protected Bullet bullet;
+
 
     protected Color tankColor;
     protected Color towerColor;
