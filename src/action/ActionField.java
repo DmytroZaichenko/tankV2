@@ -1,7 +1,8 @@
 package action;
 
-import enums.Direction;
-import field.BattleField;
+import enums.*;
+import field.*;
+
 import tanks.AbstractTank;
 import tanks.T34;
 import tanks.Tiger;

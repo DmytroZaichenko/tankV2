@@ -1,8 +1,8 @@
 package action;
 
 import enums.Direction;
-import inteface.Destroyable;
-import inteface.Drawable;
+import Destroyable;
+import Drawable;
 
 import java.awt.Graphics;
 import java.awt.Color;

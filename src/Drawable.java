@@ -1,5 +1,3 @@
-package inteface;
-
 import java.awt.Graphics;
 
 
