@@ -1,6 +1,9 @@
 package tanks;
 
 import java.awt.Color;
+import action.ActionField;
+import field.BattleField;
+import enums.Direction;
 
 public class BT7 extends AbstractTank {
 

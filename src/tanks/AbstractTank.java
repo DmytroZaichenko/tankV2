@@ -1,5 +1,10 @@
 package tanks;
 
+import action.*;
+import field.BattleField;
+import enums.Direction;
+import inter.*;
+
 import java.awt.Graphics;
 import java.awt.Color;
 

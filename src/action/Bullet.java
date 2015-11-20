@@ -1,8 +1,8 @@
 package action;
 
 import enums.Direction;
-import Destroyable;
-import Drawable;
+import inter.Destroyable;
+import inter.Drawable;
 
 import java.awt.Graphics;
 import java.awt.Color;

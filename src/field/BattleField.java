@@ -1,6 +1,7 @@
 package field;
 
 import tanks.AbstractTank;
+import inter.*;
 
 import java.awt.Graphics;
 import java.awt.Color;

@@ -1,5 +1,9 @@
 package tanks;
 
+import action.ActionField;
+import field.BattleField;
+import enums.Direction;
+
 import java.awt.Color;
 
 public class T34 extends AbstractTank {
@@ -16,6 +20,5 @@ public class T34 extends AbstractTank {
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
     }
-
 
 }

@@ -1,3 +1,5 @@
+package inter;
+
 import java.awt.Graphics;
 
 
