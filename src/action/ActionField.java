@@ -3,13 +3,7 @@ package action;
 import field.BattleField;
 import enums.Direction;
 import tanks.*;
-import action.*;
 import inter.*;
-
-
-import tanks.AbstractTank;
-import tanks.T34;
-import tanks.Tiger;
 
 import javax.swing.*;
 import java.awt.Graphics;
@@ -429,7 +423,5 @@ public class ActionField extends JPanel{
             shootingBrick(tank,direction);
         }
     }
-
-
 
 }
