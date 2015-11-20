@@ -1,3 +1,6 @@
+package action;
+
+import enums.Direction;
 import field.BattleField;
 import tanks.AbstractTank;
 import tanks.T34;
@@ -55,17 +58,6 @@ public class ActionField extends JPanel{
     public void runTheGame() throws Exception{
 
           clean(defender);
-//        defender.fire();
-//        defender.fire();
-//        defender.fire();
-//        defender.fire();
-//        defender.fire();
-//        defender.fire();
-
-//        Drawable[] draw = new Drawable[]{defender,aggressor,bullet};
-//        for (Drawable dr:draw) {
-//            dr.draw();
-//        }
 
     }
 

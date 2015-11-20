@@ -1,7 +1,13 @@
+package action;
+
+import enums.Direction;
+import inteface.Destroyable;
+import inteface.Drawable;
+
 import java.awt.Graphics;
 import java.awt.Color;
 
-public class Bullet implements Drawable,Destroyable {
+public class Bullet implements Drawable, Destroyable {
 
     private int speed = 10;
     private int x;
