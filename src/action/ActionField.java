@@ -232,20 +232,20 @@ public class ActionField extends JPanel{
 
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             if (battleField.isBrick(y,x)) {
-                battleField.updateQuadrant(y, x, "");
+                battleField.updateQuadrant(y, x, " ");
                 battleField.setCountOfBriks(battleField.getCountOfBriks() - 1);
                 return true;
             }
 
-            if (defender.getBullet() != bullet && battleField.isCoordinatesTank(defender,y,x)){
-                defender.destroy();
-                return true;
+            for (AbstractTank tank: tanksInGame) {
+
+                if (tank.getBullet() != bullet && battleField.isCoordinatesTank(tank,y,x)){
+                    tank.destroy();
+                    return true;
+                }
+
             }
 
-            if (aggressor.getBullet() != bullet && battleField.isCoordinatesTank(aggressor,y,x)){
-                aggressor.destroy();
-                return true;
-            }
         }
 
         return false;

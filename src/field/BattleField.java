@@ -30,7 +30,7 @@ public class BattleField implements Drawable {
 
     public BattleField(){
 
-        setCountOfBriks(howManyBricksInField());
+        setCountOfBriks(howManyBlocksInField());
         setBfHeight(SIZE_QUADRANT * battleField.length);
         setBfWidth(SIZE_QUADRANT * battleField.length);
 
@@ -88,7 +88,7 @@ public class BattleField implements Drawable {
         return battleField.length;
     }
 
-    public int howManyBricksInField() {
+    public int howManyBlocksInField() {
 
         int result = 0;
 
@@ -104,7 +104,7 @@ public class BattleField implements Drawable {
     }
 
     public boolean isBrick(int y, int x){
-        return scanQuadrant(y,x).equals("B");
+        return !scanQuadrant(y,x).equals(" ");
     }
 
     public int[] getAggressorLocation(AbstractTank[] tanks){
@@ -175,6 +175,7 @@ public class BattleField implements Drawable {
                     }
                 } else {
                     cc = new Color(180, 180, 180);
+                    //cc = Color.WHITE;
                 }
                 i++;
                 g.setColor(cc);
