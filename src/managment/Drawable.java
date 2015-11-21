@@ -1,4 +1,4 @@
-package inter;
+package ua.tankv2.managment;
 
 import java.awt.Graphics;
 

@@ -1,8 +1,8 @@
-package action;
+package ua.tankv2.action;
 
-import enums.Direction;
-import inter.Destroyable;
-import inter.Drawable;
+import ua.tankv2.managment.Direction;
+import ua.tankv2.managment.Destroyable;
+import ua.tankv2.managment.Drawable;
 
 import java.awt.Graphics;
 import java.awt.Color;

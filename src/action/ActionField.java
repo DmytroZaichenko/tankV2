@@ -1,14 +1,17 @@
-package action;
+package ua.tankv2.action;
 
-import field.BattleField;
-import enums.Direction;
-import tanks.*;
-import inter.*;
+import ua.tankv2.managment.Direction;
+import ua.tankv2.tanks.AbstractTank;
+import ua.tankv2.tanks.T34;
+import ua.tankv2.tanks.Tiger;
+import ua.tankv2.field.BattleField;
+
 
 import javax.swing.*;
-import java.awt.Graphics;
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.Random;
+
+
 
 public class ActionField extends JPanel{
 
@@ -138,7 +141,7 @@ public class ActionField extends JPanel{
         return false;
     }
 
-    public boolean isTankOnQuadrant( AbstractTank tankException, int y, int x){
+    public boolean isTankOnQuadrant(AbstractTank tankException, int y, int x){
 
         boolean result = false;
 
@@ -424,4 +427,55 @@ public class ActionField extends JPanel{
         }
     }
 
+    public static class Bullet implements Drawable, Destroyable {
+
+        private int speed = 10;
+        private int x;
+        private int y;
+        private Direction direction;
+
+        public Bullet(int x, int y, Direction direction){
+            this.x = x;
+            this.y = y;
+            this.direction = direction;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public int getSpeed() {
+            return speed;
+        }
+
+        public Direction getDirection() {
+            return direction;
+        }
+
+
+        public void updateX(int x){
+            this.x += x;
+        }
+
+        public void updateY(int y){
+            this.y += y;
+        }
+
+        public void destroy(){
+            x = -100;
+            y = -100;
+        }
+
+        public void draw(Graphics g) {
+
+            g.setColor(new Color(255, 255, 0));
+            g.fillRect(getX(), getY(), 14, 14);
+        }
+
+
+    }
 }

@@ -1,8 +1,8 @@
-package tanks;
+package ua.tankv2.tanks;
 
-import action.ActionField;
-import field.BattleField;
-import enums.Direction;
+import ua.tankv2.action.ActionField;
+import ua.tankv2.field.BattleField;
+import ua.tankv2.managment.Direction;
 
 import java.awt.Color;
 

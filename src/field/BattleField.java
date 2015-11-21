@@ -1,7 +1,7 @@
-package field;
+package ua.tankv2.field;
 
-import tanks.AbstractTank;
-import inter.*;
+import ua.tankv2.tanks.AbstractTank;
+import ua.tankv2.managment.*;
 
 import java.awt.Graphics;
 import java.awt.Color;

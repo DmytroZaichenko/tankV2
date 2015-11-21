@@ -1,9 +1,13 @@
-package tanks;
+package ua.tankv2.tanks;
 
-import action.*;
-import field.BattleField;
-import enums.Direction;
-import inter.*;
+import ua.tankv2.action.ActionField;
+import ua.tankv2.action.Bullet;
+
+import ua.tankv2.managment.Direction;
+import ua.tankv2.managment.Destroyable;
+import ua.tankv2.managment.Drawable;
+
+import ua.tankv2.field.BattleField;
 
 import java.awt.Graphics;
 import java.awt.Color;
