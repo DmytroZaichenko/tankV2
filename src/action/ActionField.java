@@ -233,7 +233,7 @@ public class ActionField extends JPanel{
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             if (battleField.isBrick(y,x)) {
                 battleField.updateQuadrant(y, x, " ");
-                battleField.setCountOfBriks(battleField.getCountOfBriks() - 1);
+                battleField.setCountOfBlocks(battleField.getCountOfBlocks() - 1);
                 return true;
             }
 
@@ -337,7 +337,7 @@ public class ActionField extends JPanel{
 
         int rBrick = 10;
         Random rand = new Random();
-        int countBricks = battleField.getCountOfBriks();
+        int countBricks = battleField.getCountOfBlocks();
 
         while (countBricks > 0) {
 
@@ -345,7 +345,7 @@ public class ActionField extends JPanel{
 
             int r;
 
-            if (battleField.getCountOfBriks() > rBrick) {
+            if (battleField.getCountOfBlocks() > rBrick) {
                 r = rand.nextInt(4);
                 r = r == 4 ? 1 : r;
                 tank.turn(Direction.values()[r]);
@@ -364,7 +364,7 @@ public class ActionField extends JPanel{
         int tankX = tank.getX();
         int tankY = tank.getY();
 
-        int[][]coordinatsBrik = new int[battleField.getCountOfBriks()][2];
+        int[][]coordinatsBrik = new int[battleField.getCountOfBlocks()][2];
         int idy = 0;
         for (int y = 0; y < battleField.getDimentionY(); y++) {
             for (int x = 0; x < battleField.getDimentionX(); x++) {

@@ -16,21 +16,21 @@ public class BattleField implements Drawable {
             { "B", "B", " ", "B", " ", "B", " ", "B", "B" },
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
             { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
-            { " ", "B", "B", " ", " ", " ", "B", "B", " " },
-            { "B", " ", " ", "B", "B", " ", "B", "B", "B" },
-            { "B", "B", "B", "B", "B", "B", "B", "B", " " },
+            { "W ","W", "B", " ", " ", " ", "B", "B", " " },
+            { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
+            { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
-            { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
+            { "E", " ", " ", "B", "B", "B", " ", " ", "B" },
             { " ", " ", "B", " ", " ", " ", "B", " ", " " } };
 
 
     private int bfWidth;
     private int bfHeight;
-    private int countOfBriks;
+    private int countOfBlocks;
 
     public BattleField(){
 
-        setCountOfBriks(howManyBlocksInField());
+        setCountOfBlocks(howManyBlocksInField());
         setBfHeight(SIZE_QUADRANT * battleField.length);
         setBfWidth(SIZE_QUADRANT * battleField.length);
 
@@ -44,12 +44,12 @@ public class BattleField implements Drawable {
         this.bfHeight = bfHeight;
     }
 
-    public int getCountOfBriks() {
-        return countOfBriks;
+    public int getCountOfBlocks() {
+        return countOfBlocks;
     }
 
-    public void setCountOfBriks(int countOfBriks) {
-        this.countOfBriks = countOfBriks;
+    public void setCountOfBlocks(int countOfBlocks) {
+        this.countOfBlocks = countOfBlocks;
     }
 
     public BattleField(String[][] battleField){
@@ -184,20 +184,41 @@ public class BattleField implements Drawable {
             }
         }
 
+        String whatABlock = " ";
+        Color colorBlock = Color.black;
+        String fString = "";
+
         for (int j = 0; j < getDimentionY(); j++) {
             for (int k = 0; k < getDimentionX(); k++) {
-                if (isBrick(j,k)) {
+                whatABlock = scanQuadrant(j, k);
+
+                if (!whatABlock.equals(" ")) {
                     String coordinates = getQuadrantXY(j + 1, k + 1);
                     int separator = coordinates.indexOf("_");
                     int y = Integer.parseInt(coordinates
                             .substring(0, separator));
                     int x = Integer.parseInt(coordinates
                             .substring(separator + 1));
-                    g.setColor(new Color(0, 0, 255));
+
+                    fString = whatABlock.substring(0, 1);
+
+                    if (fString == "R") {
+                        colorBlock = Color.gray;
+                    } else if (fString == "E") {
+                        colorBlock = Color.black;
+                    } else if (fString == "B") {
+                        colorBlock = Color.orange;
+                    } else if (fString == "W") {
+                        colorBlock = Color.PINK;
+                    }else {
+                        colorBlock = new Color(0, 0, 255);
+                    }
+
+                    //g.setColor(new Color(0, 0, 255));
+                    g.setColor(colorBlock);
                     g.fillRect(x, y, SIZE_QUADRANT, SIZE_QUADRANT);
                 }
             }
         }
-
     }
 }
