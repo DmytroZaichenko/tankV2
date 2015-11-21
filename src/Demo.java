@@ -1,4 +1,6 @@
-import action.ActionField;
+package ua.tankv2;
+
+import ua.tankv2.action.ActionField;
 
 public class Demo {
 

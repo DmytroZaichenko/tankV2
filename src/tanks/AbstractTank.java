@@ -66,6 +66,10 @@ public abstract class AbstractTank implements Drawable, Destroyable {
         return y;
     }
 
+    public Bullet getBullet(){
+        return bullet;
+    }
+
     public Direction getDirection() {
         return direction;
     }

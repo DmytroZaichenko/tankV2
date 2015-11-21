@@ -12,7 +12,6 @@ import java.awt.*;
 import java.util.Random;
 
 
-
 public class ActionField extends JPanel{
 
     private boolean COLORED_MODE = false;
@@ -32,7 +31,6 @@ public class ActionField extends JPanel{
         defender  = new T34(this, battleField);
         aggressor = new Tiger(this, battleField, 0, 3*battleField.SIZE_QUADRANT, Direction.UP, 1);
         tanksInGame = new AbstractTank[] {defender, aggressor};
-
 
         bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
@@ -239,12 +237,12 @@ public class ActionField extends JPanel{
                 return true;
             }
 
-            if (defender.bullet != bullet && battleField.isCoordinatesTank(defender,y,x)){
+            if (defender.getBullet() != bullet && battleField.isCoordinatesTank(defender,y,x)){
                 defender.destroy();
                 return true;
             }
 
-            if (aggressor.bullet != bullet && battleField.isCoordinatesTank(aggressor,y,x)){
+            if (aggressor.getBullet() != bullet && battleField.isCoordinatesTank(aggressor,y,x)){
                 aggressor.destroy();
                 return true;
             }
@@ -427,55 +425,4 @@ public class ActionField extends JPanel{
         }
     }
 
-    public static class Bullet implements Drawable, Destroyable {
-
-        private int speed = 10;
-        private int x;
-        private int y;
-        private Direction direction;
-
-        public Bullet(int x, int y, Direction direction){
-            this.x = x;
-            this.y = y;
-            this.direction = direction;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public int getSpeed() {
-            return speed;
-        }
-
-        public Direction getDirection() {
-            return direction;
-        }
-
-
-        public void updateX(int x){
-            this.x += x;
-        }
-
-        public void updateY(int y){
-            this.y += y;
-        }
-
-        public void destroy(){
-            x = -100;
-            y = -100;
-        }
-
-        public void draw(Graphics g) {
-
-            g.setColor(new Color(255, 255, 0));
-            g.fillRect(getX(), getY(), 14, 14);
-        }
-
-
-    }
 }
