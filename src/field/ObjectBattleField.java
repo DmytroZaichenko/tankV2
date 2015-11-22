@@ -1,5 +1,6 @@
 package ua.tankv2.field;
 
+import ua.tankv2.action.Bullet;
 import ua.tankv2.managment.Destroyable;
 
 import java.awt.Color;
@@ -11,7 +12,7 @@ public class ObjectBattleField implements Destroyable{
     protected int x;
     protected int strength = 0;
     protected BattleField bf;
-
+    protected Bullet bullet;
 
     public Color getColorBlock() {
         return colorBlock;
@@ -51,6 +52,14 @@ public class ObjectBattleField implements Destroyable{
 
     public void setStrength(int strength) {
         this.strength = strength;
+    }
+
+    public Bullet getBullet() {
+        return bullet;
+    }
+
+    public void setBullet(Bullet bullet) {
+        this.bullet = bullet;
     }
 
     @Override

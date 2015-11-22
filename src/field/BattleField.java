@@ -23,17 +23,22 @@ public class BattleField implements Drawable {
             { "E", " ", " ", "B", "B", "B", " ", " ", "B" },
             { " ", " ", "B", " ", " ", " ", "B", " ", " " } };
 
-
+    private ObjectBattleField [][] battleField1:
     private int bfWidth;
     private int bfHeight;
     private int countOfBlocks;
 
     public BattleField(){
 
+        createBattleField();
         setCountOfBlocks(howManyBlocksInField());
         setBfHeight(SIZE_QUADRANT * battleField.length);
         setBfWidth(SIZE_QUADRANT * battleField.length);
 
+    }
+
+    public BattleField(String[][] battleField){
+        this.battleField = battleField;
     }
 
     private void setBfWidth(int bfWidth) {
@@ -52,10 +57,6 @@ public class BattleField implements Drawable {
         this.countOfBlocks = countOfBlocks;
     }
 
-    public BattleField(String[][] battleField){
-        this.battleField = battleField;
-    }
-
     public String[][] getBattleField() {
         return battleField;
     }
@@ -72,20 +73,57 @@ public class BattleField implements Drawable {
         return bfHeight;
     }
 
-    public String scanQuadrant(int v, int h){
-        return battleField[v][h];
-    }
-
-    public void updateQuadrant(int v, int h, String object){
-        battleField[v][h] = object;
-    }
-
     public int getDimentionX(){
         return battleField.length;
     }
 
     public int getDimentionY(){
         return battleField.length;
+    }
+
+    private void createBattleField(){
+
+        String fString = "";
+
+        for (int j = 0; j < getDimentionY(); j++) {
+            for (int k = 0; k < getDimentionX(); k++) {
+                String thatIsBlock = scanQuadrant(j, k);
+
+                if (!whatABlock.equals(" ")) {
+
+                    String coordinates = getQuadrantXY(j + 1, k + 1);
+                    int separator = coordinates.indexOf("_");
+                    int y = Integer.parseInt(coordinates
+                            .substring(0, separator));
+                    int x = Integer.parseInt(coordinates
+                            .substring(separator + 1));
+
+                    fString = whatABlock.substring(0, 1);
+
+                    if (fString == "R") {
+
+                    } else if (fString == "E") {
+
+                    } else if (fString == "B") {
+
+                    } else if (fString == "W") {
+
+                    }else {
+
+                    }
+
+
+                }
+            }
+        }
+    }
+
+    public String scanQuadrant(int v, int h){
+        return battleField[v][h];
+    }
+
+    public void updateQuadrant(int v, int h, String object){
+        battleField[v][h] = object;
     }
 
     public int howManyBlocksInField() {
