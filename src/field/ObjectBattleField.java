@@ -9,7 +9,9 @@ public class ObjectBattleField implements Destroyable{
     protected Color colorBlock;
     protected int y;
     protected int x;
+    protected int strength = 0;
     protected BattleField bf;
+
 
     public Color getColorBlock() {
         return colorBlock;
@@ -41,6 +43,14 @@ public class ObjectBattleField implements Destroyable{
 
     public void setX(int x) {
         this.x = x;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
 
     @Override
