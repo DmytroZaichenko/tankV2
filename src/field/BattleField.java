@@ -23,14 +23,14 @@ public class BattleField implements Drawable {
             { "E", " ", " ", "B", "B", "B", " ", " ", "B" },
             { " ", " ", "B", " ", " ", " ", "B", " ", " " } };
 
-    private ObjectBattleField [][] battleField1:
+    private ObjectBattleField [][] battleField1;
     private int bfWidth;
     private int bfHeight;
     private int countOfBlocks;
 
     public BattleField(){
 
-        createBattleField();
+        fillBattleField();
         setCountOfBlocks(howManyBlocksInField());
         setBfHeight(SIZE_QUADRANT * battleField.length);
         setBfWidth(SIZE_QUADRANT * battleField.length);
@@ -83,13 +83,23 @@ public class BattleField implements Drawable {
 
     private void createBattleField(){
 
-        String fString = "";
+        battleField1 = new ObjectBattleField[battleField.length][];
+        for (int y = 0; y < battleField.length ; y++) {
+            battleField1[y] = new ObjectBattleField[battleField[y].length];
+        }
+    }
+
+    private void fillBattleField(){
+
+        createBattleField();
+        String firstCh = "";
+        ObjectBattleField obf = null;
 
         for (int j = 0; j < getDimentionY(); j++) {
             for (int k = 0; k < getDimentionX(); k++) {
-                String thatIsBlock = scanQuadrant(j, k);
 
-                if (!whatABlock.equals(" ")) {
+                String stateField = scanQuadrant(j, k);
+                if (!stateField.equals(" ")) {
 
                     String coordinates = getQuadrantXY(j + 1, k + 1);
                     int separator = coordinates.indexOf("_");
@@ -98,20 +108,30 @@ public class BattleField implements Drawable {
                     int x = Integer.parseInt(coordinates
                             .substring(separator + 1));
 
-                    fString = whatABlock.substring(0, 1);
+                    firstCh = stateField.substring(0, 1);
 
-                    if (fString == "R") {
-
-                    } else if (fString == "E") {
-
-                    } else if (fString == "B") {
-
-                    } else if (fString == "W") {
-
+                    if (firstCh == "R") {
+                        obf = new Rock();
+                        obf.setColorBlock(Color.darkGray);
+                    } else if (firstCh == "E") {
+                        obf = new Eagle();
+                        obf.setColorBlock(Color.BLACK);
+                    } else if (firstCh == "B") {
+                        obf = new Brick();
+                        obf.setColorBlock(Color.CYAN);
+                    } else if (firstCh == "W") {
+                        obf = new Water();
+                        obf.setColorBlock(Color.blue);
                     }else {
 
                     }
 
+                    obf.setX(k);
+                    obf.setY(j);
+                    obf.setBf(this);
+                    obf.setStrength(0);
+
+                    updateQuadrant(j,k,obf);
 
                 }
             }
@@ -124,6 +144,10 @@ public class BattleField implements Drawable {
 
     public void updateQuadrant(int v, int h, String object){
         battleField[v][h] = object;
+    }
+
+    public void updateQuadrant(int v, int h, ObjectBattleField object){
+        battleField1[v][h] = object;
     }
 
     public int howManyBlocksInField() {

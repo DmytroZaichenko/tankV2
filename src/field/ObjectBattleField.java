@@ -14,6 +14,8 @@ public class ObjectBattleField implements Destroyable{
     protected BattleField bf;
     protected Bullet bullet;
 
+
+
     public Color getColorBlock() {
         return colorBlock;
     }
