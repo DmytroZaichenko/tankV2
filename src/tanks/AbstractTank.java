@@ -50,7 +50,7 @@ public abstract class AbstractTank implements Drawable, Destroyable {
     }
 
     public void fire() throws Exception {
-        bullet = new Bullet((getX() + 25), (getY() + 25), direction);
+        bullet = new Bullet((getX() + 25), (getY() + 25), direction, this);
         af.processFire(bullet);
     }
 

@@ -30,9 +30,10 @@ public class ActionField extends JPanel{
         battleField = new BattleField();
         defender  = new T34(this, battleField);
         aggressor = new Tiger(this, battleField, 0, 3*battleField.SIZE_QUADRANT, Direction.UP, 1);
+
         tanksInGame = new AbstractTank[] {defender, aggressor};
 
-        bullet = new Bullet(-100, -100, Direction.BOTTOM);
+        //bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
         JFrame frame = new JFrame("BATTLE FIELD, DAY 4");
         frame.setLocation(750, 150);
