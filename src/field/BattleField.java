@@ -207,7 +207,7 @@ public class BattleField implements Drawable {
                     } else if (fString == "E") {
                         colorBlock = Color.black;
                     } else if (fString == "B") {
-                        colorBlock = Color.orange;
+                        colorBlock = new Color(0,153,0);
                     } else if (fString == "W") {
                         colorBlock = Color.PINK;
                     }else {
