@@ -66,6 +66,7 @@ public class ObjectBattleField implements Destroyable{
 
     @Override
     public void destroy() throws Exception {
-        bf.updateQuadrant(y, x, " ");
+        bf.updateQuadrant(y, x, null);
+        bf.setCountOfBlocks(bf.getCountOfBlocks() - 1);
     }
 }

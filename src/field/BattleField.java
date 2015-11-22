@@ -12,7 +12,7 @@ public class BattleField implements Drawable {
     public final boolean COLORED_MODE = false;
     public final int SIZE_QUADRANT = 64;
 
-    private String[][] battleField = {
+    private String[][] battleFieldTmp = {
             { "B", "B", " ", "B", " ", "B", " ", "B", "B" },
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
             { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
@@ -20,10 +20,10 @@ public class BattleField implements Drawable {
             { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
-            { "E", " ", " ", "B", "B", "B", " ", " ", "B" },
+            { "R", " ", " ", "B", "B", "B", " ", " ", "B" },
             { " ", " ", "B", " ", " ", " ", "B", " ", " " } };
 
-    private ObjectBattleField [][] battleField1;
+    private ObjectBattleField [][] battleField;
     private int bfWidth;
     private int bfHeight;
     private int countOfBlocks;
@@ -35,10 +35,6 @@ public class BattleField implements Drawable {
         setBfHeight(SIZE_QUADRANT * battleField.length);
         setBfWidth(SIZE_QUADRANT * battleField.length);
 
-    }
-
-    public BattleField(String[][] battleField){
-        this.battleField = battleField;
     }
 
     private void setBfWidth(int bfWidth) {
@@ -55,14 +51,6 @@ public class BattleField implements Drawable {
 
     public void setCountOfBlocks(int countOfBlocks) {
         this.countOfBlocks = countOfBlocks;
-    }
-
-    public String[][] getBattleField() {
-        return battleField;
-    }
-
-    public void setBattleField(String[][] battleField) {
-        this.battleField = battleField;
     }
 
     public int getBfWidth() {
@@ -83,9 +71,9 @@ public class BattleField implements Drawable {
 
     private void createBattleField(){
 
-        battleField1 = new ObjectBattleField[battleField.length][];
-        for (int y = 0; y < battleField.length ; y++) {
-            battleField1[y] = new ObjectBattleField[battleField[y].length];
+        battleField = new ObjectBattleField[battleFieldTmp.length][];
+        for (int y = 0; y < battleFieldTmp.length ; y++) {
+            battleField[y] = new ObjectBattleField[battleFieldTmp[y].length];
         }
     }
 
@@ -98,7 +86,7 @@ public class BattleField implements Drawable {
         for (int j = 0; j < getDimentionY(); j++) {
             for (int k = 0; k < getDimentionX(); k++) {
 
-                String stateField = scanQuadrant(j, k);
+                String stateField = battleFieldTmp[j][k];
                 if (!stateField.equals(" ")) {
 
                     String coordinates = getQuadrantXY(j + 1, k + 1);
@@ -126,8 +114,8 @@ public class BattleField implements Drawable {
 
                     }
 
-                    obf.setX(k);
-                    obf.setY(j);
+                    obf.setX(x);
+                    obf.setY(y);
                     obf.setBf(this);
                     obf.setStrength(0);
 
@@ -138,16 +126,12 @@ public class BattleField implements Drawable {
         }
     }
 
-    public String scanQuadrant(int v, int h){
+    public ObjectBattleField scanQuadrant(int v, int h){
         return battleField[v][h];
     }
 
-    public void updateQuadrant(int v, int h, String object){
-        battleField[v][h] = object;
-    }
-
     public void updateQuadrant(int v, int h, ObjectBattleField object){
-        battleField1[v][h] = object;
+        battleField[v][h] = object;
     }
 
     public int howManyBlocksInField() {
@@ -156,7 +140,7 @@ public class BattleField implements Drawable {
 
         for (int y = 0; y < getDimentionY(); y++) {
             for (int x = 0; x < getDimentionX(); x++) {
-                if (isBrick(y,x)){
+                if (isBlock(y,x)){
                     result ++;
                 }
             }
@@ -165,8 +149,8 @@ public class BattleField implements Drawable {
         return result;
     }
 
-    public boolean isBrick(int y, int x){
-        return !scanQuadrant(y,x).equals(" ");
+    public boolean isBlock(int y, int x){
+        return !scanQuadrant(y,x).equals(null);
     }
 
     public int[] getAggressorLocation(AbstractTank[] tanks){
@@ -179,7 +163,7 @@ public class BattleField implements Drawable {
 
         for (int y = 0; y < maxY; y++) {
             for (int x = 0; x < maxX; x++){
-                if (!isBrick(y, x) && !isCoordinatesTank(tanks, y, x)){
+                if (!isBlock(y, x) && !isCoordinatesTank(tanks, y, x)){
                     coordinatesTank[idx][0] = y * SIZE_QUADRANT;
                     coordinatesTank[idx][1] = x * SIZE_QUADRANT;
                     idx ++;
@@ -246,39 +230,18 @@ public class BattleField implements Drawable {
             }
         }
 
-        String whatABlock = " ";
         Color colorBlock = Color.black;
-        String fString = "";
+        ObjectBattleField obf = null;
 
         for (int j = 0; j < getDimentionY(); j++) {
+
             for (int k = 0; k < getDimentionX(); k++) {
-                whatABlock = scanQuadrant(j, k);
+                obf = scanQuadrant(j,k);
 
-                if (!whatABlock.equals(" ")) {
-                    String coordinates = getQuadrantXY(j + 1, k + 1);
-                    int separator = coordinates.indexOf("_");
-                    int y = Integer.parseInt(coordinates
-                            .substring(0, separator));
-                    int x = Integer.parseInt(coordinates
-                            .substring(separator + 1));
-
-                    fString = whatABlock.substring(0, 1);
-
-                    if (fString == "R") {
-                        colorBlock = Color.gray;
-                    } else if (fString == "E") {
-                        colorBlock = Color.black;
-                    } else if (fString == "B") {
-                        colorBlock = new Color(0,153,0);
-                    } else if (fString == "W") {
-                        colorBlock = Color.PINK;
-                    }else {
-                        colorBlock = new Color(0, 0, 255);
-                    }
-
-                    //g.setColor(new Color(0, 0, 255));
+                if (! obf.equals(null)) {
+                    colorBlock = obf.getColorBlock();
                     g.setColor(colorBlock);
-                    g.fillRect(x, y, SIZE_QUADRANT, SIZE_QUADRANT);
+                    g.fillRect(obf.getX(), obf.getY(), SIZE_QUADRANT, SIZE_QUADRANT);
                 }
             }
         }

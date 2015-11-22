@@ -1,5 +1,6 @@
 package ua.tankv2.action;
 
+import ua.tankv2.field.ObjectBattleField;
 import ua.tankv2.managment.Direction;
 import ua.tankv2.tanks.AbstractTank;
 import ua.tankv2.tanks.T34;
@@ -58,7 +59,8 @@ public class ActionField extends JPanel{
 
     public void runTheGame() throws Exception{
 
-          clean(defender);
+          //clean(defender);
+        defender.fire();
 
     }
 
@@ -105,14 +107,14 @@ public class ActionField extends JPanel{
                 || (direction == Direction.BOTTOM && tank.getY() >= battleField.getBfHeight())
                 || (direction == Direction.LEFT && tank.getX() == 0)
                 || (direction == Direction.RIGHT && tank.getX() >= battleField.getBfWidth())
-                || (nextQuadrantBrik(tank, direction))
+                || (nextQuadrantBlock(tank, direction))
                 ) {
             return true;
         }
         return false;
     }
 
-    private boolean nextQuadrantBrik(AbstractTank tank, Direction direction) {
+    private boolean nextQuadrantBlock(AbstractTank tank, Direction direction) {
 
         int tmpTankX = tank.getX();
         int tmpTankY = tank.getY();
@@ -132,11 +134,8 @@ public class ActionField extends JPanel{
         int x = Integer.parseInt(coordinates.split("_")[1]);
 
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
-            if (!battleField.scanQuadrant(y,x).trim().isEmpty()) {
-                return true;
-            }
+            return battleField.isBlock(y,x);
         }
-
         return false;
     }
 
@@ -165,27 +164,27 @@ public class ActionField extends JPanel{
 
         if (direction == Direction.UP) {
             for (int j = 0; j <= y; j++) {
-                if (battleField.isBrick(j, x) || isTankOnQuadrant(tank, j, x)) {
+                if (battleField.isBlock(j, x) || isTankOnQuadrant(tank, j, x)) {
                     result++;
                 }
             }
 
         } else if (direction == Direction.BOTTOM) {
             for (int j = y; j <= battleField.getDimentionY() - 1; j++) {
-                if (battleField.isBrick(j, x)  || isTankOnQuadrant(tank, j, x)) {
+                if (battleField.isBlock(j, x)  || isTankOnQuadrant(tank, j, x)) {
                     result++;
                 }
             }
         } else if (direction == Direction.LEFT) {
             for (int j = x; j >= 0; j--) {
-                if (battleField.isBrick(y, j)  || isTankOnQuadrant(tank, y, j)) {
+                if (battleField.isBlock(y, j)  || isTankOnQuadrant(tank, y, j)) {
                     result++;
                 }
             }
 
         } else if (direction == Direction.RIGHT) {
             for (int j = x; j <= battleField.getDimentionX() - 1; j++) {
-                if (battleField.isBrick(y, j)  || isTankOnQuadrant(tank, y, j)) {
+                if (battleField.isBlock(y, j)  || isTankOnQuadrant(tank, y, j)) {
                     result++;
                 }
             }
@@ -230,11 +229,11 @@ public class ActionField extends JPanel{
         int y = Integer.parseInt(coordinates.split("_")[0]);
         int x = Integer.parseInt(coordinates.split("_")[1]);
 
-
+        ObjectBattleField obf = null;
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
-            if (battleField.isBrick(y,x)) {
-                battleField.updateQuadrant(y, x, " ");
-                battleField.setCountOfBlocks(battleField.getCountOfBlocks() - 1);
+            obf = battleField.scanQuadrant(y,x);
+            if (!obf.equals(null)) {
+                obf.destroy();
                 return true;
             }
 
@@ -369,7 +368,7 @@ public class ActionField extends JPanel{
         int idy = 0;
         for (int y = 0; y < battleField.getDimentionY(); y++) {
             for (int x = 0; x < battleField.getDimentionX(); x++) {
-                if (battleField.isBrick(y, x)) {
+                if (battleField.isBlock(y, x)) {
                     coordinatsBrik[idy][0] = y;
                     coordinatsBrik[idy][1] = x;
                     idy++;
