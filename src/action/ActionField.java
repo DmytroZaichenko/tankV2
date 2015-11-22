@@ -29,12 +29,13 @@ public class ActionField extends JPanel{
     public ActionField() throws  Exception{
 
         battleField = new BattleField();
-        defender  = new T34(this, battleField);
-        aggressor = new Tiger(this, battleField, 0, 3*battleField.SIZE_QUADRANT, Direction.UP, 1);
+        aggressor   = new Tiger(this, battleField);
+        //defender  = new T34(this, battleField);
+        //aggressor = new Tiger(this, battleField, 0, 3*battleField.SIZE_QUADRANT, Direction.UP, 1);
 
-        tanksInGame = new AbstractTank[] {defender, aggressor};
+        tanksInGame = new AbstractTank[] {aggressor};
 
-        //bullet = new Bullet(-100, -100, Direction.BOTTOM);
+        bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
         JFrame frame = new JFrame("BATTLE FIELD, DAY 4");
         frame.setLocation(750, 150);
@@ -51,7 +52,7 @@ public class ActionField extends JPanel{
         super.paintComponent(g);
 
         battleField.draw(g);
-        defender.draw(g);
+        //defender.draw(g);
         aggressor.draw(g);
         bullet.draw(g);
 
@@ -60,7 +61,12 @@ public class ActionField extends JPanel{
     public void runTheGame() throws Exception{
 
           //clean(defender);
-        defender.fire();
+        aggressor.fire();
+        aggressor.fire();
+        aggressor.fire();
+        aggressor.fire();
+        aggressor.fire();
+        aggressor.fire();
 
     }
 
@@ -232,7 +238,8 @@ public class ActionField extends JPanel{
         ObjectBattleField obf = null;
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             obf = battleField.scanQuadrant(y,x);
-            if (!obf.equals(null)) {
+            if (obf != null) {
+                obf.setBullet(bullet);
                 obf.destroy();
                 return true;
             }

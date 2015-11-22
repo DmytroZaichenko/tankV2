@@ -16,11 +16,11 @@ public class BattleField implements Drawable {
             { "B", "B", " ", "B", " ", "B", " ", "B", "B" },
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
             { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
-            { "W ","W", "B", " ", " ", " ", "B", "B", " " },
+            { "W","W", "B", " ", " ", " ", "B", "B", " " },
             { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
-            { "R", " ", " ", "B", "B", "B", " ", " ", "B" },
+            { "W", " ", " ", "B", "B", "B", " ", " ", "B" },
             { " ", " ", "B", " ", " ", " ", "B", " ", " " } };
 
     private ObjectBattleField [][] battleField;
@@ -150,7 +150,7 @@ public class BattleField implements Drawable {
     }
 
     public boolean isBlock(int y, int x){
-        return !scanQuadrant(y,x).equals(null);
+        return !(scanQuadrant(y,x) == null);
     }
 
     public int[] getAggressorLocation(AbstractTank[] tanks){
@@ -238,7 +238,7 @@ public class BattleField implements Drawable {
             for (int k = 0; k < getDimentionX(); k++) {
                 obf = scanQuadrant(j,k);
 
-                if (! obf.equals(null)) {
+                if ( obf != null) {
                     colorBlock = obf.getColorBlock();
                     g.setColor(colorBlock);
                     g.fillRect(obf.getX(), obf.getY(), SIZE_QUADRANT, SIZE_QUADRANT);

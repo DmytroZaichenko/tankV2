@@ -10,8 +10,11 @@ public class Tiger extends AbstractTank {
 
     private int armor = 1;
 
-    public void setArmor(int armor) {
+    public Tiger(ActionField af, BattleField bf) {
+        super(af, bf);
         this.armor = armor;
+        tankColor = new Color(255,0,0);
+        towerColor = new Color(0,255,0);
     }
 
     public Tiger(ActionField af, BattleField bf, int x, int y, Direction direction, int armor) {
@@ -19,6 +22,10 @@ public class Tiger extends AbstractTank {
         setArmor(armor);
         tankColor = new Color(255,0,0);
         towerColor = new Color(0,255,0);
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
     }
 
     @Override
