@@ -26,12 +26,10 @@ public class BattleField implements Drawable {
     private ObjectBattleField [][] battleField;
     private int bfWidth;
     private int bfHeight;
-    private int countOfBlocks;
 
     public BattleField(){
 
         fillBattleField();
-        setCountOfBlocks(howManyBlocksInField());
         setBfHeight(SIZE_QUADRANT * battleField.length);
         setBfWidth(SIZE_QUADRANT * battleField.length);
 
@@ -43,14 +41,6 @@ public class BattleField implements Drawable {
 
     private void setBfHeight(int bfHeight) {
         this.bfHeight = bfHeight;
-    }
-
-    public int getCountOfBlocks() {
-        return countOfBlocks;
-    }
-
-    public void setCountOfBlocks(int countOfBlocks) {
-        this.countOfBlocks = countOfBlocks;
     }
 
     public int getBfWidth() {
@@ -134,67 +124,8 @@ public class BattleField implements Drawable {
         battleField[v][h] = object;
     }
 
-    public int howManyBlocksInField() {
-
-        int result = 0;
-
-        for (int y = 0; y < getDimentionY(); y++) {
-            for (int x = 0; x < getDimentionX(); x++) {
-                if (isBlock(y,x)){
-                    result ++;
-                }
-            }
-        }
-
-        return result;
-    }
-
     public boolean isBlock(int y, int x){
         return !(scanQuadrant(y,x) == null);
-    }
-
-    public int[] getAggressorLocation(AbstractTank[] tanks){
-
-        int maxY = getDimentionY();
-        int maxX = getDimentionX();
-
-        int[][] coordinatesTank = new int[maxY * maxX][2];
-        int idx = 0;
-
-        for (int y = 0; y < maxY; y++) {
-            for (int x = 0; x < maxX; x++){
-                if (!isBlock(y, x) && !isCoordinatesTank(tanks, y, x)){
-                    coordinatesTank[idx][0] = y * SIZE_QUADRANT;
-                    coordinatesTank[idx][1] = x * SIZE_QUADRANT;
-                    idx ++;
-                }
-            }
-        }
-
-        if (idx != 0){
-            Random r = new Random();
-            int rand = r.nextInt(idx - 1);
-            return coordinatesTank[rand];
-        }
-
-        return null;
-    }
-
-    public boolean isCoordinatesTank(AbstractTank[] tanks, int y, int x) {
-
-        for (AbstractTank tank : tanks){
-            return isCoordinatesTank(tank, y, x);
-        }
-
-        return false;
-    }
-
-    public boolean isCoordinatesTank(AbstractTank tank, int y, int x) {
-
-        if (tank.getX() == x * SIZE_QUADRANT && tank.getY() == y * SIZE_QUADRANT) {
-            return true;
-        }
-        return false;
     }
 
     public String getQuadrant(int x, int y){
@@ -221,7 +152,6 @@ public class BattleField implements Drawable {
                     }
                 } else {
                     cc = new Color(180, 180, 180);
-                    //cc = Color.WHITE;
                 }
                 i++;
                 g.setColor(cc);
