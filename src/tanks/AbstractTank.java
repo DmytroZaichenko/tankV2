@@ -82,6 +82,48 @@ public abstract class AbstractTank implements Drawable, Destroyable {
         this.y += y;
     }
 
+    private void moveToQuadrant(AbstractTank tank, int v, int h) throws Exception {
+
+        String coordinates = bf.getQuadrantXY(v, h);
+
+        int y = Integer.parseInt(coordinates.split("_")[0]);
+        int x = Integer.parseInt(coordinates.split("_")[1]);
+
+        boolean key = true;
+
+        while (key) {
+
+            if (x != tank.getX() && x >= 0 && x <= bf.getDimentionX()) {
+                if (x > tank.getX()) {
+                    tank.turn(Direction.RIGHT);
+                } else {
+                    tank.turn(Direction.LEFT);
+                }
+                tank.move();
+            } else {
+                break;
+            }
+        }
+
+        key = true;
+
+        int tankY = tank.getY();
+
+        while (key) {
+
+            if (y != tankY && y >= 0 && y <= bf.getDimentionY()) {
+                if (y > tank.getY()) {
+                    tank.turn(Direction.BOTTOM);
+                } else {
+                    tank.turn(Direction.UP);
+                }
+                tank.move();
+            } else {
+                break;
+            }
+        }
+    }
+
 
     public void destroy() throws Exception {
         updateX(-100);
