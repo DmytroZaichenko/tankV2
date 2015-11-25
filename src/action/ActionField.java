@@ -192,7 +192,7 @@ public class ActionField extends JPanel{
 
             for (AbstractTank tank: tanksInGame) {
 
-                if (tank.getBullet() != bullet && battleField.isCoordinatesTank(tank,y,x)){
+                if (tank.getBullet() != bullet){
                     tank.destroy();
                     return true;
                 }

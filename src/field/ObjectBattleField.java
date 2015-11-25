@@ -24,10 +24,6 @@ public class ObjectBattleField implements Destroyable{
         this.colorBlock = colorBlock;
     }
 
-    public BattleField getBf() {
-        return bf;
-    }
-
     public void setBf(BattleField bf) {
         this.bf = bf;
     }
@@ -67,6 +63,5 @@ public class ObjectBattleField implements Destroyable{
     @Override
     public void destroy() throws Exception {
         bf.updateQuadrant(y / bf.SIZE_QUADRANT, x / bf.SIZE_QUADRANT, null);
-        bf.setCountOfBlocks(bf.getCountOfBlocks() - 1);
     }
 }

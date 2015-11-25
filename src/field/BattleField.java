@@ -1,11 +1,8 @@
 package ua.tankv2.field;
 
-import ua.tankv2.tanks.AbstractTank;
 import ua.tankv2.managment.*;
-
 import java.awt.Graphics;
 import java.awt.Color;
-import java.util.Random;
 
 public class BattleField implements Drawable {
 
