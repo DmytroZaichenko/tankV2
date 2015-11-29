@@ -1,6 +1,7 @@
 package ua.tankv2.action;
 
-import ua.tankv2.field.ObjectBattleField;
+import ua.tankv2.field.SimpleBFObject;
+import ua.tankv2.managment.Constant;
 import ua.tankv2.managment.Direction;
 import ua.tankv2.tanks.AbstractTank;
 import ua.tankv2.tanks.T34;
@@ -10,15 +11,12 @@ import ua.tankv2.field.BattleField;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 
-public class ActionField extends JPanel{
+public class ActionField extends JPanel implements Constant{
 
-    private boolean COLORED_MODE = false;
 
     private BattleField battleField;
-
     private T34 defender;
     private Tiger aggressor;
     private Bullet bullet;
@@ -26,7 +24,7 @@ public class ActionField extends JPanel{
     private AbstractTank[] tanksInGame;
 
 
-    public ActionField() throws  Exception{
+    public ActionField() throws  Exception {
 
         battleField = new BattleField();
         aggressor   = new Tiger(this, battleField);
@@ -50,6 +48,25 @@ public class ActionField extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        int i = 0;
+        Color cc;
+        for (int v = 0; v < 9; v++) {
+            for (int h = 0; h < 9; h++) {
+                if (COLORDED_MODE) {
+                    if (i % 2 == 0) {
+                        cc = new Color(252, 241, 177);
+                    } else {
+                        cc = new Color(233, 243, 255);
+                    }
+                } else {
+                    cc = new Color(180, 180, 180);
+                }
+                i++;
+                g.setColor(cc);
+                g.fillRect(h * 64, v * 64, 64, 64);
+            }
+        }
 
         battleField.draw(g);
         //defender.draw(g);
@@ -86,7 +103,7 @@ public class ActionField extends JPanel{
 
         tank.turn(direction);
 
-        while (covered < battleField.SIZE_QUADRANT) {
+        while (covered < SIZE_QUADRANT) {
 
             if (direction == Direction.UP) {
                 tank.updateY(-step);
@@ -116,31 +133,6 @@ public class ActionField extends JPanel{
                 || (nextQuadrantBlock(tank, direction))
                 ) {
             return true;
-        }
-        return false;
-    }
-
-    private boolean nextQuadrantBlock(AbstractTank tank, Direction direction) {
-
-        int tmpTankX = tank.getX();
-        int tmpTankY = tank.getY();
-
-        if (direction == Direction.UP) {
-            tmpTankY -= battleField.SIZE_QUADRANT;
-        } else if (direction == Direction.BOTTOM) {
-            tmpTankY += battleField.SIZE_QUADRANT;
-        } else if (direction == Direction.LEFT) {
-            tmpTankX -= battleField.SIZE_QUADRANT;
-        } else if (direction == Direction.RIGHT){
-            tmpTankX += battleField.SIZE_QUADRANT;
-        }
-
-        String coordinates = battleField.getQuadrant(tmpTankX, tmpTankY);
-        int y = Integer.parseInt(coordinates.split("_")[0]);
-        int x = Integer.parseInt(coordinates.split("_")[1]);
-
-        if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
-            return battleField.isBlock(y,x);
         }
         return false;
     }
@@ -181,7 +173,7 @@ public class ActionField extends JPanel{
         int y = Integer.parseInt(coordinates.split("_")[0]);
         int x = Integer.parseInt(coordinates.split("_")[1]);
 
-        ObjectBattleField obf = null;
+        SimpleBFObject obf = null;
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             obf = battleField.scanQuadrant(y,x);
             if (obf != null) {

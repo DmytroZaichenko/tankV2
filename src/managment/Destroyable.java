@@ -1,5 +1,7 @@
 package ua.tankv2.managment;
 
 public interface Destroyable {
-    void destroy() throws Exception;
+
+    public void destroy() throws Exception;
+    public boolean isDestroyed();
 }

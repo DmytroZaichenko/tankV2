@@ -3,19 +3,19 @@ package ua.tankv2.tanks;
 import ua.tankv2.action.ActionField;
 import ua.tankv2.action.Bullet;
 
-import ua.tankv2.managment.Direction;
-import ua.tankv2.managment.Destroyable;
-import ua.tankv2.managment.Drawable;
+import ua.tankv2.managment.*;
 
 import ua.tankv2.field.BattleField;
 
 import java.awt.Graphics;
 import java.awt.Color;
 
-public abstract class AbstractTank implements Drawable, Destroyable {
+public abstract class AbstractTank implements Tank, Constant {
 
     protected int speed = 10;
+    protected int movePath = 1;
 
+    //current position on BF
     protected int x;
     protected int y;
 
@@ -24,6 +24,7 @@ public abstract class AbstractTank implements Drawable, Destroyable {
     protected BattleField bf;
     protected Bullet bullet;
 
+    private boolean destroyed;
 
     protected Color tankColor;
     protected Color towerColor;
@@ -38,20 +39,35 @@ public abstract class AbstractTank implements Drawable, Destroyable {
         this.x = x;
         this.y = y;
         this.direction = direction;
+        this.destroyed = false;
     }
 
     public void turn(Direction direction) throws Exception {
         this.direction = direction;
-        af.processTurn(this);
     }
 
-    public void move() throws Exception {
-        af.processMove(this);
+    public void move(){
+
     }
 
-    public void fire() throws Exception {
-        bullet = new Bullet((getX() + 25), (getY() + 25), direction, this);
-        af.processFire(bullet);
+    public Bullet fire() {
+
+        int bulletX = -100;
+        int bulletY = -100;
+        if (direction == Direction.UP) {
+            bulletX = x + 25;
+            bulletY = y - SIZE_QUADRANT;
+        } else if (direction == Direction.BOTTOM) {
+            bulletX = x + 25;
+            bulletY = y + SIZE_QUADRANT;
+        } else if (direction == Direction.LEFT) {
+            bulletX = x - SIZE_QUADRANT;
+            bulletY = y + 25;
+        } else if (direction == Direction.RIGHT) {
+            bulletX = x + SIZE_QUADRANT;
+            bulletY = y + 25;
+        }
+        return new Bullet(bulletX, bulletY, direction);
     }
 
     public int getSpeed() {
@@ -132,21 +148,38 @@ public abstract class AbstractTank implements Drawable, Destroyable {
 
     public void draw(Graphics g){
 
-        g.setColor(tankColor);
-        g.fillRect(this.getX(), this.getY(), bf.SIZE_QUADRANT, bf.SIZE_QUADRANT);
+        if (!destroyed) {
+            g.setColor(tankColor);
+            g.fillRect(this.getX(), this.getY(), SIZE_QUADRANT, SIZE_QUADRANT);
 
-        g.setColor(towerColor);
+            g.setColor(towerColor);
 
-        if (this.getDirection() == Direction.UP) {
-            g.fillRect(this.getX() + 20, this.getY(), 24, 34);
-        } else if (this.getDirection() == Direction.BOTTOM) {
-            g.fillRect(this.getX() + 20, this.getY() + 30, 24, 34);
-        } else if (this.getDirection() == Direction.LEFT) {
-            g.fillRect(this.getX(), this.getY() + 20, 34, 24);
-        } else {
-            g.fillRect(this.getX() + 30, this.getY() + 20, 34, 24);
+            if (this.getDirection() == Direction.UP) {
+                g.fillRect(this.getX() + 20, this.getY(), 24, 34);
+            } else if (this.getDirection() == Direction.BOTTOM) {
+                g.fillRect(this.getX() + 20, this.getY() + 30, 24, 34);
+            } else if (this.getDirection() == Direction.LEFT) {
+                g.fillRect(this.getX(), this.getY() + 20, 34, 24);
+            } else {
+                g.fillRect(this.getX() + 30, this.getY() + 20, 34, 24);
+            }
+
         }
+
     }
 
+    @Override
+    public Action setUp() {
+        return null;
+    }
 
+    @Override
+    public int getMovePath() {
+        return movePath;
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return destroyed;
+    }
 }

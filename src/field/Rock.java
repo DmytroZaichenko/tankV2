@@ -2,14 +2,14 @@ package ua.tankv2.field;
 
 import ua.tankv2.tanks.Tiger;
 
-public class Rock  extends ObjectBattleField {
+import java.awt.Color;
 
-    @Override
-    public void destroy() throws Exception {
+public class Rock  extends SimpleBFObject {
 
-        if (getBullet().getTank() instanceof Tiger){
-            super.destroy();
-        }
-
+    public Rock(int x, int y) {
+        super(x, y);
+        color = new Color(0, 0, 255);
     }
+
+
 }

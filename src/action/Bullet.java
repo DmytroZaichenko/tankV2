@@ -10,21 +10,20 @@ import java.awt.Color;
 
 public class Bullet implements Drawable, Destroyable {
 
-    private int speed = 10;
+    private int speed = 5;
+
     private int x;
     private int y;
+
     private Direction direction;
-    private AbstractTank tank;
+
+    private boolean destroyed;
 
     public Bullet(int x, int y, Direction direction){
-        this(x, y, direction, null);
-    }
-
-    public Bullet(int x, int y, Direction direction, AbstractTank tank){
         this.x = x;
         this.y = y;
         this.direction = direction;
-        this.tank = tank;
+        this.destroyed = false;
     }
 
     public int getX() {
@@ -43,7 +42,6 @@ public class Bullet implements Drawable, Destroyable {
         return direction;
     }
 
-
     public void updateX(int x){
         this.x += x;
     }
@@ -52,24 +50,21 @@ public class Bullet implements Drawable, Destroyable {
         this.y += y;
     }
 
-    public AbstractTank getTank() {
-        return tank;
-    }
-
-    public void setTank(AbstractTank tank) {
-        this.tank = tank;
-    }
-
     public void destroy(){
-        x = -100;
-        y = -100;
+        destroyed = true;
     }
 
     public void draw(Graphics g) {
 
-        g.setColor(new Color(255, 255, 0));
-        g.fillRect(getX(), getY(), 14, 14);
+        if (!destroyed){
+            g.setColor(new Color(255, 255, 0));
+            g.fillRect(getX(), getY(), 14, 14);
+        }
+
     }
 
-
+    @Override
+    public boolean isDestroyed() {
+        return destroyed;
+    }
 }
