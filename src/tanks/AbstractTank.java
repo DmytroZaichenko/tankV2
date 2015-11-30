@@ -21,7 +21,7 @@ public abstract class AbstractTank implements Tank, Constant {
 
     protected Direction direction;
     protected BattleField bf;
-    protected Bullet bullet;
+    //protected Bullet bullet;
 
     private boolean destroyed;
 
@@ -54,12 +54,12 @@ public abstract class AbstractTank implements Tank, Constant {
         int bulletY = -100;
         if (direction == Direction.UP) {
             bulletX = x + 25;
-            bulletY = y - SIZE_QUADRANT;
+            bulletY = y - 25;
         } else if (direction == Direction.BOTTOM) {
             bulletX = x + 25;
-            bulletY = y + SIZE_QUADRANT;
+            bulletY = y + 25;
         } else if (direction == Direction.LEFT) {
-            bulletX = x - SIZE_QUADRANT;
+            bulletX = x - 25;
             bulletY = y + 25;
         } else if (direction == Direction.RIGHT) {
             bulletX = x + SIZE_QUADRANT;
@@ -78,10 +78,6 @@ public abstract class AbstractTank implements Tank, Constant {
 
     public int getY() {
         return y;
-    }
-
-    public Bullet getBullet(){
-        return bullet;
     }
 
     public Direction getDirection() {

@@ -10,7 +10,7 @@ import java.awt.Color;
 
 public class Bullet implements Drawable, Destroyable {
 
-    private int speed = 5;
+    private int speed = 10;
 
     private int x;
     private int y;
@@ -58,7 +58,7 @@ public class Bullet implements Drawable, Destroyable {
 
         if (!destroyed){
             g.setColor(new Color(255, 255, 0));
-            g.fillRect(getX(), getY(), 14, 14);
+            g.fillRect(this.x, this.y, 14, 14);
         }
 
     }

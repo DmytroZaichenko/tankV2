@@ -1,6 +1,5 @@
 package ua.tankv2.tanks;
 
-import ua.tankv2.action.ActionField;
 import ua.tankv2.field.BattleField;
 import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Direction;

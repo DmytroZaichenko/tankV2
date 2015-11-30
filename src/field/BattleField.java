@@ -16,7 +16,7 @@ public class BattleField implements Drawable, Constant  {
             { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
-            { "W", " ", " ", "B", "B", "B", " ", " ", "B" },
+            { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
             { " ", " ", "B", " ", " ", " ", "B", " ", " " } };
 
     private SimpleBFObject[][] battleField;
