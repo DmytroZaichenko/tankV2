@@ -1,11 +1,12 @@
 package ua.tankv2.action;
 
+import ua.tankv2.field.Blank;
 import ua.tankv2.field.SimpleBFObject;
 import ua.tankv2.managment.Constant;
 import ua.tankv2.managment.Direction;
 import ua.tankv2.tanks.AbstractTank;
+import ua.tankv2.tanks.BT7;
 import ua.tankv2.tanks.T34;
-import ua.tankv2.tanks.Tiger;
 import ua.tankv2.field.BattleField;
 
 
@@ -18,24 +19,24 @@ public class ActionField extends JPanel implements Constant{
 
     private BattleField battleField;
     private T34 defender;
-    private Tiger aggressor;
+    private BT7 aggressor;
     private Bullet bullet;
 
-    private AbstractTank[] tanksInGame;
 
 
     public ActionField() throws  Exception {
 
         battleField = new BattleField();
-        aggressor   = new Tiger(this, battleField);
-        //defender  = new T34(this, battleField);
-        //aggressor = new Tiger(this, battleField, 0, 3*battleField.SIZE_QUADRANT, Direction.UP, 1);
 
-        tanksInGame = new AbstractTank[] {aggressor};
+        defender  = new T34(battleField);
+        String location = battleField.getAggressorLocation();
+        aggressor   = new BT7(battleField,
+                Integer.parseInt(location.split("_")[1]), Integer.parseInt(location.split("_")[0]),Direction.RIGHT);
 
-        bullet = new Bullet(-100, -100, Direction.BOTTOM);
 
-        JFrame frame = new JFrame("BATTLE FIELD, DAY 4");
+        bullet = new Bullet(-100, -100, Direction.NONE);
+
+        JFrame frame = new JFrame("BATTLE FIELD, DAY 7");
         frame.setLocation(750, 150);
         frame.setMinimumSize(new Dimension(battleField.getBfWidth() + 17, battleField.getBfHeight() + 35));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -53,7 +54,7 @@ public class ActionField extends JPanel implements Constant{
         Color cc;
         for (int v = 0; v < 9; v++) {
             for (int h = 0; h < 9; h++) {
-                if (COLORDED_MODE) {
+                if (COLORED_MODE) {
                     if (i % 2 == 0) {
                         cc = new Color(252, 241, 177);
                     } else {
@@ -69,7 +70,7 @@ public class ActionField extends JPanel implements Constant{
         }
 
         battleField.draw(g);
-        //defender.draw(g);
+        defender.draw(g);
         aggressor.draw(g);
         bullet.draw(g);
 
@@ -77,13 +78,7 @@ public class ActionField extends JPanel implements Constant{
 
     public void runTheGame() throws Exception{
 
-          //clean(defender);
-        aggressor.fire();
-        aggressor.fire();
-        aggressor.fire();
-        aggressor.fire();
-        aggressor.fire();
-        aggressor.fire();
+
 
     }
 
@@ -130,12 +125,14 @@ public class ActionField extends JPanel implements Constant{
                 || (direction == Direction.BOTTOM && tank.getY() >= battleField.getBfHeight())
                 || (direction == Direction.LEFT && tank.getX() == 0)
                 || (direction == Direction.RIGHT && tank.getX() >= battleField.getBfWidth())
-                || (nextQuadrantBlock(tank, direction))
+                || (nextQuadrantBlock(tank, direction)
+
                 ) {
             return true;
         }
         return false;
     }
+
 
 
     public void processFire(Bullet bullet) throws Exception{
@@ -167,32 +164,52 @@ public class ActionField extends JPanel implements Constant{
 
     }
 
+    public String getQuadrant(int x, int y){
+        return y / SIZE_QUADRANT + "_" + x / SIZE_QUADRANT;
+    }
+
     private boolean processInterception() throws Exception {
 
-        String coordinates = battleField.getQuadrant(bullet.getX(), bullet.getY());
+        String coordinates = getQuadrant(bullet.getX(), bullet.getY());
         int y = Integer.parseInt(coordinates.split("_")[0]);
         int x = Integer.parseInt(coordinates.split("_")[1]);
 
-        SimpleBFObject obf = null;
+        SimpleBFObject obf;
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             obf = battleField.scanQuadrant(y,x);
-            if (obf != null) {
-                obf.setBullet(bullet);
-                obf.destroy();
+            if (!obf.isDestroyed() && !(obf instanceof Blank)) {
+                battleField.destroyObject(y, x);
                 return true;
             }
 
-            for (AbstractTank tank: tanksInGame) {
+            if (!aggressor.isDestroyed() && checkInterception(getQuadrant(aggressor.getY(), aggressor.getX()),coordinates)){
+                aggressor.destroy();
+                return true;
+            }
 
-                if (tank.getBullet() != bullet){
-                    tank.destroy();
-                    return true;
-                }
-
+            if (!defender.isDestroyed() && checkInterception(getQuadrant(defender.getY(), defender.getX()),coordinates)){
+                defender.destroy();
+                return true;
             }
 
         }
 
+        return false;
+    }
+
+    private boolean checkInterception(String obj, String quadrant){
+
+        int oy = Integer.parseInt(obj.split("_")[0]);
+        int ox = Integer.parseInt(obj.split("_")[1]);
+
+        int qy = Integer.parseInt(quadrant.split("_")[0]);
+        int qx = Integer.parseInt(quadrant.split("_")[1]);
+
+        if (oy >= 0 && oy < 9 && ox >= 0 && ox < 9) {
+            if (oy == qy && ox == qx) {
+                return true;
+            }
+        }
         return false;
     }
 

@@ -106,9 +106,6 @@ public class BattleField implements Drawable, Constant  {
         battleField[v][h] = object;
     }
 
-    public String getQuadrant(int x, int y){
-        return y / SIZE_QUADRANT + "_" + x / SIZE_QUADRANT;
-    }
 
     public String getQuadrantXY(int v, int h){
         return (v - 1) * SIZE_QUADRANT + "_" + (h - 1) * SIZE_QUADRANT;
@@ -116,6 +113,10 @@ public class BattleField implements Drawable, Constant  {
 
     public void destroyObject(int v, int h) throws Exception{
         battleField[v][h].destroy();
+    }
+
+    public String getAggressorLocation() {
+        return "64_128";
     }
 
     @Override

@@ -20,7 +20,6 @@ public abstract class AbstractTank implements Tank, Constant {
     protected int y;
 
     protected Direction direction;
-    protected ActionField af;
     protected BattleField bf;
     protected Bullet bullet;
 
@@ -29,12 +28,11 @@ public abstract class AbstractTank implements Tank, Constant {
     protected Color tankColor;
     protected Color towerColor;
 
-    public AbstractTank(ActionField af, BattleField bf) {
-        this(af, bf, 0, 512, Direction.UP);
+    public AbstractTank(BattleField bf) {
+        this(bf, 0, 512, Direction.UP);
     }
 
-    public AbstractTank(ActionField af, BattleField bf, int x, int y, Direction direction) {
-        this.af = af;
+    public AbstractTank(BattleField bf, int x, int y, Direction direction) {
         this.bf = bf;
         this.x = x;
         this.y = y;
