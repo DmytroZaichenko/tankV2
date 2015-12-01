@@ -4,7 +4,6 @@ import ua.tankv2.field.Blank;
 import ua.tankv2.field.SimpleBFObject;
 import ua.tankv2.managment.*;
 import ua.tankv2.managment.Action;
-import ua.tankv2.tanks.AbstractTank;
 import ua.tankv2.tanks.BT7;
 import ua.tankv2.tanks.T34;
 import ua.tankv2.field.BattleField;
@@ -30,9 +29,9 @@ public class ActionField extends JPanel implements Constant{
         battleField = new BattleField();
 
         defender  = new T34(battleField);
-//        String location = battleField.getAggressorLocation();
-//        aggressor   = new BT7(battleField,
-//                Integer.parseInt(location.split("_")[1]), Integer.parseInt(location.split("_")[0]),Direction.RIGHT);
+        String location = battleField.getAggressorLocation();
+        aggressor   = new BT7(battleField,
+                Integer.parseInt(location.split("_")[1]), Integer.parseInt(location.split("_")[0]),Direction.RIGHT);
 
 
         bullet = new Bullet(-100, -100, Direction.NONE);
@@ -72,31 +71,30 @@ public class ActionField extends JPanel implements Constant{
 
         battleField.draw(g);
         defender.draw(g);
-        //aggressor.draw(g);
+        aggressor.draw(g);
         bullet.draw(g);
 
     }
 
     public void runTheGame() throws Exception{
 
-//        while (true){
-//            if (!aggressor.isDestroyed() && !defender.isDestroyed()){
-//                processMove(defender);
-//            }
-//        }
         while (true) {
-            processMove(defender);
-            processFire(defender.fire());
+            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+                processAction(aggressor.setUp(), aggressor);
+            }
+            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+                processAction(defender.setUp(), defender);
+            }
         }
-
-
-
-
     }
 
     private void processAction(Action a, Tank tank) throws Exception{
-        if (a == Action.MOVE){
+
+        if (a == Action.MOVE) {
             processMove(tank);
+        } else if (a == Action.FIRE) {
+            processTurn(tank);
+            processFire(tank.fire());
         }
 
     }
@@ -111,7 +109,7 @@ public class ActionField extends JPanel implements Constant{
         int step = 1;
         int covered = 0;
 
-        if (checkLimits(tank)){
+        if (checkLimits(tank,direction)){
             return;
         }
 
@@ -136,9 +134,7 @@ public class ActionField extends JPanel implements Constant{
         }
     }
 
-    public boolean checkLimits(Tank tank) {
-
-        Direction direction = tank.getDirection();
+    public boolean checkLimits(Tank tank, Direction direction) {
 
         if ((direction == Direction.UP && tank.getY() == 0)
                 || (direction == Direction.BOTTOM && tank.getY() >= battleField.getBfHeight())
@@ -172,7 +168,7 @@ public class ActionField extends JPanel implements Constant{
 
         try {
             SimpleBFObject obj = battleField.scanQuadrant(tmpY, tmpX);
-            return obj.isDestroyed() || (obj instanceof Blank);
+            return obj.isDestroyed() || (!(obj instanceof Blank));
         }catch (ArrayIndexOutOfBoundsException e){
             return true;
         }

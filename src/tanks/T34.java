@@ -21,9 +21,31 @@ public class T34 extends AbstractTank {
         towerColor = new Color(255, 0, 0);
     }
 
+    private Object[] actions = new Object[] {
+            Direction.RIGHT,
+            Action.FIRE,
+            Action.MOVE,
+            Action.FIRE,
+            Action.MOVE,
+            Action.FIRE,
+            Action.FIRE
+    };
+
+    private int step = 0;
+
     @Override
     public Action setUp() {
-        return Action.MOVE;
+
+        if (step >= actions.length) {
+            step = 0;
+        }
+        if (!(actions[step] instanceof Action)) {
+            turn((Direction) actions[step++]);
+        }
+        if (step >= actions.length) {
+            step = 0;
+        }
+        return (Action) actions[step++];
     }
 
 }

@@ -40,7 +40,7 @@ public abstract class AbstractTank implements Tank, Constant {
         this.destroyed = false;
     }
 
-    public void turn(Direction direction) throws Exception {
+    public void turn(Direction direction){
         this.direction = direction;
     }
 
