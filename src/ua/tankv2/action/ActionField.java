@@ -82,9 +82,9 @@ public class ActionField extends JPanel implements Constant{
             if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
                 processAction(aggressor.setUp(), aggressor);
             }
-//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
-//                processAction(defender.setUp(), defender);
-//            }
+            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+                processAction(defender.setUp(), defender);
+            }
         }
     }
 
