@@ -83,31 +83,7 @@ public class BT7 extends AbstractTank {
 
     @Override
     public Action setUp() {
-
-//        if (step == listOfActions.size() && !(isHQDestroyed())){
-//            step = 0;
-//        }
-//
-//        Object obj = listOfActions.get(step ++);
-//        if (obj instanceof Direction){
-//            if (obj != direction) {
-//                turn((Direction) obj);
-//            }
-//            return Action.NONE;
-//        }
-//
-//        return (Action) obj;
-//    }
-//
-//    private boolean isHQDestroyed(){
-//
-//        for (SimpleBFObject hq:  bf.getArrayListHQ()) {
-//            if (!(hq.isDestroyed())) {
-//                return false;
-//            }
-//        }
-//        return true;
-            return Action.MOVE;
+         return Action.MOVE;
     }
 
 }
