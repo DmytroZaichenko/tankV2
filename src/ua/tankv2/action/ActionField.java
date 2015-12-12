@@ -31,7 +31,7 @@ public class ActionField extends JPanel implements Constant{
         defender  = new T34(battleField);
         String location = battleField.getAggressorLocation();
         aggressor   = new BT7(battleField,
-                Integer.parseInt(location.split("_")[1]), Integer.parseInt(location.split("_")[0]),Direction.BOTTOM);
+                Integer.parseInt(location.split("_")[1]), Integer.parseInt(location.split("_")[0]),Direction.DOWN);
 
 
         bullet = new Bullet(-100, -100, Direction.NONE);
@@ -82,9 +82,9 @@ public class ActionField extends JPanel implements Constant{
             if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
                 processAction(aggressor.setUp(), aggressor);
             }
-            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
-                processAction(defender.setUp(), defender);
-            }
+//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+//                processAction(defender.setUp(), defender);
+//            }
         }
     }
 
@@ -119,7 +119,7 @@ public class ActionField extends JPanel implements Constant{
 
             if (direction == Direction.UP) {
                 tank.updateY(-step);
-            } else if (direction == Direction.BOTTOM) {
+            } else if (direction == Direction.DOWN) {
                 tank.updateY(step);
             } else if (direction == Direction.LEFT) {
                tank.updateX(-step);
@@ -137,10 +137,10 @@ public class ActionField extends JPanel implements Constant{
     public boolean checkLimits(Tank tank, Direction direction) {
 
         if ((direction == Direction.UP && tank.getY() == 0)
-                || (direction == Direction.BOTTOM && tank.getY() >= battleField.getBfHeight())
+                || (direction == Direction.DOWN && tank.getY() >= battleField.getBfHeight())
                 || (direction == Direction.LEFT && tank.getX() == 0)
                 || (direction == Direction.RIGHT && tank.getX() >= battleField.getBfWidth())
-                || (nextQuadrantBlankDestoyed(tank, direction))
+                || (!(nextQuadrantBlankDestoyed(tank, direction)))
            ){
             return true;
         }
@@ -158,7 +158,7 @@ public class ActionField extends JPanel implements Constant{
 
         if (direction == Direction.UP){
             tmpY = --y;
-        }else if(direction == Direction.BOTTOM){
+        }else if(direction == Direction.DOWN){
             tmpY = ++y;
         }else if (direction == Direction.LEFT){
             tmpX = --x;
@@ -167,8 +167,8 @@ public class ActionField extends JPanel implements Constant{
         }
 
         try {
-            SimpleBFObject obj = battleField.scanQuadrant(tmpY, tmpX);
-            return obj.isDestroyed() || (!(obj instanceof Blank));
+            Destroyable obj = battleField.scanQuadrant(tmpY, tmpX);
+            return obj.isDestroyed() || obj instanceof Blank;
         }catch (ArrayIndexOutOfBoundsException e){
             return true;
         }
@@ -185,7 +185,7 @@ public class ActionField extends JPanel implements Constant{
 
             if (bullet.getDirection() == Direction.UP) {
                 bullet.updateY(-step) ;
-            } else if (bullet.getDirection() == Direction.BOTTOM) {
+            } else if (bullet.getDirection() == Direction.DOWN) {
                 bullet.updateY(step) ;
             } else if (bullet.getDirection() == Direction.LEFT) {
                 bullet.updateX(-step) ;
@@ -217,7 +217,7 @@ public class ActionField extends JPanel implements Constant{
         int y = Integer.parseInt(coordinates.split("_")[0]);
         int x = Integer.parseInt(coordinates.split("_")[1]);
 
-        SimpleBFObject obf;
+        Destroyable obf;
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             obf = battleField.scanQuadrant(y,x);
             if (!obf.isDestroyed() && !(obf instanceof Blank)) {

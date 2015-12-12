@@ -1,13 +1,14 @@
 package ua.tankv2.tanks;
 
-import ua.tankv2.field.BFObject;
 import ua.tankv2.field.BattleField;
 import ua.tankv2.field.SimpleBFObject;
 import ua.tankv2.managment.Action;
+import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Direction;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class BT7 extends AbstractTank {
 
@@ -39,6 +40,9 @@ public class BT7 extends AbstractTank {
             return;
         }
 
+        boolean isBlockOnDirection = false;
+        HashSet<Destroyable> listBlock = new HashSet<>();
+
         for (SimpleBFObject hq : arrHQ ) {
 
             int yHQ = hq.getY();
@@ -49,19 +53,24 @@ public class BT7 extends AbstractTank {
 
             while (yHQ != yTank) {
 
+                isBlockOnDirection = bf.isBlockOnDirection(yTank, xTank, direction, listBlock);
                 if (yHQ < yTank) {
                     listOfActions.add(Direction.UP);
                     yTank -= SIZE_QUADRANT;
                 } else if (yHQ > yTank) {
-                    listOfActions.add(Direction.BOTTOM);
+                    listOfActions.add(Direction.DOWN);
                     yTank += SIZE_QUADRANT;
                 }
-                listOfActions.add(Action.FIRE);
+
+                if (isBlockOnDirection) {
+                    listOfActions.add(Action.FIRE);
+                }
                 listOfActions.add(Action.MOVE);
             }
 
             while (xHQ != xTank){
 
+                isBlockOnDirection = bf.isBlockOnDirection(yTank, xTank, direction, listBlock);
                 if (xHQ < xTank){
                     listOfActions.add(Direction.LEFT);
                     xTank -= SIZE_QUADRANT;
@@ -70,7 +79,10 @@ public class BT7 extends AbstractTank {
                      xTank += SIZE_QUADRANT;
                 }
 
-                listOfActions.add(Action.FIRE);
+                if (isBlockOnDirection) {
+                    listOfActions.add(Action.FIRE);
+                }
+
                 listOfActions.add(Action.MOVE);
 
             }

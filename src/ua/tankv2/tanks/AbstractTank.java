@@ -1,6 +1,5 @@
 package ua.tankv2.tanks;
 
-import ua.tankv2.action.ActionField;
 import ua.tankv2.action.Bullet;
 
 import ua.tankv2.managment.*;
@@ -48,17 +47,16 @@ public abstract class AbstractTank implements Tank, Constant {
     }
 
     public Bullet fire() {
-
         int bulletX = -100;
         int bulletY = -100;
         if (direction == Direction.UP) {
             bulletX = x + 25;
-            bulletY = y - 25;
-        } else if (direction == Direction.BOTTOM) {
+            bulletY = y - SIZE_QUADRANT;
+        } else if (direction == Direction.DOWN) {
             bulletX = x + 25;
-            bulletY = y + 25;
+            bulletY = y + SIZE_QUADRANT;
         } else if (direction == Direction.LEFT) {
-            bulletX = x - 25;
+            bulletX = x - SIZE_QUADRANT;
             bulletY = y + 25;
         } else if (direction == Direction.RIGHT) {
             bulletX = x + SIZE_QUADRANT;
@@ -91,48 +89,6 @@ public abstract class AbstractTank implements Tank, Constant {
         this.y += y;
     }
 
-    private void moveToQuadrant(AbstractTank tank, int v, int h) throws Exception {
-
-        String coordinates = bf.getQuadrantXY(v, h);
-
-        int y = Integer.parseInt(coordinates.split("_")[0]);
-        int x = Integer.parseInt(coordinates.split("_")[1]);
-
-        boolean key = true;
-
-        while (key) {
-
-            if (x != tank.getX() && x >= 0 && x <= bf.getDimentionX()) {
-                if (x > tank.getX()) {
-                    tank.turn(Direction.RIGHT);
-                } else {
-                    tank.turn(Direction.LEFT);
-                }
-                tank.move();
-            } else {
-                break;
-            }
-        }
-
-        key = true;
-
-        int tankY = tank.getY();
-
-        while (key) {
-
-            if (y != tankY && y >= 0 && y <= bf.getDimentionY()) {
-                if (y > tank.getY()) {
-                    tank.turn(Direction.BOTTOM);
-                } else {
-                    tank.turn(Direction.UP);
-                }
-                tank.move();
-            } else {
-                break;
-            }
-        }
-    }
-
 
     public void destroy() throws Exception {
         updateX(-100);
@@ -149,7 +105,7 @@ public abstract class AbstractTank implements Tank, Constant {
 
             if (this.getDirection() == Direction.UP) {
                 g.fillRect(this.getX() + 20, this.getY(), 24, 34);
-            } else if (this.getDirection() == Direction.BOTTOM) {
+            } else if (this.getDirection() == Direction.DOWN) {
                 g.fillRect(this.getX() + 20, this.getY() + 30, 24, 34);
             } else if (this.getDirection() == Direction.LEFT) {
                 g.fillRect(this.getX(), this.getY() + 20, 34, 24);

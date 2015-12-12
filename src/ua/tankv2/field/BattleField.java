@@ -1,8 +1,11 @@
 package ua.tankv2.field;
 
 import ua.tankv2.managment.*;
+
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BattleField implements Drawable, Constant  {
 
@@ -104,7 +107,7 @@ public class BattleField implements Drawable, Constant  {
         }
     }
 
-    public SimpleBFObject scanQuadrant(int v, int h){
+    public Destroyable scanQuadrant(int v, int h){
         return battleField[v][h];
     }
 
@@ -123,6 +126,83 @@ public class BattleField implements Drawable, Constant  {
 
     public String getAggressorLocation() {
         return "64_128";
+    }
+
+    public boolean checkLimits(int v, int h, Direction direction) {
+
+        if ((direction == Direction.UP && v == 0)
+                || (direction == Direction.DOWN && v >= getDimentionY())
+                || (direction == Direction.LEFT && h == 0)
+                || (direction == Direction.RIGHT && h >= getDimentionX())
+                ) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isBlock(Destroyable obj, HashSet<Destroyable> list){
+
+        if (list == null){
+            list = new HashSet<>();
+        };
+
+        if (!(obj.isDestroyed()) && !(obj instanceof Blank) && !(list.contains(obj)) ){
+            list.add(obj);
+            return true;
+        }
+        return false;
+
+    }
+
+    public boolean isBlockOnDirection(int y, int x, Direction direction, HashSet<Destroyable> list){
+
+        int firstV = y / SIZE_QUADRANT;
+        int firstH = x / SIZE_QUADRANT;
+
+        if (checkLimits(firstV, firstH, direction)) {
+            return false;
+        }
+
+        Destroyable obj;
+
+        if (direction == Direction.UP){
+
+            for (int tmpV = firstV; tmpV >= 0 ; tmpV --) {
+                obj = scanQuadrant(tmpV, firstH);
+                if (isBlock(obj,list)){
+                    return true;
+                }
+            }
+
+        }else if (direction == Direction.DOWN){
+
+            for (int tmpV = firstV; tmpV < getDimentionY() ; tmpV ++) {
+                obj = scanQuadrant(tmpV, firstH);
+                if (isBlock(obj,list)){
+                    return true;
+                }
+            }
+
+        }else if (direction == Direction.RIGHT){
+
+            for (int tmpH = firstH; tmpH < getDimentionX() ; tmpH++) {
+                obj = scanQuadrant(firstV, tmpH);
+                if (isBlock(obj,list)){
+                    return true;
+                }
+            }
+
+        }else if (direction == Direction.LEFT){
+
+            for (int tmpH = firstH; tmpH >= 0 ; tmpH--) {
+                obj = scanQuadrant(firstV, tmpH);
+                if (isBlock(obj,list)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 
