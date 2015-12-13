@@ -5,7 +5,6 @@ import ua.tankv2.managment.*;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public class BattleField implements Drawable, Constant  {
 

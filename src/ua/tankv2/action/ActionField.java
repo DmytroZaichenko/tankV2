@@ -1,7 +1,6 @@
 package ua.tankv2.action;
 
 import ua.tankv2.field.Blank;
-import ua.tankv2.field.SimpleBFObject;
 import ua.tankv2.managment.*;
 import ua.tankv2.managment.Action;
 import ua.tankv2.tanks.BT7;
@@ -82,9 +81,9 @@ public class ActionField extends JPanel implements Constant{
             if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
                 processAction(aggressor.setUp(), aggressor);
             }
-//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
-//                processAction(defender.setUp(), defender);
-//            }
+            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+                processAction(defender.setUp(), defender);
+            }
         }
     }
 
