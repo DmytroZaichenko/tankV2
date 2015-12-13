@@ -14,7 +14,7 @@ public class BattleField implements Drawable, Constant  {
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
             { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
             { "W","W", "B", " ", " ", " ", "B", "B", " " },
-            { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
+            { "W", "H", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
             { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
@@ -23,7 +23,7 @@ public class BattleField implements Drawable, Constant  {
     private SimpleBFObject[][] battleField;
     private int bfWidth;
     private int bfHeight;
-    private ArrayList<SimpleBFObject> arrayListHQ = new ArrayList<SimpleBFObject>();
+    private ArrayList<SimpleBFObject> arrayListHQ = new ArrayList<>();
 
     public BattleField(){
 
@@ -100,9 +100,7 @@ public class BattleField implements Drawable, Constant  {
                 } else {
                     obf = new Blank(y,x);
                 }
-
                 updateQuadrant(j, k, obf);
-
             }
         }
     }
@@ -125,7 +123,7 @@ public class BattleField implements Drawable, Constant  {
     }
 
     public String getAggressorLocation() {
-        return "64_128";
+        return "64_512";
     }
 
     public boolean checkLimits(int v, int h, Direction direction) {

@@ -40,7 +40,6 @@ public class BT7 extends AbstractTank {
             return;
         }
 
-        boolean isBlockOnDirection = false;
         HashSet<Destroyable> listBlock = new HashSet<>();
 
         for (SimpleBFObject hq : arrHQ ) {
@@ -51,43 +50,68 @@ public class BT7 extends AbstractTank {
             int yTank = getY();
             int xTank = getX();
 
+            int tmpYTank;
+            int tmpXTank;
+
+            Direction tmpDirection = direction;
+
             while (yHQ != yTank) {
 
-                isBlockOnDirection = bf.isBlockOnDirection(yTank, xTank, direction, listBlock);
+                tmpYTank = yTank;
+                tmpXTank = xTank;
+
                 if (yHQ < yTank) {
-                    listOfActions.add(Direction.UP);
+                    tmpDirection = Direction.UP;
+                    listOfActions.add(tmpDirection);
                     yTank -= SIZE_QUADRANT;
                 } else if (yHQ > yTank) {
-                    listOfActions.add(Direction.DOWN);
+                    tmpDirection = Direction.DOWN;
+                    listOfActions.add(tmpDirection);
                     yTank += SIZE_QUADRANT;
                 }
 
-                if (isBlockOnDirection) {
+                if (bf.isBlockOnDirection(tmpYTank, tmpXTank, tmpDirection, listBlock)) {
                     listOfActions.add(Action.FIRE);
                 }
-                listOfActions.add(Action.MOVE);
+                if (listBlock.contains(hq)){
+                    break;
+                }else {
+                    listOfActions.add(Action.MOVE);
+                }
+
             }
 
-            while (xHQ != xTank){
+            while (xHQ != xTank && !(listBlock.contains(hq))){
 
-                isBlockOnDirection = bf.isBlockOnDirection(yTank, xTank, direction, listBlock);
+                tmpYTank = yTank;
+                tmpXTank = xTank;
+
                 if (xHQ < xTank){
-                    listOfActions.add(Direction.LEFT);
+                    tmpDirection = Direction.LEFT;
+                    listOfActions.add(tmpDirection);
                     xTank -= SIZE_QUADRANT;
                 }else if (xHQ > xTank){
-                    listOfActions.add(Direction.RIGHT);
+                    tmpDirection = Direction.RIGHT;
+                    listOfActions.add(tmpDirection);
                      xTank += SIZE_QUADRANT;
                 }
 
-                if (isBlockOnDirection) {
+                if (bf.isBlockOnDirection(tmpYTank, tmpXTank, tmpDirection, listBlock)) {
                     listOfActions.add(Action.FIRE);
                 }
 
-                listOfActions.add(Action.MOVE);
+                if (listBlock.contains(hq)){
+                    break;
+                }else {
+                    listOfActions.add(Action.MOVE);
+                }
 
             }
-            System.out.println();
+
         }
+
+        listOfActions.add(Direction.DOWN);
+        listOfActions.add(Action.MOVE);
 
     }
 
@@ -96,12 +120,16 @@ public class BT7 extends AbstractTank {
     @Override
     public Action setUp() {
 
-        if (step == listOfActions.size() && !(isHQDestroyed())){
-            step = 0;
+        if (step == listOfActions.size()) {
+            if (!(isHQDestroyed())) {
+                step = 0;
+            } else {
+                return Action.NONE;
+            }
         }
 
-        Object obj = listOfActions.get(step ++);
-        if (obj instanceof Direction){
+        Object obj = listOfActions.get(step++);
+        if (obj instanceof Direction) {
             if (obj != direction) {
                 turn((Direction) obj);
             }

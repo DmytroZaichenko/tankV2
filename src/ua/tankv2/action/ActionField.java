@@ -136,10 +136,13 @@ public class ActionField extends JPanel implements Constant{
 
     public boolean checkLimits(Tank tank, Direction direction) {
 
+        int limitX = (battleField.getDimentionX()-1) * SIZE_QUADRANT;
+        int limitY = (battleField.getDimentionY()-1) * SIZE_QUADRANT;
+
         if ((direction == Direction.UP && tank.getY() == 0)
-                || (direction == Direction.DOWN && tank.getY() >= battleField.getBfHeight())
+                || (direction == Direction.DOWN && tank.getY() >= limitY)
                 || (direction == Direction.LEFT && tank.getX() == 0)
-                || (direction == Direction.RIGHT && tank.getX() >= battleField.getBfWidth())
+                || (direction == Direction.RIGHT && tank.getX() >= limitX)
                 || (!(nextQuadrantBlankDestoyed(tank, direction)))
            ){
             return true;
@@ -207,8 +210,13 @@ public class ActionField extends JPanel implements Constant{
 
     }
 
+    private String getRoundValue(int value){
+        return new Long (Math.round((double) value / (double)SIZE_QUADRANT)).toString();
+    }
+
     public String getQuadrant(int x, int y){
-        return y / SIZE_QUADRANT + "_" + x / SIZE_QUADRANT;
+
+        return getRoundValue(y) + "_" + getRoundValue(x);
     }
 
     private boolean processInterception() throws Exception {
