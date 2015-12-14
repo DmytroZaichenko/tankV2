@@ -8,6 +8,7 @@ import ua.tankv2.field.BattleField;
 
 import java.awt.Graphics;
 import java.awt.Color;
+import java.util.HashMap;
 
 public abstract class AbstractTank implements Tank, Constant {
 
@@ -36,6 +37,7 @@ public abstract class AbstractTank implements Tank, Constant {
         this.y = y;
         this.direction = direction;
         this.destroyed = false;
+
     }
 
     public void turn(Direction direction){
@@ -46,20 +48,21 @@ public abstract class AbstractTank implements Tank, Constant {
 
     }
 
+
     public Bullet fire() {
         int bulletX = -100;
         int bulletY = -100;
         if (direction == Direction.UP) {
             bulletX = x + 25;
-            bulletY = y - SIZE_QUADRANT;
+            bulletY = y - 33;
         } else if (direction == Direction.DOWN) {
             bulletX = x + 25;
-            bulletY = y + SIZE_QUADRANT;
+            bulletY = y + 33;
         } else if (direction == Direction.LEFT) {
-            bulletX = x - SIZE_QUADRANT;
+            bulletX = x - 33;
             bulletY = y + 25;
         } else if (direction == Direction.RIGHT) {
-            bulletX = x + SIZE_QUADRANT;
+            bulletX = x + 33;
             bulletY = y + 25;
         }
         return new Bullet(bulletX, bulletY, direction);
@@ -90,7 +93,7 @@ public abstract class AbstractTank implements Tank, Constant {
     }
 
 
-    public void destroy() throws Exception {
+    public void destroy(){
         updateX(-100);
         updateY(-100);
     }

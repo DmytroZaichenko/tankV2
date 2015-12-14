@@ -31,7 +31,7 @@ public class SimpleBFObject implements BFObject,Constant{
     }
 
     @Override
-    public void destroy() throws Exception {
+    public void destroy(){
         isDestroyed = true;
     }
 

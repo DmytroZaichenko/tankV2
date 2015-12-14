@@ -2,17 +2,20 @@ package ua.tankv2.tanks;
 
 import ua.tankv2.field.BattleField;
 import ua.tankv2.field.SimpleBFObject;
+import ua.tankv2.field.Hq;
 import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Direction;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class BT7 extends AbstractTank {
 
-    private ArrayList<Object> listOfActions = new ArrayList<>();
+    private HashMap<Hq, ArrayList<Object>> listOfActions = new HashMap<>();
 
     private int speed = super.getSpeed() * 2;
 
@@ -40,6 +43,12 @@ public class BT7 extends AbstractTank {
             return;
         }
 
+        int tmpYTank = 0;
+        int tmpXTank = 0;
+
+        int yTank = getY();
+        int xTank = getX();
+
         HashSet<Destroyable> listBlock = new HashSet<>();
 
         for (SimpleBFObject hq : arrHQ ) {
@@ -47,11 +56,7 @@ public class BT7 extends AbstractTank {
             int yHQ = hq.getY();
             int xHQ = hq.getX();
 
-            int yTank = getY();
-            int xTank = getX();
-
-            int tmpYTank;
-            int tmpXTank;
+            listOfActions.put((Hq) hq,new ArrayList<>());
 
             Direction tmpDirection = direction;
 
@@ -62,21 +67,21 @@ public class BT7 extends AbstractTank {
 
                 if (yHQ < yTank) {
                     tmpDirection = Direction.UP;
-                    listOfActions.add(tmpDirection);
+                    listOfActions.get(hq).add(tmpDirection);
                     yTank -= SIZE_QUADRANT;
                 } else if (yHQ > yTank) {
                     tmpDirection = Direction.DOWN;
-                    listOfActions.add(tmpDirection);
+                    listOfActions.get((Hq)hq).add(tmpDirection);
                     yTank += SIZE_QUADRANT;
                 }
 
                 if (bf.isBlockOnDirection(tmpYTank, tmpXTank, tmpDirection, listBlock)) {
-                    listOfActions.add(Action.FIRE);
+                    listOfActions.get(hq).add(Action.FIRE);
                 }
                 if (listBlock.contains(hq)){
                     break;
                 }else {
-                    listOfActions.add(Action.MOVE);
+                    listOfActions.get(hq).add(Action.MOVE);
                 }
 
             }
@@ -88,31 +93,27 @@ public class BT7 extends AbstractTank {
 
                 if (xHQ < xTank){
                     tmpDirection = Direction.LEFT;
-                    listOfActions.add(tmpDirection);
+                    listOfActions.get(hq).add(tmpDirection);
                     xTank -= SIZE_QUADRANT;
                 }else if (xHQ > xTank){
                     tmpDirection = Direction.RIGHT;
-                    listOfActions.add(tmpDirection);
+                    listOfActions.get(hq).add(tmpDirection);
                      xTank += SIZE_QUADRANT;
                 }
 
                 if (bf.isBlockOnDirection(tmpYTank, tmpXTank, tmpDirection, listBlock)) {
-                    listOfActions.add(Action.FIRE);
+                    listOfActions.get(hq).add(Action.FIRE);
                 }
 
                 if (listBlock.contains(hq)){
                     break;
                 }else {
-                    listOfActions.add(Action.MOVE);
+                    listOfActions.get(hq).add(Action.MOVE);
                 }
 
             }
 
         }
-
-        listOfActions.add(Direction.DOWN);
-        listOfActions.add(Action.MOVE);
-
     }
 
     private int step = 0;
@@ -120,23 +121,39 @@ public class BT7 extends AbstractTank {
     @Override
     public Action setUp() {
 
-        if (step == listOfActions.size()) {
-            if (!(isHQDestroyed())) {
-                step = 0;
-            } else {
-                return Action.NONE;
+        for (HashMap.Entry<Hq, ArrayList<Object>> entry : listOfActions.entrySet()) {
+            Hq h = entry.getKey();
+            ArrayList<Object> act = entry.getValue();
+            while (!(h.isDestroyed())) {
+                Object obj = act.get(step++);
+                if (obj instanceof Direction) {
+                    if (obj != direction) {
+                        turn((Direction) obj);
+                    }
+                    return Action.NONE;
+                }
+
+                return (Action) obj;
             }
         }
-
-        Object obj = listOfActions.get(step++);
-        if (obj instanceof Direction) {
-            if (obj != direction) {
-                turn((Direction) obj);
-            }
-            return Action.NONE;
-        }
-
-        return (Action) obj;
+//        if (step == listOfActions.size()) {
+//            if (!(isHQDestroyed())) {
+//                step = 0;
+//            } else {
+//                return Action.NONE;
+//            }
+//        }
+//
+//        Object obj = listOfActions.get(step++);
+//        if (obj instanceof Direction) {
+//            if (obj != direction) {
+//                turn((Direction) obj);
+//            }
+//            return Action.NONE;
+//        }
+//
+//        return (Action) obj;
+        return Action.NONE;
     }
 
     private boolean isHQDestroyed(){

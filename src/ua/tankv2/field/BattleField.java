@@ -4,6 +4,7 @@ import ua.tankv2.managment.*;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class BattleField implements Drawable, Constant  {
@@ -121,8 +122,16 @@ public class BattleField implements Drawable, Constant  {
         battleField[v][h].destroy();
     }
 
-    public String getAggressorLocation() {
-        return "64_512";
+    public HashMap<String, Integer> getAggressorLocation() {
+
+        HashMap<String,Integer> loc = new HashMap<String, Integer>(){
+            {
+                put("y",64);
+                put("x",64);
+            }
+        };
+
+        return loc;
     }
 
     public boolean checkLimits(int v, int h, Direction direction) {

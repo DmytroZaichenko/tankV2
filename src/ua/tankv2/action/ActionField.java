@@ -11,6 +11,8 @@ import ua.tankv2.tanks.Tank;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 
 public class ActionField extends JPanel implements Constant{
@@ -28,11 +30,18 @@ public class ActionField extends JPanel implements Constant{
         battleField = new BattleField();
 
         defender  = new T34(battleField);
-        String location = battleField.getAggressorLocation();
-        aggressor   = new BT7(battleField,
-                Integer.parseInt(location.split("_")[1]), Integer.parseInt(location.split("_")[0]),Direction.DOWN);
-
-
+        aggressor   = new BT7(battleField,battleField.getAggressorLocation().get("x"),
+                              battleField.getAggressorLocation().get("y"),Direction.DOWN);
+        
+        List<Tank> listOfTank = new ArrayList<Tank>() {
+            {
+                add(defender);
+                add(aggressor);
+            }
+        };
+        
+        destroyObjUnderTank(listOfTank);
+        
         bullet = new Bullet(-100, -100, Direction.NONE);
 
         JFrame frame = new JFrame("BATTLE FIELD, DAY 7");
@@ -42,6 +51,19 @@ public class ActionField extends JPanel implements Constant{
         frame.getContentPane().add(this);
         frame.pack();
         frame.setVisible(true);
+
+    }
+
+    private void destroyObjUnderTank(List<Tank> listOfTank) {
+
+        for (int i = 0; i < listOfTank.size(); i++) {
+            Tank t = listOfTank.get(i);
+            HashMap<String, Integer> hm = getQuadrant(t.getX(),t.getY());
+            Destroyable obj = battleField.scanQuadrant(hm.get("y"), hm.get("x"));
+            if (!(obj instanceof Blank) || !(obj.isDestroyed())) {
+                obj.destroy();
+            }
+        }
 
     }
 
@@ -81,9 +103,9 @@ public class ActionField extends JPanel implements Constant{
             if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
                 processAction(aggressor.setUp(), aggressor);
             }
-            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
-                processAction(defender.setUp(), defender);
-            }
+//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+//                processAction(defender.setUp(), defender);
+//            }
         }
     }
 
@@ -151,9 +173,9 @@ public class ActionField extends JPanel implements Constant{
 
     private boolean nextQuadrantBlankDestoyed(Tank tank, Direction direction){
 
-        String coordinates = getQuadrant(tank.getX(), tank.getY());
-        int y = Integer.parseInt(coordinates.split("_")[0]);
-        int x = Integer.parseInt(coordinates.split("_")[1]);
+        HashMap<String, Integer> coordinates = getQuadrant(tank.getX(), tank.getY());
+        int y = coordinates.get("y");
+        int x = coordinates.get("x");
 
         int tmpX = x;
         int tmpY = y;
@@ -209,20 +231,24 @@ public class ActionField extends JPanel implements Constant{
 
     }
 
-    private String getRoundValue(int value){
-        return new Long (Math.round((double) value / (double)SIZE_QUADRANT)).toString();
+    private Integer getRoundValue(int value){
+        return new Integer ((int) Math.round((double) value / (double)SIZE_QUADRANT));
     }
 
-    public String getQuadrant(int x, int y){
+    public HashMap<String, Integer> getQuadrant(int x, int y){
 
-        return getRoundValue(y) + "_" + getRoundValue(x);
+        HashMap<String, Integer>  result = new HashMap<>(2);
+        result.put("x",getRoundValue(x));
+        result.put("y",getRoundValue(y));
+        return result;
+
     }
 
     private boolean processInterception() throws Exception {
 
-        String coordinates = getQuadrant(bullet.getX(), bullet.getY());
-        int y = Integer.parseInt(coordinates.split("_")[0]);
-        int x = Integer.parseInt(coordinates.split("_")[1]);
+        HashMap<String, Integer> coordinates = getQuadrant(bullet.getX(), bullet.getY());
+        int y = coordinates.get("y");
+        int x = coordinates.get("x");
 
         Destroyable obf;
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
@@ -247,13 +273,13 @@ public class ActionField extends JPanel implements Constant{
         return false;
     }
 
-    private boolean checkInterception(String obj, String quadrant){
+    private boolean checkInterception(HashMap<String,Integer> obj, HashMap<String,Integer> quadrant){
 
-        int oy = Integer.parseInt(obj.split("_")[0]);
-        int ox = Integer.parseInt(obj.split("_")[1]);
+        int oy = obj.get("y");
+        int ox = obj.get("x");
 
-        int qy = Integer.parseInt(quadrant.split("_")[0]);
-        int qx = Integer.parseInt(quadrant.split("_")[1]);
+        int qy = quadrant.get("y");
+        int qx = quadrant.get("x");
 
         if (oy >= 0 && oy < battleField.getDimentionY() && ox >= 0 && ox < battleField.getDimentionX()) {
             if (oy == qy && ox == qx) {
