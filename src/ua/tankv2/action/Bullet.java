@@ -10,7 +10,7 @@ import java.awt.Color;
 
 public class Bullet implements Drawable, Destroyable {
 
-    private int speed = 20;
+    private int speed = 10;
 
     private int x;
     private int y;

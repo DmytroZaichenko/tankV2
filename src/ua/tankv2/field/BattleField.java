@@ -23,7 +23,7 @@ public class BattleField implements Drawable, Constant  {
     private SimpleBFObject[][] battleField;
     private int bfWidth;
     private int bfHeight;
-    private ArrayList<SimpleBFObject> arrayListHQ = new ArrayList<>();
+    private ArrayList<Hq> arrayListHQ = new ArrayList<>();
 
     public BattleField(){
 
@@ -33,7 +33,7 @@ public class BattleField implements Drawable, Constant  {
 
     }
 
-    public ArrayList<SimpleBFObject> getArrayListHQ() {
+    public ArrayList<Hq> getArrayListHQ() {
         return arrayListHQ;
     }
 
@@ -96,7 +96,7 @@ public class BattleField implements Drawable, Constant  {
                     obf = new Water(y,x);
                 } else if (stateField.equals(HQ)) {
                     obf = new Hq(y,x);
-                    arrayListHQ.add(obf);
+                    arrayListHQ.add((Hq)obf);
                 } else {
                     obf = new Blank(y,x);
                 }
@@ -127,7 +127,7 @@ public class BattleField implements Drawable, Constant  {
         HashMap<String,Integer> loc = new HashMap<String, Integer>(){
             {
                 put("y",64);
-                put("x",64);
+                put("x",512);
             }
         };
 
@@ -160,10 +160,95 @@ public class BattleField implements Drawable, Constant  {
 
     }
 
+    private Integer getRoundValue(int value){
+        return new Integer ((int) Math.round((double) value / (double)SIZE_QUADRANT));
+    }
+
+    public HashMap<String, Integer> getQuadrant(int x, int y){
+
+        HashMap<String, Integer>  result = new HashMap<>(2);
+        result.put("x",getRoundValue(x));
+        result.put("y",getRoundValue(y));
+        return result;
+
+    }
+
+    public boolean nextQuadrantBlankDestoyed(int x, int y, Direction direction){
+
+        HashMap<String, Integer> coordinates = getQuadrant(x, y);
+        int v = coordinates.get("y");
+        int h = coordinates.get("x");
+
+        int tmpX = h;
+        int tmpY = v;
+
+        if (direction == Direction.UP){
+            tmpY = --v;
+        }else if(direction == Direction.DOWN){
+            tmpY = ++v;
+        }else if (direction == Direction.LEFT){
+            tmpX = --h;
+        }else if (direction == Direction.RIGHT){
+            tmpX = ++h;
+        }
+
+        try {
+            Destroyable obj = scanQuadrant(tmpY, tmpX);
+            return obj.isDestroyed() || obj instanceof Blank;
+        }catch (ArrayIndexOutOfBoundsException e){
+            return true;
+        }
+    }
+
+    public boolean isShooting(int x, int y, Direction direction, HashSet<Destroyable> listObj){
+
+        HashMap<String, Integer> coordinates = getQuadrant(x, y);
+        int v = coordinates.get("y");
+        int h = coordinates.get("x");
+
+        int tmpH = h;
+        int tmpV = v;
+
+        if (direction == Direction.UP){
+            tmpV = --v;
+        }else if(direction == Direction.DOWN){
+            tmpV = ++v;
+        }else if (direction == Direction.LEFT){
+            tmpH = --h;
+        }else if (direction == Direction.RIGHT){
+            tmpH = ++h;
+        }
+
+        try {
+            Destroyable obj = scanQuadrant(tmpV, tmpH);
+            boolean result;
+            
+            if (obj instanceof Blank){
+                result =  false;
+            }else if (obj.isDestroyed() ){
+                result =  false;
+            }else if (listObj.contains(obj)){
+                result =  false;
+            }else{
+                result =  true;
+            }
+
+            if (result) {
+                listObj.add(obj);
+            }
+            
+            return result;
+            
+        }catch (ArrayIndexOutOfBoundsException e){
+            return true;
+        }
+    }
+
     public boolean isBlockOnDirection(int y, int x, Direction direction, HashSet<Destroyable> list){
 
-        int firstV = y / SIZE_QUADRANT;
-        int firstH = x / SIZE_QUADRANT;
+        HashMap<String, Integer> hm = getQuadrant(x,y);
+        int firstV = hm.get("y");
+        int firstH = hm.get("x");
 
         if (checkLimits(firstV, firstH, direction)) {
             return false;

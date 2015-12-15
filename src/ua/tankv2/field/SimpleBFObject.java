@@ -43,14 +43,14 @@ public class SimpleBFObject implements BFObject,Constant{
         }
     }
 
-    @Override
-    public int hashCode() {
-
-        int result = 23;
-        result += 37 * new Integer(y).hashCode();
-        result += 37 * new Integer(x).hashCode();
-        result += 37 * new Boolean(isDestroyed).hashCode();
-
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//
+//        int result = 23;
+//        result += 37 * new Integer(y).hashCode();
+//        result += 37 * new Integer(x).hashCode();
+//        result += 37 * new Boolean(isDestroyed).hashCode();
+//
+//        return result;
+//    }
 }

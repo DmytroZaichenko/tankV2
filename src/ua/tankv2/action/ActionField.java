@@ -2,12 +2,9 @@ package ua.tankv2.action;
 
 import ua.tankv2.field.Blank;
 import ua.tankv2.managment.*;
-import ua.tankv2.managment.Action;
-import ua.tankv2.tanks.BT7;
-import ua.tankv2.tanks.T34;
+import ua.tankv2.tanks.*;
 import ua.tankv2.field.BattleField;
-import ua.tankv2.tanks.Tank;
-
+import ua.tankv2.managment.Action;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,7 +55,7 @@ public class ActionField extends JPanel implements Constant{
 
         for (int i = 0; i < listOfTank.size(); i++) {
             Tank t = listOfTank.get(i);
-            HashMap<String, Integer> hm = getQuadrant(t.getX(),t.getY());
+            HashMap<String, Integer> hm = battleField.getQuadrant(t.getX(),t.getY());
             Destroyable obj = battleField.scanQuadrant(hm.get("y"), hm.get("x"));
             if (!(obj instanceof Blank) || !(obj.isDestroyed())) {
                 obj.destroy();
@@ -164,40 +161,13 @@ public class ActionField extends JPanel implements Constant{
                 || (direction == Direction.DOWN && tank.getY() >= limitY)
                 || (direction == Direction.LEFT && tank.getX() == 0)
                 || (direction == Direction.RIGHT && tank.getX() >= limitX)
-                || (!(nextQuadrantBlankDestoyed(tank, direction)))
+                || (!(battleField.nextQuadrantBlankDestoyed(tank.getX(), tank.getY(), direction)))
            ){
             return true;
         }
         return false;
     }
 
-    private boolean nextQuadrantBlankDestoyed(Tank tank, Direction direction){
-
-        HashMap<String, Integer> coordinates = getQuadrant(tank.getX(), tank.getY());
-        int y = coordinates.get("y");
-        int x = coordinates.get("x");
-
-        int tmpX = x;
-        int tmpY = y;
-
-        if (direction == Direction.UP){
-            tmpY = --y;
-        }else if(direction == Direction.DOWN){
-            tmpY = ++y;
-        }else if (direction == Direction.LEFT){
-            tmpX = --x;
-        }else if (direction == Direction.RIGHT){
-            tmpX = ++x;
-        }
-
-        try {
-            Destroyable obj = battleField.scanQuadrant(tmpY, tmpX);
-            return obj.isDestroyed() || obj instanceof Blank;
-        }catch (ArrayIndexOutOfBoundsException e){
-            return true;
-        }
-
-    }
 
     public void processFire(Bullet bullet) throws Exception{
 
@@ -231,22 +201,10 @@ public class ActionField extends JPanel implements Constant{
 
     }
 
-    private Integer getRoundValue(int value){
-        return new Integer ((int) Math.round((double) value / (double)SIZE_QUADRANT));
-    }
-
-    public HashMap<String, Integer> getQuadrant(int x, int y){
-
-        HashMap<String, Integer>  result = new HashMap<>(2);
-        result.put("x",getRoundValue(x));
-        result.put("y",getRoundValue(y));
-        return result;
-
-    }
 
     private boolean processInterception() throws Exception {
 
-        HashMap<String, Integer> coordinates = getQuadrant(bullet.getX(), bullet.getY());
+        HashMap<String, Integer> coordinates = battleField.getQuadrant(bullet.getX(), bullet.getY());
         int y = coordinates.get("y");
         int x = coordinates.get("x");
 
@@ -258,12 +216,12 @@ public class ActionField extends JPanel implements Constant{
                 return true;
             }
 
-            if (!aggressor.isDestroyed() && checkInterception(getQuadrant(aggressor.getY(), aggressor.getX()),coordinates)){
+            if (!aggressor.isDestroyed() && checkInterception(battleField.getQuadrant(aggressor.getY(), aggressor.getX()),coordinates)){
                 aggressor.destroy();
                 return true;
             }
 
-            if (!defender.isDestroyed() && checkInterception(getQuadrant(defender.getY(), defender.getX()),coordinates)){
+            if (!defender.isDestroyed() && checkInterception(battleField.getQuadrant(defender.getY(), defender.getX()),coordinates)){
                 defender.destroy();
                 return true;
             }
