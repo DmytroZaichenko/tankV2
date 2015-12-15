@@ -107,7 +107,7 @@ public class ActionField extends JPanel implements Constant{
     }
 
     private void processAction(Action a, Tank tank) throws Exception{
-
+        System.out.println(a+" "+tank.getDirection());
         if (a == Action.MOVE) {
             processMove(tank);
         } else if (a == Action.FIRE) {
@@ -123,6 +123,7 @@ public class ActionField extends JPanel implements Constant{
 
     public void processMove(Tank tank) throws Exception{
 
+        System.out.println(tank.getX()+" "+tank.getY());
         Direction direction = tank.getDirection();
         int step = 1;
         int covered = 0;
