@@ -10,7 +10,7 @@ import java.util.HashSet;
 public class BattleField implements Drawable, Constant  {
 
     private String[][] battleFieldTmp = {
-            { "B", "B", " ", "B", " ", "B", " ", "B", "B" },
+            { "B", "B", " ", "B", "H", "B", " ", "B", "B" },
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
             { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
             { "W","W", "B", " ", " ", " ", "B", "B", " " },
@@ -18,7 +18,7 @@ public class BattleField implements Drawable, Constant  {
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
             { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
-            { " ", " ", "B", "B", "H", "B", "B", " ", " " } };
+            { " ", " ", "B", "B", " ", "B", "B", " ", " " } };
 
     private SimpleBFObject[][] battleField;
     private int bfWidth;
@@ -126,8 +126,8 @@ public class BattleField implements Drawable, Constant  {
 
         HashMap<String,Integer> loc = new HashMap<String, Integer>(){
             {
-                put("y",64);
-                put("x",512);
+                put("y",128);
+                put("x",448);
             }
         };
 

@@ -11,11 +11,12 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 
 public class BT7 extends AbstractTank {
 
-    private HashMap<Hq, ArrayList<Object>> listOfActions;
+    private LinkedHashMap<Hq, ArrayList<Object>> listOfActions;
 
     public BT7(BattleField bf, int x, int y, Direction direction) {
         super(bf, x, y, direction);
@@ -33,7 +34,7 @@ public class BT7 extends AbstractTank {
             return;
         }
 
-        listOfActions = new HashMap<>();
+        listOfActions = new LinkedHashMap<>();
 
         int tmpYTank;
         int tmpXTank;
@@ -117,6 +118,8 @@ public class BT7 extends AbstractTank {
             }
 
             Object obj = act.get(step++);
+            //System.out.println("hq [x: "+h.getX()+" y: "+h.getY()+"] tank [x: "+ x + " y: " + y+"]
+            // action: "+obj.toString());
             hmStep.put(h,step);
             if (obj instanceof Direction) {
                 if (obj != direction) {
