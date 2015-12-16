@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class ActionField extends JPanel implements Constant{
+public class ActionField extends JPanel {
 
 
     private BattleField battleField;
@@ -72,7 +72,7 @@ public class ActionField extends JPanel implements Constant{
         Color cc;
         for (int v = 0; v < battleField.getDimentionY(); v++) {
             for (int h = 0; h < battleField.getDimentionX(); h++) {
-                if (COLORED_MODE) {
+                if (battleField.COLORED_MODE) {
                     if (i % 2 == 0) {
                         cc = new Color(252, 241, 177);
                     } else {
@@ -83,7 +83,8 @@ public class ActionField extends JPanel implements Constant{
                 }
                 i++;
                 g.setColor(cc);
-                g.fillRect(h * SIZE_QUADRANT, v * SIZE_QUADRANT, SIZE_QUADRANT, SIZE_QUADRANT);
+                g.fillRect(h * battleField.SIZE_QUADRANT, v * battleField.SIZE_QUADRANT,
+                               battleField.SIZE_QUADRANT, battleField.SIZE_QUADRANT);
             }
         }
 
@@ -130,7 +131,7 @@ public class ActionField extends JPanel implements Constant{
 
         processTurn();
 
-        while (covered < SIZE_QUADRANT) {
+        while (covered < battleField.SIZE_QUADRANT) {
 
             if (direction == Direction.UP) {
                 tank.updateY(-step);
@@ -151,8 +152,8 @@ public class ActionField extends JPanel implements Constant{
 
     public boolean checkLimits(Tank tank, Direction direction) {
 
-        int limitX = (battleField.getDimentionX()-1) * SIZE_QUADRANT;
-        int limitY = (battleField.getDimentionY()-1) * SIZE_QUADRANT;
+        int limitX = (battleField.getDimentionX()-1) * battleField.SIZE_QUADRANT;
+        int limitY = (battleField.getDimentionY()-1) * battleField.SIZE_QUADRANT;
 
         if ((direction == Direction.UP && tank.getY() == 0)
                 || (direction == Direction.DOWN && tank.getY() >= limitY)
@@ -170,9 +171,9 @@ public class ActionField extends JPanel implements Constant{
 
         this.bullet = bullet;
         int step = 1;
-
-        while ((bullet.getX() > (-1)*OUT_FIELD && bullet.getX() < battleField.getBfWidth() + OUT_FIELD)
-                && (bullet.getY() > (-1) * OUT_FIELD && bullet.getY() < battleField.getBfHeight() + OUT_FIELD)) {
+        int incToOut = battleField.OUT_FIELD;
+        while ((bullet.getX() > (-1)*incToOut && bullet.getX() < battleField.getBfWidth() + incToOut)
+                && (bullet.getY() > (-1) * incToOut && bullet.getY() < battleField.getBfHeight() + incToOut)) {
 
             if (bullet.getDirection() == Direction.UP) {
                 bullet.updateY(-step) ;
@@ -213,7 +214,7 @@ public class ActionField extends JPanel implements Constant{
                 return true;
             }
 
-            if (!aggressor.isDestroyed() && checkInterception(battleField.getQuadrant(aggressor.getY(), aggressor.getX()),coordinates)){
+            if (!aggressor.isDestroyed() && checkInterception(battleField.getQuadrant(aggressor.getY(),aggressor.getX()),coordinates)){
                 aggressor.destroy();
                 return true;
             }

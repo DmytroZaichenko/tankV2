@@ -1,10 +1,9 @@
 package ua.tankv2.field;
 
-import ua.tankv2.managment.Constant;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class SimpleBFObject implements BFObject,Constant{
+public class SimpleBFObject implements BFObject{
 
     protected Color color;
 

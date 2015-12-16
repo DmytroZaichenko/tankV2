@@ -8,9 +8,8 @@ import ua.tankv2.field.BattleField;
 
 import java.awt.Graphics;
 import java.awt.Color;
-import java.util.HashMap;
 
-public abstract class AbstractTank implements Tank, Constant {
+public abstract class AbstractTank implements Tank {
 
     protected int speed = 10;
     protected int movePath = 1;

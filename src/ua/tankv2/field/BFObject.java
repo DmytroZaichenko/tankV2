@@ -5,4 +5,5 @@ import ua.tankv2.managment.Destroyable;
 
 public interface BFObject extends Drawable, Destroyable {
 
+
 }

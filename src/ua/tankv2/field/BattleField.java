@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class BattleField implements Drawable, Constant  {
+public class BattleField implements Drawable {
 
     private String[][] battleFieldTmp = {
-            { "B", "B", " ", "B", " ", "B", " ", "B", "B" },
+            { "B", "B", "H", "B", " ", "B", "B", "B", "B" },
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
-            { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
-            { "W","W", "B", " ", " ", " ", "B", "B", " " },
+            { "B", "B", " ", "H", "B", " ", "B", "B", "B" },
+            { "W","W", "B", " ", " ", " ", "B", "B",  "E" },
             { "W", "H", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
             { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
-            { " ", " ", "B", "B", "H", "B", "B", " ", " " } };
+            { " ", " ", "B", "B", "H", "B", "B", " ", "W" } };
 
     private SimpleBFObject[][] battleField;
     private int bfWidth;
