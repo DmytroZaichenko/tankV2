@@ -161,7 +161,7 @@ public class BattleField implements Drawable {
     }
 
     private Integer getRoundValue(int value){
-        return new Integer ((int) Math.round((double) value / (double)SIZE_QUADRANT));
+        return (int) Math.round((double) value / (double) SIZE_QUADRANT);
     }
 
     public HashMap<String, Integer> getQuadrant(int x, int y){
@@ -295,7 +295,6 @@ public class BattleField implements Drawable {
 
         return false;
     }
-
 
     @Override
     public void draw(Graphics g) {
