@@ -118,8 +118,7 @@ public class BT7 extends AbstractTank {
             }
 
             Object obj = act.get(step++);
-            //System.out.println("hq [x: "+h.getX()+" y: "+h.getY()+"] tank [x: "+ x + " y: " + y+"]
-            // action: "+obj.toString());
+
             hmStep.put(h,step);
             if (obj instanceof Direction) {
                 if (obj != direction) {
