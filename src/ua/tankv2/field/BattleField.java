@@ -150,7 +150,7 @@ public class BattleField implements Drawable {
 
         if (list == null){
             list = new HashSet<>();
-        };
+        }
 
         if (!(obj.isDestroyed()) && !(obj instanceof Blank) && !(list.contains(obj)) ){
             list.add(obj);
