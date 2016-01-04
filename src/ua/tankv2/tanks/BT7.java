@@ -6,7 +6,6 @@ import ua.tankv2.field.SimpleBFObject;
 import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Direction;
-import ua.tankv2.managment.NoMovementException;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class BT7 extends AbstractTank {
                 ArrayList<Direction> listOfPermittedDirection = getPermittedDirections(tmpYTank, tmpXTank);
 
                 if (listOfPermittedDirection.size() == 0){
-                    //throw new NoMovementException("[BT7] I can not move. Help me!");
+
                     break;
                 }
 
