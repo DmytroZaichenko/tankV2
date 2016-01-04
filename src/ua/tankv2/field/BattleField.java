@@ -10,15 +10,15 @@ import java.util.HashSet;
 public class BattleField implements Drawable {
 
     private String[][] battleFieldTmp = {
-            { "B", "B", "E", "B", " ", "B", "B", "B", "B" },
+            { "B", "B", " ", "B", " ", "B", "B", "B", "B" },
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
             { "B", "B", " ", "E", "B", " ", "B", "B", "B" },
-            { "W","W", "B", " ", " ", " ", "B", "B",  "E" },
+            { "W","W", "B", " ", " ", " ", "B", "B",  " " },
             { "W", "E", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
             { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
-            { " ", " ", "B", "B", "E", "B", "B", " ", "W" } };
+            { " ", " ", "B", "B", " ", "B", "B", " ", "E" } };
 
     private SimpleBFObject[][] battleField;
     private int bfWidth;
@@ -134,15 +134,20 @@ public class BattleField implements Drawable {
 
     public boolean checkLimits(int v, int h, Direction direction) {
 
+        int limitX = (getDimentionX()-1) * SIZE_QUADRANT;
+        int limitY = (getDimentionY()-1) * SIZE_QUADRANT;
+
         if ((direction == Direction.UP && v == 0)
-                || (direction == Direction.DOWN && v >= getDimentionY())
-                || (direction == Direction.LEFT && h == 0)
-                || (direction == Direction.RIGHT && h >= getDimentionX())
-                ) {
+                || (direction == Direction.DOWN && h >= limitY)
+                || (direction == Direction.LEFT && v == 0)
+                || (direction == Direction.RIGHT && v >= limitX)
+                || (!(nextQuadrantBlankDestoyed(v, h, direction)))
+                ){
             return true;
         }
         return false;
     }
+
 
     private boolean isBlock(Destroyable obj, HashSet<Destroyable> list){
 
@@ -198,6 +203,67 @@ public class BattleField implements Drawable {
         }
     }
 
+    public boolean isShooting(int x, int y, Direction direction){
+
+        HashMap<String, Integer> coordinates = getQuadrant(x, y);
+        int v = coordinates.get("y");
+        int h = coordinates.get("x");
+
+        int tmpH = h;
+        int tmpV = v;
+
+        if (direction == Direction.UP){
+            tmpV = --v;
+        }else if(direction == Direction.DOWN){
+            tmpV = ++v;
+        }else if (direction == Direction.LEFT){
+            tmpH = --h;
+        }else if (direction == Direction.RIGHT){
+            tmpH = ++h;
+        }
+
+        try {
+            Destroyable obj = scanQuadrant(tmpV, tmpH);
+            boolean result;
+
+            if (obj instanceof Blank  || obj instanceof Water){
+                result =  false;
+            }else if (obj.isDestroyed() ){
+                result =  false;
+            }else{
+                result =  true;
+            }
+
+            return result;
+
+        }catch (ArrayIndexOutOfBoundsException e){
+            return true;
+        }
+    }
+
+    public boolean canMove(int x, int y, Direction direction){
+
+        HashMap<String, Integer> coordinates = getQuadrant(x, y);
+        int v = coordinates.get("y");
+        int h = coordinates.get("x");
+
+        int tmpH = h;
+        int tmpV = v;
+
+        if (direction == Direction.UP){
+            tmpV = --v;
+        }else if(direction == Direction.DOWN){
+            tmpV = ++v;
+        }else if (direction == Direction.LEFT){
+            tmpH = --h;
+        }else if (direction == Direction.RIGHT){
+            tmpH = ++h;
+        }
+
+        return !(checkLimits(tmpV, tmpH, direction));
+
+    }
+
     public boolean isShooting(int x, int y, Direction direction, HashSet<Destroyable> listObj){
 
         HashMap<String, Integer> coordinates = getQuadrant(x, y);
@@ -221,7 +287,7 @@ public class BattleField implements Drawable {
             Destroyable obj = scanQuadrant(tmpV, tmpH);
             boolean result;
             
-            if (obj instanceof Blank){
+            if (obj instanceof Blank || obj instanceof Water){
                 result =  false;
             }else if (obj.isDestroyed() ){
                 result =  false;

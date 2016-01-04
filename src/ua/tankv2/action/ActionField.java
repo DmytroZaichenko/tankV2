@@ -1,6 +1,7 @@
 package ua.tankv2.action;
 
 import ua.tankv2.field.Blank;
+import ua.tankv2.field.Water;
 import ua.tankv2.managment.*;
 import ua.tankv2.tanks.*;
 import ua.tankv2.field.BattleField;
@@ -36,6 +37,7 @@ public class ActionField extends JPanel {
                 add(aggressor);
             }
         };
+
         
         destroyObjUnderTank(listOfTank);
         
@@ -125,7 +127,7 @@ public class ActionField extends JPanel {
         int step = 1;
         int covered = 0;
 
-        if (checkLimits(tank,direction)){
+        if (battleField.checkLimits(tank.getX(), tank.getY(),direction)){
             return;
         }
 
@@ -149,23 +151,6 @@ public class ActionField extends JPanel {
             Thread.sleep(tank.getSpeed());
         }
     }
-
-    public boolean checkLimits(Tank tank, Direction direction) {
-
-        int limitX = (battleField.getDimentionX()-1) * battleField.SIZE_QUADRANT;
-        int limitY = (battleField.getDimentionY()-1) * battleField.SIZE_QUADRANT;
-
-        if ((direction == Direction.UP && tank.getY() == 0)
-                || (direction == Direction.DOWN && tank.getY() >= limitY)
-                || (direction == Direction.LEFT && tank.getX() == 0)
-                || (direction == Direction.RIGHT && tank.getX() >= limitX)
-                || (!(battleField.nextQuadrantBlankDestoyed(tank.getX(), tank.getY(), direction)))
-           ){
-            return true;
-        }
-        return false;
-    }
-
 
     public void processFire(Bullet bullet) throws Exception{
 
@@ -209,7 +194,7 @@ public class ActionField extends JPanel {
         Destroyable obf;
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             obf = battleField.scanQuadrant(y,x);
-            if (!obf.isDestroyed() && !(obf instanceof Blank)) {
+            if (!obf.isDestroyed() && !(obf instanceof Blank) && !(obf instanceof Water)) {
                 battleField.destroyObject(y, x);
                 return true;
             }

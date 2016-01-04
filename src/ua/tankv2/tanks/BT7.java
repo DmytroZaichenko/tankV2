@@ -6,6 +6,7 @@ import ua.tankv2.field.SimpleBFObject;
 import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Direction;
+import ua.tankv2.managment.NoMovementException;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -23,10 +24,10 @@ public class BT7 extends AbstractTank {
         tankColor = new Color(255,0,0);
         towerColor = new Color(0,255,0);
         speed = 5;
-        setActionForDestroyEagls();
+        setActionForDestroyObject();
     }
 
-    private void setActionForDestroyEagls(){
+    private void setActionForDestroyObject(){
 
         ArrayList<Eagle> arrEagle = bf.getArrayListEagle();
 
@@ -57,45 +58,81 @@ public class BT7 extends AbstractTank {
                 tmpXTank = xTank;
                 tmpYTank = yTank;
 
-                if (yEagle > yTank) {
-                    tmpDirection = Direction.DOWN;
-                    listAction.add(tmpDirection);
-                    yTank += SIZE_QUADRANT;
-                } else if (yEagle < yTank) {
-                    tmpDirection = Direction.UP;
-                    listAction.add(tmpDirection);
-                    yTank -= SIZE_QUADRANT;
+                ArrayList<Direction> listOfPermittedDirection = getPermittedDirections(tmpYTank, tmpXTank);
+
+                if (listOfPermittedDirection.size() == 0){
+                    //throw new NoMovementException("[BT7] I can not move. Help me!");
+                    break;
                 }
 
-                if (yEagle != tmpYTank){
+
+                if (yEagle > yTank) {
+                    tmpDirection = Direction.DOWN;
+                    if (listOfPermittedDirection.contains(tmpDirection)){
+                        listAction.add(tmpDirection);
+                        yTank += SIZE_QUADRANT;
+                    }
+                } else if (yEagle < yTank) {
+                    tmpDirection = Direction.UP;
+                    if (listOfPermittedDirection.contains(tmpDirection)){
+                        listAction.add(tmpDirection);
+                        yTank -= SIZE_QUADRANT;
+                    }
+                }
+
+                if (yEagle != tmpYTank && listOfPermittedDirection.contains(tmpDirection)){
+
                     if (bf.isShooting(tmpXTank, tmpYTank, tmpDirection, listBlock)) {
                         listAction.add(Action.FIRE);
                     }
                     listAction.add(Action.MOVE);
+
                 }
 
 
                 if (xEagle > xTank) {
                     tmpDirection = Direction.RIGHT;
-                    listAction.add(tmpDirection);
-                    xTank += SIZE_QUADRANT;
+                    if (listOfPermittedDirection.contains(tmpDirection)){
+                        listAction.add(tmpDirection);
+                        xTank += SIZE_QUADRANT;
+                    }
 
                 } else if (xEagle < xTank) {
                     tmpDirection = Direction.LEFT;
-                    listAction.add(tmpDirection);
-                    xTank -= SIZE_QUADRANT;
+                    if (listOfPermittedDirection.contains(tmpDirection)){
+                        listAction.add(tmpDirection);
+                        xTank -= SIZE_QUADRANT;
+                    }
                 }
-                if (xEagle != tmpXTank){
+                if (xEagle != tmpXTank && listOfPermittedDirection.contains(tmpDirection)){
                     if (bf.isShooting(tmpXTank, yTank,tmpDirection,listBlock)){
                         listAction.add(Action.FIRE);
                     }
                     listAction.add(Action.MOVE);
                 }
             }
+
             listOfActions.put((Eagle) eagle, listAction);
             hmStep.put((Eagle) eagle,0);
         }
 
+    }
+
+    private ArrayList<Direction> getPermittedDirections(int y, int x) {
+        ArrayList<Direction> listOfPermittedMotion = new ArrayList<>();
+        for (Direction d : Direction.values()) {
+            if (d == Direction.NONE) {
+                continue;
+            }
+            if (!bf.canMove(x, y, d)) {
+                if (bf.isShooting(x, y, d)) {
+                    listOfPermittedMotion.add(d);
+                }
+            } else {
+                listOfPermittedMotion.add(d);
+            }
+        }
+        return listOfPermittedMotion;
     }
 
     private HashMap<Eagle,Integer> hmStep = new HashMap<>();
