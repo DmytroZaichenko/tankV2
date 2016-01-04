@@ -9,7 +9,6 @@ public interface Drawable {
     String ROCK  = "R";
     String EAGLE = "E";
     String WATER = "W";
-    String HQ    = "H";
 
     void draw(Graphics g);
 

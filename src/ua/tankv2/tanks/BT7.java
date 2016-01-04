@@ -1,8 +1,8 @@
 package ua.tankv2.tanks;
 
 import ua.tankv2.field.BattleField;
+import ua.tankv2.field.Eagle;
 import ua.tankv2.field.SimpleBFObject;
-import ua.tankv2.field.Hq;
 import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Direction;
@@ -16,21 +16,21 @@ import java.util.LinkedHashMap;
 
 public class BT7 extends AbstractTank {
 
-    private LinkedHashMap<Hq, ArrayList<Object>> listOfActions;
+    private LinkedHashMap<Eagle, ArrayList<Object>> listOfActions;
 
     public BT7(BattleField bf, int x, int y, Direction direction) {
         super(bf, x, y, direction);
         tankColor = new Color(255,0,0);
         towerColor = new Color(0,255,0);
         speed = 5;
-        setActionForDestroyHQ();
+        setActionForDestroyEagls();
     }
 
-    private void setActionForDestroyHQ(){
+    private void setActionForDestroyEagls(){
 
-        ArrayList<Hq> arrHQ = bf.getArrayListHQ();
+        ArrayList<Eagle> arrEagle = bf.getArrayListEagle();
 
-        if (arrHQ.size() == 0){
+        if (arrEagle.size() == 0){
             return;
         }
 
@@ -44,30 +44,30 @@ public class BT7 extends AbstractTank {
 
         HashSet<Destroyable> listBlock = new HashSet<>();
 
-        for (SimpleBFObject hq : arrHQ ) {
+        for (SimpleBFObject eagle : arrEagle ) {
 
-            int yHQ = hq.getY();
-            int xHQ = hq.getX();
+            int yEagle = eagle.getY();
+            int xEagle = eagle.getX();
             ArrayList<Object> listAction = new ArrayList<>();
 
             Direction tmpDirection = direction;
 
-            while (!listBlock.contains(hq)){
+            while (!listBlock.contains(eagle)){
 
                 tmpXTank = xTank;
                 tmpYTank = yTank;
 
-                if (yHQ > yTank) {
+                if (yEagle > yTank) {
                     tmpDirection = Direction.DOWN;
                     listAction.add(tmpDirection);
                     yTank += SIZE_QUADRANT;
-                } else if (yHQ < yTank) {
+                } else if (yEagle < yTank) {
                     tmpDirection = Direction.UP;
                     listAction.add(tmpDirection);
                     yTank -= SIZE_QUADRANT;
                 }
 
-                if (yHQ != tmpYTank){
+                if (yEagle != tmpYTank){
                     if (bf.isShooting(tmpXTank, tmpYTank, tmpDirection, listBlock)) {
                         listAction.add(Action.FIRE);
                     }
@@ -75,41 +75,41 @@ public class BT7 extends AbstractTank {
                 }
 
 
-                if (xHQ > xTank) {
+                if (xEagle > xTank) {
                     tmpDirection = Direction.RIGHT;
                     listAction.add(tmpDirection);
                     xTank += SIZE_QUADRANT;
 
-                } else if (xHQ < xTank) {
+                } else if (xEagle < xTank) {
                     tmpDirection = Direction.LEFT;
                     listAction.add(tmpDirection);
                     xTank -= SIZE_QUADRANT;
                 }
-                if (xHQ != tmpXTank){
+                if (xEagle != tmpXTank){
                     if (bf.isShooting(tmpXTank, yTank,tmpDirection,listBlock)){
                         listAction.add(Action.FIRE);
                     }
                     listAction.add(Action.MOVE);
                 }
             }
-            listOfActions.put((Hq) hq, listAction);
-            hmStep.put((Hq)hq,0);
+            listOfActions.put((Eagle) eagle, listAction);
+            hmStep.put((Eagle) eagle,0);
         }
 
     }
 
-    private HashMap<Hq,Integer> hmStep = new HashMap<>();
+    private HashMap<Eagle,Integer> hmStep = new HashMap<>();
 
     @Override
     public Action setUp() {
 
         int step;
-        for (HashMap.Entry<Hq, ArrayList<Object>> entry : listOfActions.entrySet()) {
-            Hq h = entry.getKey();
+        for (HashMap.Entry<Eagle, ArrayList<Object>> entry : listOfActions.entrySet()) {
+            Eagle eagle = entry.getKey();
             ArrayList<Object> act = entry.getValue();
-            step = hmStep.get(h);
+            step = hmStep.get(eagle);
 
-            if (h.isDestroyed() && act.size() == step){
+            if (eagle.isDestroyed() && act.size() == step){
                 continue;
             }
 
@@ -119,7 +119,7 @@ public class BT7 extends AbstractTank {
 
             Object obj = act.get(step++);
 
-            hmStep.put(h,step);
+            hmStep.put(eagle,step);
             if (obj instanceof Direction) {
                 if (obj != direction) {
                     turn((Direction) obj);

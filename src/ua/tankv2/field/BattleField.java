@@ -10,20 +10,20 @@ import java.util.HashSet;
 public class BattleField implements Drawable {
 
     private String[][] battleFieldTmp = {
-            { "B", "B", "H", "B", " ", "B", "B", "B", "B" },
+            { "B", "B", "E", "B", " ", "B", "B", "B", "B" },
             { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
-            { "B", "B", " ", "H", "B", " ", "B", "B", "B" },
+            { "B", "B", " ", "E", "B", " ", "B", "B", "B" },
             { "W","W", "B", " ", " ", " ", "B", "B",  "E" },
-            { "W", "H", " ", "B", "B", " ", "B", "B", "B" },
+            { "W", "E", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
             { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
-            { " ", " ", "B", "B", "H", "B", "B", " ", "W" } };
+            { " ", " ", "B", "B", "E", "B", "B", " ", "W" } };
 
     private SimpleBFObject[][] battleField;
     private int bfWidth;
     private int bfHeight;
-    private ArrayList<Hq> arrayListHQ = new ArrayList<>();
+    private ArrayList<Eagle> arrayListEagle = new ArrayList<>();
 
     public BattleField(){
 
@@ -33,8 +33,8 @@ public class BattleField implements Drawable {
 
     }
 
-    public ArrayList<Hq> getArrayListHQ() {
-        return arrayListHQ;
+    public ArrayList<Eagle> getArrayListEagle() {
+        return arrayListEagle;
     }
 
     private void setBfWidth(int bfWidth) {
@@ -90,13 +90,11 @@ public class BattleField implements Drawable {
                     obf = new Rock(y,x);
                 } else if (stateField.equals(EAGLE)) {
                     obf = new Eagle(y,x);
+                    arrayListEagle.add((Eagle)obf);
                 } else if (stateField.equals(BRICK)) {
                     obf = new Brick(y,x);
                 } else if (stateField.equals(WATER)) {
                     obf = new Water(y,x);
-                } else if (stateField.equals(HQ)) {
-                    obf = new Hq(y,x);
-                    arrayListHQ.add((Hq)obf);
                 } else {
                     obf = new Blank(y,x);
                 }
