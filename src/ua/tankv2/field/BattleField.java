@@ -10,15 +10,15 @@ import java.util.HashSet;
 public class BattleField implements Drawable {
 
     private String[][] battleFieldTmp = {
-            { "B", "B", " ", "B", " ", "B", "B", "B", "B" },
-            { "B", " ", " ", " ", " ", " ", " ", " ", "B" },
-            { "B", "B", " ", "E", "B", " ", "B", "B", "B" },
+            { "E", "B", "W", "W", " ", "B", "B", "B", "B" },
+            { "B", " ", " ", " ", "W", " ", " ", " ", "B" },
+            { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
             { "W","W", "B", " ", " ", " ", "B", "B",  " " },
-            { "W", "E", " ", "B", "B", " ", "B", "B", "B" },
+            { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "R", "B", "B", "B", "B", "B", "B", " " },
             { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
             { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
-            { " ", " ", "B", "B", " ", "B", "B", " ", "E" } };
+            { " ", " ", "B", "B", " ", "B", "B", " ", " " } };
 
     private SimpleBFObject[][] battleField;
     private int bfWidth;
@@ -132,16 +132,16 @@ public class BattleField implements Drawable {
         return loc;
     }
 
-    public boolean checkLimits(int v, int h, Direction direction) {
+    public boolean checkLimits(int x, int y, Direction direction) {
 
         int limitX = (getDimentionX()-1) * SIZE_QUADRANT;
         int limitY = (getDimentionY()-1) * SIZE_QUADRANT;
 
-        if ((direction == Direction.UP && v == 0)
-                || (direction == Direction.DOWN && h >= limitY)
-                || (direction == Direction.LEFT && v == 0)
-                || (direction == Direction.RIGHT && v >= limitX)
-                || (!(nextQuadrantBlankDestoyed(v, h, direction)))
+        if ((direction == Direction.UP && x == 0)
+                || (direction == Direction.DOWN && y >= limitY)
+                || (direction == Direction.LEFT && x == 0)
+                || (direction == Direction.RIGHT && x >= limitX)
+                || (!(nextQuadrantBlankDestoyed(x, y, direction)))
                 ){
             return true;
         }
@@ -203,6 +203,37 @@ public class BattleField implements Drawable {
         }
     }
 
+    public boolean canMove(int x, int y, Direction direction){
+
+        int limitX = (getDimentionX()-1) * SIZE_QUADRANT;
+        int limitY = (getDimentionY()-1) * SIZE_QUADRANT;
+
+        int tmpY = y;
+        int tmpX = x;
+
+        if (direction == Direction.UP){
+            tmpY -= SIZE_QUADRANT;
+        }else if(direction == Direction.DOWN){
+            tmpY += SIZE_QUADRANT;
+        }else if (direction == Direction.LEFT){
+            tmpX -= SIZE_QUADRANT;
+        }else if (direction == Direction.RIGHT){
+            tmpX += SIZE_QUADRANT;
+        }
+
+        if ((direction == Direction.UP && tmpY <= 0)
+                || (direction == Direction.DOWN && tmpY >= limitY)
+                || (direction == Direction.LEFT && tmpX <= 0)
+                || (direction == Direction.RIGHT && tmpX >= limitX)
+                || (!(nextQuadrantBlankDestoyed(x, y, direction)))
+                ){
+            return false;
+        }
+
+        return true;
+
+    }
+
     public boolean isShooting(int x, int y, Direction direction){
 
         HashMap<String, Integer> coordinates = getQuadrant(x, y);
@@ -226,7 +257,7 @@ public class BattleField implements Drawable {
             Destroyable obj = scanQuadrant(tmpV, tmpH);
             boolean result;
 
-            if (obj instanceof Blank  || obj instanceof Water){
+            if (obj instanceof Blank || obj instanceof Water){
                 result =  false;
             }else if (obj.isDestroyed() ){
                 result =  false;
@@ -234,34 +265,12 @@ public class BattleField implements Drawable {
                 result =  true;
             }
 
+
             return result;
 
         }catch (ArrayIndexOutOfBoundsException e){
-            return true;
+            return false;
         }
-    }
-
-    public boolean canMove(int x, int y, Direction direction){
-
-        HashMap<String, Integer> coordinates = getQuadrant(x, y);
-        int v = coordinates.get("y");
-        int h = coordinates.get("x");
-
-        int tmpH = h;
-        int tmpV = v;
-
-        if (direction == Direction.UP){
-            tmpV = --v;
-        }else if(direction == Direction.DOWN){
-            tmpV = ++v;
-        }else if (direction == Direction.LEFT){
-            tmpH = --h;
-        }else if (direction == Direction.RIGHT){
-            tmpH = ++h;
-        }
-
-        return !(checkLimits(tmpV, tmpH, direction));
-
     }
 
     public boolean isShooting(int x, int y, Direction direction, HashSet<Destroyable> listObj){
@@ -304,7 +313,7 @@ public class BattleField implements Drawable {
             return result;
             
         }catch (ArrayIndexOutOfBoundsException e){
-            return true;
+            return false;
         }
     }
 
