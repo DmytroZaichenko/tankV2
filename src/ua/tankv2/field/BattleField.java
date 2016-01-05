@@ -10,15 +10,15 @@ import java.util.HashSet;
 public class BattleField implements Drawable {
 
     private String[][] battleFieldTmp = {
-            { "E", "B", "W", "W", " ", "B", "B", "B", "B" },
-            { "B", " ", " ", " ", "W", " ", " ", " ", "B" },
+            { "E", "B", "W", "W", "E", "B", "B", "B", "B" },
+            { "B", "W", " ", " ", "W", " ", " ", " ", "B" },
             { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
-            { "W","W", "B", " ", " ", " ", "B", "B",  " " },
+            { "W","W", "B", " ", " ", " ", "B", "B",  "E" },
             { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
-            { "R", "R", "B", "B", "B", "B", "B", "B", " " },
-            { " ", "B", " ", " ", " ", " ", " ", "B", "B" },
-            { "B", " ", " ", "B", "B", "B", " ", " ", "B" },
-            { " ", " ", "B", "B", " ", "B", "B", " ", " " } };
+            { "R", "W", "B", "B", "B", "B", "B", "B", " " },
+            { "E", "W", "B", " ", " ", " ", " ", "B", "B" },
+            { "B", " ", " ", "B", "B", "B", " ", "W", "B" },
+            { " ", " ", "B", "B", " ", "B", "B", "W", "B" } };
 
     private SimpleBFObject[][] battleField;
     private int bfWidth;
@@ -124,8 +124,8 @@ public class BattleField implements Drawable {
 
         HashMap<String,Integer> loc = new HashMap<String, Integer>(){
             {
-                put("y",128);
-                put("x",448);
+                put("y",384);
+                put("x",192);
             }
         };
 
@@ -201,37 +201,6 @@ public class BattleField implements Drawable {
         }catch (ArrayIndexOutOfBoundsException e){
             return true;
         }
-    }
-
-    public boolean canMove(int x, int y, Direction direction){
-
-        int limitX = (getDimentionX()-1) * SIZE_QUADRANT;
-        int limitY = (getDimentionY()-1) * SIZE_QUADRANT;
-
-        int tmpY = y;
-        int tmpX = x;
-
-        if (direction == Direction.UP){
-            tmpY -= SIZE_QUADRANT;
-        }else if(direction == Direction.DOWN){
-            tmpY += SIZE_QUADRANT;
-        }else if (direction == Direction.LEFT){
-            tmpX -= SIZE_QUADRANT;
-        }else if (direction == Direction.RIGHT){
-            tmpX += SIZE_QUADRANT;
-        }
-
-        if ((direction == Direction.UP && tmpY <= 0)
-                || (direction == Direction.DOWN && tmpY >= limitY)
-                || (direction == Direction.LEFT && tmpX <= 0)
-                || (direction == Direction.RIGHT && tmpX >= limitX)
-                || (!(nextQuadrantBlankDestoyed(x, y, direction)))
-                ){
-            return false;
-        }
-
-        return true;
-
     }
 
     public boolean isShooting(int x, int y, Direction direction){
