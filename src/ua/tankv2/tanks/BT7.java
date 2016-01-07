@@ -8,6 +8,11 @@ import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Direction;
 
 import java.awt.Color;
+
+import java.io.IOException;
+import java.io.File;
+import javax.imageio.ImageIO;
+
 import java.util.*;
 
 
@@ -21,6 +26,17 @@ public class BT7 extends AbstractTank {
         towerColor = new Color(0,255,0);
         speed = 5;
         setActionForDestroyObject();
+        setImages();
+    }
+
+    private void setImages(){
+
+        try {
+            image = ImageIO.read(new File("redtank.png").getAbsoluteFile());
+        } catch (IOException e) {
+            throw new IllegalStateException("Can't find tank bt7 images.");
+        }
+
     }
 
     private void setActionForDestroyObject(){

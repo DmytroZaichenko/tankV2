@@ -5,9 +5,14 @@ import ua.tankv2.action.Bullet;
 import ua.tankv2.managment.*;
 
 import ua.tankv2.field.BattleField;
+import ua.tankv2.managment.Action;
 
-import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.ImageObserver;
+import java.util.HashMap;
+
 
 public abstract class AbstractTank implements Tank {
 
@@ -25,6 +30,8 @@ public abstract class AbstractTank implements Tank {
 
     protected Color tankColor;
     protected Color towerColor;
+
+    protected Image image;
 
     public AbstractTank(BattleField bf) {
         this(bf, 0, 512, Direction.UP);
@@ -96,24 +103,60 @@ public abstract class AbstractTank implements Tank {
         updateY(-100);
     }
 
+    private void putToHM(HashMap<String, Integer> hm, int sx1, int sy1, int sx2, int sy2){
+        hm.put("sx1",sx1);
+        hm.put("sy1",sy1);
+        hm.put("sx2",sx2);
+        hm.put("sy2",sy2);
+    }
+
+    private HashMap<String, Integer> getCoordinatesOnDirection(){
+
+        HashMap<String, Integer> hashMap = new HashMap<>(4);
+        putToHM(hashMap, 0, 0, 32, 32);
+
+        if (direction == Direction.UP){
+            putToHM(hashMap, 0, 0, 32, 32);
+        }else if (direction == Direction.DOWN){
+            putToHM(hashMap, 0, 32, 32, 64);
+        }else if(direction == Direction.LEFT){
+            putToHM(hashMap, 0, 64, 32, 96);
+        }else if (direction == Direction.RIGHT){
+            putToHM(hashMap, 0, 96, 32, 128);
+        }
+
+        return hashMap;
+    }
+
     public void draw(Graphics g){
 
         if (!destroyed) {
-            g.setColor(tankColor);
-            g.fillRect(this.getX(), this.getY(), SIZE_QUADRANT, SIZE_QUADRANT);
+            if (image != null){
+                HashMap<String, Integer> hm = getCoordinatesOnDirection();
+                g.drawImage(image, getX(), getY(), getX()+SIZE_QUADRANT, getY()+SIZE_QUADRANT,
+                                           hm.get("sx1"), hm.get("sy1"), hm.get("sx2"), hm.get("sy2"),
+                        new ImageObserver() {
+                    @Override
+                    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+                        return false;
+                    }
+                });
+            }else{
+                g.setColor(tankColor);
+                g.fillRect(this.getX(), this.getY(), SIZE_QUADRANT, SIZE_QUADRANT);
 
-            g.setColor(towerColor);
+                g.setColor(towerColor);
 
-            if (this.getDirection() == Direction.UP) {
-                g.fillRect(this.getX() + 20, this.getY(), 24, 34);
-            } else if (this.getDirection() == Direction.DOWN) {
-                g.fillRect(this.getX() + 20, this.getY() + 30, 24, 34);
-            } else if (this.getDirection() == Direction.LEFT) {
-                g.fillRect(this.getX(), this.getY() + 20, 34, 24);
-            } else {
-                g.fillRect(this.getX() + 30, this.getY() + 20, 34, 24);
+                if (this.getDirection() == Direction.UP) {
+                    g.fillRect(this.getX() + 20, this.getY(), 24, 34);
+                } else if (this.getDirection() == Direction.DOWN) {
+                    g.fillRect(this.getX() + 20, this.getY() + 30, 24, 34);
+                } else if (this.getDirection() == Direction.LEFT) {
+                    g.fillRect(this.getX(), this.getY() + 20, 34, 24);
+                } else {
+                    g.fillRect(this.getX() + 30, this.getY() + 20, 34, 24);
+                }
             }
-
         }
 
     }

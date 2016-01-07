@@ -20,6 +20,7 @@ public class ActionField extends JPanel {
     private T34 defender;
     private BT7 aggressor;
     private Bullet bullet;
+    private Tiger tiger;
 
 
 
@@ -30,11 +31,15 @@ public class ActionField extends JPanel {
         defender  = new T34(battleField);
         aggressor   = new BT7(battleField,battleField.getAggressorLocation().get("x"),
                               battleField.getAggressorLocation().get("y"),Direction.DOWN);
-        
+
+        tiger  = new Tiger(battleField,battleField.getTigerLocation().get("x"),
+                                       battleField.getTigerLocation().get("y"),
+                                       Direction.DOWN, 2);
         List<Tank> listOfTank = new ArrayList<Tank>() {
             {
                 add(defender);
                 add(aggressor);
+                add(tiger);
             }
         };
 
@@ -94,6 +99,7 @@ public class ActionField extends JPanel {
         defender.draw(g);
         aggressor.draw(g);
         bullet.draw(g);
+        tiger.draw(g);
 
     }
 

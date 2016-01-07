@@ -132,6 +132,18 @@ public class BattleField implements Drawable {
         return loc;
     }
 
+    public HashMap<String, Integer> getTigerLocation() {
+
+        HashMap<String,Integer> loc = new HashMap<String, Integer>(){
+            {
+                put("y",0);
+                put("x",128);
+            }
+        };
+
+        return loc;
+    }
+
     public boolean checkLimits(int x, int y, Direction direction) {
 
         int limitX = (getDimentionX()-1) * SIZE_QUADRANT;
