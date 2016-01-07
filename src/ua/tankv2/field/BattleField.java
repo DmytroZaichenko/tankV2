@@ -10,15 +10,15 @@ import java.util.HashSet;
 public class BattleField implements Drawable {
 
     private String[][] battleFieldTmp = {
-            { "E", "B", "W", "W", "E", "B", "B", "B", "B" },
+            { " ", "E", " ", "W", "E", "B", "B", "W", "E" },
             { "B", "W", " ", " ", "W", " ", " ", " ", "B" },
             { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
-            { "W","W", "B", " ", " ", " ", "B", "B",  "E" },
+            { "W", "W", "B", " ", " ", " ", "B", "B", "R" },
             { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "W", "B", "B", "B", "B", "B", "B", " " },
-            { "E", "W", "B", " ", " ", " ", " ", "B", "B" },
-            { "B", " ", " ", "B", "B", "B", " ", "W", "B" },
-            { " ", " ", "B", "B", " ", "B", "B", "W", "B" } };
+            { " ", "W", "B", " ", " ", " ", " ", "B", "B" },
+            { "B", " ", " ", "B", "W", "B", " ", "W", "B" },
+            { " ", " ", "B", "B", "E", "B", "B", "W", "E" } };
 
     private SimpleBFObject[][] battleField;
     private int bfWidth;
@@ -149,7 +149,7 @@ public class BattleField implements Drawable {
         int limitX = (getDimentionX()-1) * SIZE_QUADRANT;
         int limitY = (getDimentionY()-1) * SIZE_QUADRANT;
 
-        if ((direction == Direction.UP && x == 0)
+        if ((direction == Direction.UP && y == 0)
                 || (direction == Direction.DOWN && y >= limitY)
                 || (direction == Direction.LEFT && x == 0)
                 || (direction == Direction.RIGHT && x >= limitX)

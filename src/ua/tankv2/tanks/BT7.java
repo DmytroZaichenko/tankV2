@@ -49,7 +49,7 @@ public class BT7 extends AbstractTank {
 
         listOfActions = new LinkedHashMap<>();
 
-
+        int countInQuadrant = 1;
         int tmpYTank;
         int tmpXTank;
 
@@ -65,7 +65,6 @@ public class BT7 extends AbstractTank {
 
             ArrayList<Object> listAction = new ArrayList<>();
             Map<Destroyable,LinkedList<Direction>> track = new LinkedHashMap<>();
-
             Direction tmpDirection = direction;
 
             while (!listBlock.contains(eagle)){
@@ -73,11 +72,13 @@ public class BT7 extends AbstractTank {
                 tmpXTank = xTank;
                 tmpYTank = yTank;
 
-                ArrayList<Direction> listOfPermittedDirection = getListPermittedDirections(tmpYTank, tmpXTank, track);
-
+                ArrayList<Direction> listOfPermittedDirection = getListPermittedDirections(tmpYTank, tmpXTank, track, countInQuadrant);
 
                 if (listOfPermittedDirection.size() == 0){
-                    break;
+                    listOfPermittedDirection = getListPermittedDirections(tmpYTank, tmpXTank, track, 2);
+                    if (listOfPermittedDirection.size() == 0) {
+                        break;
+                    }
                 }
 
                 if (yEagle > yTank) {
@@ -123,11 +124,13 @@ public class BT7 extends AbstractTank {
                 tmpXTank = xTank;
                 tmpYTank = yTank;
 
-                listOfPermittedDirection = getListPermittedDirections(tmpYTank, tmpXTank, track);
+                listOfPermittedDirection = getListPermittedDirections(tmpYTank, tmpXTank, track,countInQuadrant);
 
                 if (listOfPermittedDirection.size() == 0){
-                    System.out.println("I can not to move: BT7");
-                    break;
+                    listOfPermittedDirection = getListPermittedDirections(tmpYTank, tmpXTank, track, 2);
+                    if (listOfPermittedDirection.size() == 0) {
+                        break;
+                    }
                 }
 
                 if (xEagle > xTank) {
@@ -186,7 +189,7 @@ public class BT7 extends AbstractTank {
         return oldDirection;
     }
 
-    private ArrayList<Direction> getListPermittedDirections(int y, int x, Map<Destroyable, LinkedList<Direction>> track) {
+    private ArrayList<Direction> getListPermittedDirections(int y, int x, Map<Destroyable, LinkedList<Direction>> track, int countHere) {
 
         LinkedList oldDirection = getDirectionFromTrack(y, x, track);
         ArrayList<Direction> listOfPermittedDirection =  new ArrayList<>();
@@ -196,7 +199,7 @@ public class BT7 extends AbstractTank {
                 continue;
             }
 
-            if (!oldDirection.contains(d) && wasNotHere(y, x, d, track)) {
+            if (!oldDirection.contains(d) && wasNotHere(y, x, d, track, countHere)) {
                 if (!canMove(x, y, d)) {
                     if (bf.isShooting(x, y, d)) {
                         listOfPermittedDirection.add(d);
@@ -209,7 +212,7 @@ public class BT7 extends AbstractTank {
         return listOfPermittedDirection;
     }
 
-    private boolean wasNotHere(int y, int x, Direction direction, Map<Destroyable, LinkedList<Direction>> track){
+    private boolean wasNotHere(int y, int x, Direction direction, Map<Destroyable, LinkedList<Direction>> track, int countHere){
 
         int limitX = (bf.getDimentionX()-1) * SIZE_QUADRANT;
         int limitY = (bf.getDimentionY()-1) * SIZE_QUADRANT;
@@ -231,7 +234,7 @@ public class BT7 extends AbstractTank {
             return false;
         }else {
             LinkedList<Direction> linkedList =  getDirectionFromTrack(tmpY, tmpX, track);
-            return linkedList.size()  <= 1;
+            return linkedList.size()  < countHere;
         }
 
     }
@@ -255,10 +258,10 @@ public class BT7 extends AbstractTank {
         }
 
 
-        if ((direction == Direction.UP && tmpY <= 0)
-                || (direction == Direction.DOWN && tmpY >= limitY)
-                || (direction == Direction.LEFT && tmpX <= 0)
-                || (direction == Direction.RIGHT && tmpX >= limitX)
+        if ((direction == Direction.UP && tmpY < 0)
+                || (direction == Direction.DOWN && tmpY > limitY)
+                || (direction == Direction.LEFT && tmpX < 0)
+                || (direction == Direction.RIGHT && tmpX > limitX)
                 || (!(bf.nextQuadrantBlankDestoyed(x, y, direction)))
                 ){
             return false;
@@ -290,9 +293,57 @@ public class BT7 extends AbstractTank {
         }else if (listOfPermittedDirection.contains(xBestDirection)) {
             tmpDirection = xBestDirection;
         } else {
-            tmpDirection = listOfPermittedDirection.get(0);
+            if (listOfPermittedDirection.size() == 1){
+                tmpDirection = listOfPermittedDirection.get(0);
+            }else{
+
+                tmpDirection = listOfPermittedDirection.get(0);
+                if (yBestDirection  == Direction.NONE){
+                    if (listOfPermittedDirection.contains(Direction.UP)){
+                        tmpDirection =  Direction.UP;
+                    }else if (listOfPermittedDirection.contains(Direction.DOWN)){
+                        tmpDirection =  Direction.DOWN;
+                    }
+                }else if(xBestDirection == Direction.NONE){
+
+                    if (listOfPermittedDirection.contains(Direction.RIGHT)){
+                        tmpDirection =  Direction.RIGHT;
+                    }else if (listOfPermittedDirection.contains(Direction.LEFT)){
+                        tmpDirection =  Direction.LEFT;
+                    }
+                }
+            }
+
         }
         return tmpDirection;
+    }
+
+    private Map<String, Integer> getXYPossible(int yTank, int xTank,Direction d){
+
+        int tmpX = xTank;
+        int tmpY = yTank;
+
+        if (direction == Direction.UP){
+            tmpY -= SIZE_QUADRANT;
+        }else if(direction == Direction.DOWN){
+            tmpY += SIZE_QUADRANT;
+        }else if (direction == Direction.LEFT){
+            tmpX -= SIZE_QUADRANT;
+        }else if (direction == Direction.RIGHT){
+            tmpX += SIZE_QUADRANT;
+        }
+
+        final int finalTmpY = tmpY;
+        final int finalTmpX = tmpX;
+        Map<String,Integer> m = new HashMap<String, Integer>(2){
+            {
+                put("x", finalTmpX);
+                put("y", finalTmpY);
+            }
+        };
+
+        return m;
+
     }
 
     private void putToTrack(Map<Destroyable, LinkedList<Direction>> track, int tmpYTank, int tmpXTank, Direction tmpDirection) {

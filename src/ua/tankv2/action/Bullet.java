@@ -89,7 +89,7 @@ public class Bullet implements Drawable, Destroyable {
         if (!destroyed){
             if (image != null){
                 HashMap<String, Integer> hm = getCoordinatesOnDirection();
-                g.drawImage(image, getX(), getY(), getX()+20, getY()+20,
+                g.drawImage(image, getX(), getY(), getX()+40, getY()+40,
                         hm.get("sx1"), hm.get("sy1"), hm.get("sx2"), hm.get("sy2"),
                         new ImageObserver() {
                             @Override
