@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class T34 extends AbstractTank {
 
@@ -17,6 +18,7 @@ public class T34 extends AbstractTank {
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
         setImages();
+        setActionForDestroyObject(bf.getArrayListEagle());
     }
 
     public T34(BattleField bf, int x, int y, Direction direction) {
@@ -24,6 +26,7 @@ public class T34 extends AbstractTank {
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
         setImages();
+        setActionForDestroyObject(bf.getArrayListEagle());
     }
 
     private void setImages(){
@@ -36,31 +39,20 @@ public class T34 extends AbstractTank {
 
     }
 
-    private Object[] actions = new Object[] {
-            Direction.RIGHT,
-            Action.FIRE,
-            Action.MOVE,
-            Action.FIRE,
-            Action.MOVE,
-            Action.FIRE,
-            Action.FIRE
-    };
 
-    private int step = 0;
-
-    @Override
-    public Action setUp() {
-
-        if (step >= actions.length) {
-            step = 0;
-        }
-        if (!(actions[step] instanceof Action)) {
-            turn((Direction) actions[step++]);
-        }
-        if (step >= actions.length) {
-            step = 0;
-        }
-        return (Action) actions[step++];
-    }
+//    @Override
+//    public Action setUp() {
+//
+//        if (step >= actions.length) {
+//            step = 0;
+//        }
+//        if (!(actions[step] instanceof Action)) {
+//            turn((Direction) actions[step++]);
+//        }
+//        if (step >= actions.length) {
+//            step = 0;
+//        }
+//        return (Action) actions[step++];
+//    }
 
 }

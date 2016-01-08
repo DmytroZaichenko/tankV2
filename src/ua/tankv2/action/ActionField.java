@@ -33,14 +33,14 @@ public class ActionField extends JPanel {
         aggressor   = new BT7(battleField,battleField.getAggressorLocation().get("x"),
                               battleField.getAggressorLocation().get("y"),Direction.DOWN);
 
-//        tiger  = new Tiger(battleField,battleField.getTigerLocation().get("x"),
-//                                       battleField.getTigerLocation().get("y"),
-//                                       Direction.DOWN, 2);
+        tiger  = new Tiger(battleField,battleField.getTigerLocation().get("x"),
+                                       battleField.getTigerLocation().get("y"),
+                                       Direction.DOWN, 2);
         List<Tank> listOfTank = new ArrayList<Tank>() {
             {
                 add(defender);
                 add(aggressor);
-                //add(tiger);
+                add(tiger);
             }
         };
 
@@ -97,7 +97,7 @@ public class ActionField extends JPanel {
         }
 
         battleField.draw(g);
-        defender.draw(g);
+        //defender.draw(g);
         aggressor.draw(g);
         bullet.draw(g);
         //tiger.draw(g);
@@ -110,6 +110,9 @@ public class ActionField extends JPanel {
             if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
                 processAction(aggressor.setUp(), aggressor);
             }
+//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+//                processAction(defender.setUp(), defender);
+//            }
         }
     }
 

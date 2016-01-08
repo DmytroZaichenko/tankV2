@@ -10,10 +10,10 @@ import java.util.HashSet;
 public class BattleField implements Drawable {
 
     private String[][] battleFieldTmp = {
-            { " ", "E", " ", "W", "E", "B", "B", "W", "E" },
+            { " ", "E", " ", "W", " ", "B", "B", "W", "E" },
             { "B", "W", " ", " ", "W", " ", " ", " ", "B" },
             { "B", "B", " ", " ", "B", " ", "B", "B", "B" },
-            { "W", "W", "B", " ", " ", " ", "B", "B", "R" },
+            { "E", "W", "B", " ", " ", " ", "B", "B", "R" },
             { "W", " ", " ", "B", "B", " ", "B", "B", "B" },
             { "R", "W", "B", "B", "B", "B", "B", "B", " " },
             { " ", "W", "B", " ", " ", " ", " ", "B", "B" },
@@ -23,7 +23,7 @@ public class BattleField implements Drawable {
     private SimpleBFObject[][] battleField;
     private int bfWidth;
     private int bfHeight;
-    private ArrayList<Eagle> arrayListEagle = new ArrayList<>();
+    private ArrayList<Destroyable> arrayListEagle = new ArrayList<>();
 
     public BattleField(){
 
@@ -33,7 +33,7 @@ public class BattleField implements Drawable {
 
     }
 
-    public ArrayList<Eagle> getArrayListEagle() {
+    public ArrayList<Destroyable> getArrayListEagle() {
         return arrayListEagle;
     }
 
