@@ -1,6 +1,7 @@
 package ua.tankv2.field;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -40,11 +41,22 @@ public class SimpleBFObject implements BFObject{
 
     private Image setImage(){
 
-        try {
-            return ImageIO.read(new File("tileset1.png").getAbsoluteFile());
-        } catch (IOException e) {
-            System.err.println("Can't find battle field object images.");
-            return null;
+//        try {
+//            return ImageIO.read(new File("images/tileset1.png").getAbsoluteFile());
+//        } catch (IOException e) {
+//            System.err.println("Can't find battle field object images.");
+//            return null;
+//        }
+
+        java.net.URL imageURL = this.getClass().getResource("images/tileset1.png");
+        if (imageURL != null){
+            ImageIcon imIcon = new ImageIcon(imageURL);
+            return imIcon.getImage();
+
+        } else {
+            throw new IllegalStateException("Can't find battle field object images.");
+
+
         }
 
     }

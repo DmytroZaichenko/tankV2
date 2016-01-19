@@ -5,6 +5,7 @@ import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Drawable;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.io.File;
@@ -22,6 +23,7 @@ public class Bullet implements Drawable, Destroyable {
 
     private boolean destroyed;
     Image image;
+    ImageIcon imIcon;
 
     public Bullet(int x, int y, Direction direction){
         this.x = x;
@@ -112,9 +114,17 @@ public class Bullet implements Drawable, Destroyable {
 
     private void setImages(){
 
-        try {
-            image = ImageIO.read(new File("bullet.png").getAbsoluteFile());
-        } catch (IOException e) {
+//        try {
+//            image = ImageIO.read(new File("bullet.png").getAbsoluteFile());
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Can't find bullet images.");
+//        }
+
+        java.net.URL imageURL = this.getClass().getResource("images/bullet.png");
+        if (imageURL != null){
+            imIcon = new ImageIcon(imageURL);
+            image = imIcon.getImage();
+        } else {
             throw new IllegalStateException("Can't find bullet images.");
         }
 

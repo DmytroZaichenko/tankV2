@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 import java.util.*;
 
@@ -30,10 +31,18 @@ public class BT7 extends AbstractTank {
 
     private void setImages(){
 
-        try {
-            image = ImageIO.read(new File("redtank.png").getAbsoluteFile());
-        } catch (IOException e) {
-            throw new IllegalStateException("Can't find tank bt7 images.");
+//        try {
+//            image = ImageIO.read(new File("images/redtank.png").getAbsoluteFile());
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Can't find tank bt7 images.");
+//        }
+
+        java.net.URL imageURL = this.getClass().getResource("images/redtank.png");
+        if (imageURL != null){
+            imIcon = new ImageIcon(imageURL);
+            image = imIcon.getImage();
+        } else {
+            throw new IllegalStateException("Can't find tank T34 images.");
         }
 
     }

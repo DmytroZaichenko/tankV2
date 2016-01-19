@@ -7,6 +7,7 @@ import ua.tankv2.managment.*;
 import ua.tankv2.field.BattleField;
 import ua.tankv2.managment.Action;
 
+import javax.swing.*;
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -35,6 +36,7 @@ public abstract class AbstractTank implements Tank {
     protected HashMap<Destroyable,Integer> hmStep = new HashMap<>();
 
     protected Image image;
+    protected ImageIcon imIcon;
 
     public AbstractTank(BattleField bf) {
         this(bf, 0, 512, Direction.UP);

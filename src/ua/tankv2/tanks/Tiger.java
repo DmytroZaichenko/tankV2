@@ -6,6 +6,7 @@ import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Direction;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -36,10 +37,18 @@ public class Tiger extends AbstractTank {
 
     private void setImages(){
 
-        try {
-            image = ImageIO.read(new File("aitank.png").getAbsoluteFile());
-        } catch (IOException e) {
-            throw new IllegalStateException("Can't find tank Tiger images.");
+//        try {
+//            image = ImageIO.read(new File("images/aitank.png").getAbsoluteFile());
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Can't find tank Tiger images.");
+//        }
+
+        java.net.URL imageURL = this.getClass().getResource("images/aitank.png");
+        if (imageURL != null){
+            imIcon = new ImageIcon(imageURL);
+            image = imIcon.getImage();
+        } else {
+            throw new IllegalStateException("Can't find tank T34 images.");
         }
 
     }

@@ -5,6 +5,7 @@ import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Direction;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -31,11 +32,20 @@ public class T34 extends AbstractTank {
 
     private void setImages(){
 
-        try {
-            image = ImageIO.read(new File("playertank.png").getAbsoluteFile());
-        } catch (IOException e) {
+        java.net.URL imageURL = this.getClass().getResource("images/playertank.png");
+        if (imageURL != null){
+            imIcon = new ImageIcon(imageURL);
+            image = imIcon.getImage();
+        } else {
             throw new IllegalStateException("Can't find tank T34 images.");
         }
+//        try {
+//
+//
+//            //image = ImageIO.read(new File("images/playertank.png").getAbsoluteFile());
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Can't find tank T34 images.");
+//        }
 
     }
 
