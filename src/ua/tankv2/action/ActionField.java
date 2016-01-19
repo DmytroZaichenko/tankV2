@@ -97,23 +97,24 @@ public class ActionField extends JPanel {
         }
 
         battleField.draw(g);
-        //defender.draw(g);
+        defender.draw(g);
         aggressor.draw(g);
         bullet.draw(g);
-        //tiger.draw(g);
+        tiger.draw(g);
 
     }
 
     public void runTheGame() throws Exception{
 
-        while (true) {
-            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
-                processAction(aggressor.setUp(), aggressor);
-            }
+        processAction(aggressor.setUp(), defender);
+//        while (true) {
+//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+//                processAction(aggressor.setUp(), aggressor);
+//            }
 //            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
 //                processAction(defender.setUp(), defender);
 //            }
-        }
+//        }
     }
 
     private void processAction(Action a, Tank tank) throws Exception{

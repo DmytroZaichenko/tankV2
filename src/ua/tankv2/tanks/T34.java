@@ -28,20 +28,19 @@ public class T34 extends AbstractTank {
     }
 
 
+    @Override
+    public Action setUp() {
 
-//    @Override
-//    public Action setUp() {
-//
-//        if (step >= actions.length) {
-//            step = 0;
-//        }
-//        if (!(actions[step] instanceof Action)) {
-//            turn((Direction) actions[step++]);
-//        }
-//        if (step >= actions.length) {
-//            step = 0;
-//        }
-//        return (Action) actions[step++];
-//    }
+        if (step >= actions.length) {
+            step = 0;
+        }
+        if (!(actions[step] instanceof Action)) {
+            turn((Direction) actions[step++]);
+        }
+        if (step >= actions.length) {
+            step = 0;
+        }
+        return (Action) actions[step++];
+    }
 
 }
