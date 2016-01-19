@@ -1,5 +1,6 @@
 package ua.tankv2.tanks;
 
+import ua.tankv2.Demo;
 import ua.tankv2.field.BattleField;
 import ua.tankv2.field.Eagle;
 import ua.tankv2.field.SimpleBFObject;
@@ -26,26 +27,9 @@ public class BT7 extends AbstractTank {
         towerColor = new Color(0,255,0);
         speed = 5;
         setActionForDestroyObject(bf.getArrayListEagle());
-        setImages();
+        setImages(this.getClass().getName(), "redtank.png");
     }
 
-    private void setImages(){
-
-//        try {
-//            image = ImageIO.read(new File("images/redtank.png").getAbsoluteFile());
-//        } catch (IOException e) {
-//            throw new IllegalStateException("Can't find tank bt7 images.");
-//        }
-
-        java.net.URL imageURL = this.getClass().getResource("images/redtank.png");
-        if (imageURL != null){
-            imIcon = new ImageIcon(imageURL);
-            image = imIcon.getImage();
-        } else {
-            throw new IllegalStateException("Can't find tank T34 images.");
-        }
-
-    }
 
 //    @Override
 //    public Action setUp() {

@@ -1,15 +1,12 @@
 package ua.tankv2.tanks;
 
+import ua.tankv2.Demo;
 import ua.tankv2.field.BattleField;
-import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Direction;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+
 
 public class T34 extends AbstractTank {
 
@@ -18,7 +15,7 @@ public class T34 extends AbstractTank {
         super(bf);
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
-        setImages();
+        setImages(this.getClass().getName(), "playertank.png");
         setActionForDestroyObject(bf.getArrayListEagle());
     }
 
@@ -26,28 +23,10 @@ public class T34 extends AbstractTank {
         super(bf, x, y, direction);
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
-        setImages();
+        setImages(this.getClass().getName(), "playertank.png");
         setActionForDestroyObject(bf.getArrayListEagle());
     }
 
-    private void setImages(){
-
-        java.net.URL imageURL = this.getClass().getResource("images/playertank.png");
-        if (imageURL != null){
-            imIcon = new ImageIcon(imageURL);
-            image = imIcon.getImage();
-        } else {
-            throw new IllegalStateException("Can't find tank T34 images.");
-        }
-//        try {
-//
-//
-//            //image = ImageIO.read(new File("images/playertank.png").getAbsoluteFile());
-//        } catch (IOException e) {
-//            throw new IllegalStateException("Can't find tank T34 images.");
-//        }
-
-    }
 
 
 //    @Override

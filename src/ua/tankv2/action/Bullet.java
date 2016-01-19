@@ -1,5 +1,6 @@
 package ua.tankv2.action;
 
+import ua.tankv2.Demo;
 import ua.tankv2.managment.Direction;
 import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Drawable;
@@ -114,13 +115,7 @@ public class Bullet implements Drawable, Destroyable {
 
     private void setImages(){
 
-//        try {
-//            image = ImageIO.read(new File("bullet.png").getAbsoluteFile());
-//        } catch (IOException e) {
-//            throw new IllegalStateException("Can't find bullet images.");
-//        }
-
-        java.net.URL imageURL = this.getClass().getResource("images/bullet.png");
+        java.net.URL imageURL = Demo.class.getResource("images/bullet.png");
         if (imageURL != null){
             imIcon = new ImageIcon(imageURL);
             image = imIcon.getImage();

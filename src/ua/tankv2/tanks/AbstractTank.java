@@ -1,5 +1,6 @@
 package ua.tankv2.tanks;
 
+import ua.tankv2.Demo;
 import ua.tankv2.action.Bullet;
 
 import ua.tankv2.managment.*;
@@ -36,7 +37,7 @@ public abstract class AbstractTank implements Tank {
     protected HashMap<Destroyable,Integer> hmStep = new HashMap<>();
 
     protected Image image;
-    protected ImageIcon imIcon;
+    protected String nameImage;
 
     public AbstractTank(BattleField bf) {
         this(bf, 0, 512, Direction.UP);
@@ -76,6 +77,17 @@ public abstract class AbstractTank implements Tank {
             bulletY = y + 25;
         }
         return new Bullet(bulletX, bulletY, direction);
+    }
+
+    protected void setImages(String nameObj, String nameImage){
+
+        java.net.URL imageURL = Demo.class.getResource("images/" + nameImage);
+        if (imageURL != null){
+            image = new ImageIcon(imageURL).getImage();
+        } else {
+            throw new IllegalStateException("Can't find tank "+nameObj+" images.");
+        }
+
     }
 
     public int getSpeed() {

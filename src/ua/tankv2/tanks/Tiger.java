@@ -20,7 +20,7 @@ public class Tiger extends AbstractTank {
         this.armor = armor;
         tankColor = new Color(255,0,0);
         towerColor = new Color(0,255,0);
-        setImages();
+        setImages(this.getClass().getName(), "aitank.png");
     }
 
     public Tiger(BattleField bf, int x, int y, Direction direction, int armor) {
@@ -28,30 +28,13 @@ public class Tiger extends AbstractTank {
         setArmor(armor);
         tankColor = new Color(255,0,0);
         towerColor = new Color(0,255,0);
-        setImages();
+        setImages(this.getClass().getName(), "aitank.png");
     }
 
     public void setArmor(int armor) {
         this.armor = armor;
     }
 
-    private void setImages(){
-
-//        try {
-//            image = ImageIO.read(new File("images/aitank.png").getAbsoluteFile());
-//        } catch (IOException e) {
-//            throw new IllegalStateException("Can't find tank Tiger images.");
-//        }
-
-        java.net.URL imageURL = this.getClass().getResource("images/aitank.png");
-        if (imageURL != null){
-            imIcon = new ImageIcon(imageURL);
-            image = imIcon.getImage();
-        } else {
-            throw new IllegalStateException("Can't find tank T34 images.");
-        }
-
-    }
 
     @Override
     public void destroy() {
