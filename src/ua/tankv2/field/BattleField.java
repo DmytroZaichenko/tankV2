@@ -124,8 +124,8 @@ public class BattleField implements Drawable {
 
         HashMap<String,Integer> loc = new HashMap<String, Integer>(){
             {
-                put("y",384);
-                put("x",192);
+                put("y",0);
+                put("x",256);
             }
         };
 
@@ -137,7 +137,7 @@ public class BattleField implements Drawable {
         HashMap<String,Integer> loc = new HashMap<String, Integer>(){
             {
                 put("y",0);
-                put("x",128);
+                put("x",512);
             }
         };
 

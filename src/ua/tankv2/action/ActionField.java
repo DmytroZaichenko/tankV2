@@ -107,14 +107,15 @@ public class ActionField extends JPanel {
     public void runTheGame() throws Exception{
 
         processAction(aggressor.setUp(), defender);
-//        while (true) {
+
+        while (true) {
 //            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
 //                processAction(aggressor.setUp(), aggressor);
 //            }
-//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
-//                processAction(defender.setUp(), defender);
-//            }
-//        }
+            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+                processAction(defender.setUp(), defender);
+            }
+        }
     }
 
     private void processAction(Action a, Tank tank) throws Exception{
@@ -168,6 +169,7 @@ public class ActionField extends JPanel {
         this.bullet = bullet;
         int step = 1;
         int incToOut = battleField.OUT_FIELD;
+
         while ((bullet.getX() > (-1)*incToOut && bullet.getX() < battleField.getBfWidth() + incToOut)
                 && (bullet.getY() > (-1) * incToOut && bullet.getY() < battleField.getBfHeight() + incToOut)) {
 

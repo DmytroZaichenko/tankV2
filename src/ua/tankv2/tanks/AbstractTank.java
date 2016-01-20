@@ -24,8 +24,9 @@ public abstract class AbstractTank implements Tank {
     //current position on BF
     protected int x;
     protected int y;
-
     protected Direction direction;
+
+
     protected BattleField bf;
 
     private boolean destroyed;
@@ -37,10 +38,9 @@ public abstract class AbstractTank implements Tank {
     protected HashMap<Destroyable,Integer> hmStep = new HashMap<>();
 
     protected Image image;
-    protected String nameImage;
 
     public AbstractTank(BattleField bf) {
-        this(bf, 0, 512, Direction.UP);
+        this(bf,320 , 0, Direction.UP);
     }
 
     public AbstractTank(BattleField bf, int x, int y, Direction direction) {
@@ -49,7 +49,6 @@ public abstract class AbstractTank implements Tank {
         this.y = y;
         this.direction = direction;
         this.destroyed = false;
-
     }
 
     public void turn(Direction direction){
@@ -64,8 +63,10 @@ public abstract class AbstractTank implements Tank {
         int bulletX = -100;
         int bulletY = -100;
         if (direction == Direction.UP) {
-            bulletX = x + 25;
-            bulletY = y - 64;
+//            bulletX = x + 64;
+//            bulletY = y - 64;
+            bulletX = x;
+            bulletY = y;
         } else if (direction == Direction.DOWN) {
             bulletX = x + 25;
             bulletY = y + 64;
@@ -76,7 +77,8 @@ public abstract class AbstractTank implements Tank {
             bulletX = x + 64;
             bulletY = y + 25;
         }
-        return new Bullet(bulletX, bulletY, direction);
+        //return new Bullet(bulletX, bulletY, direction);
+        return new Bullet(x, y, direction);
     }
 
     protected void setImages(String nameObj, String nameImage){

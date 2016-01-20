@@ -1,7 +1,7 @@
 package ua.tankv2.tanks;
 
-import ua.tankv2.Demo;
 import ua.tankv2.field.BattleField;
+import ua.tankv2.managment.Action;
 import ua.tankv2.managment.Direction;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class T34 extends AbstractTank {
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
         setImages(this.getClass().getName(), "playertank.png");
-        setActionForDestroyObject(bf.getArrayListEagle());
+        //setActionForDestroyObject(bf.getArrayListEagle());
     }
 
     public T34(BattleField bf, int x, int y, Direction direction) {
@@ -24,9 +24,16 @@ public class T34 extends AbstractTank {
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
         setImages(this.getClass().getName(), "playertank.png");
-        setActionForDestroyObject(bf.getArrayListEagle());
+        //setActionForDestroyObject(bf.getArrayListEagle());
     }
 
+    Object[] actions = {
+            Direction.LEFT,
+            Action.FIRE
+
+    };
+
+    int step = 0;
 
     @Override
     public Action setUp() {
@@ -42,5 +49,7 @@ public class T34 extends AbstractTank {
         }
         return (Action) actions[step++];
     }
+
+
 
 }

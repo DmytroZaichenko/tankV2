@@ -5,12 +5,9 @@ import ua.tankv2.managment.Direction;
 import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Drawable;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class Bullet implements Drawable, Destroyable {
@@ -24,7 +21,6 @@ public class Bullet implements Drawable, Destroyable {
 
     private boolean destroyed;
     Image image;
-    ImageIcon imIcon;
 
     public Bullet(int x, int y, Direction direction){
         this.x = x;
@@ -62,26 +58,36 @@ public class Bullet implements Drawable, Destroyable {
         destroyed = true;
     }
 
-    private void putToHM(HashMap<String, Integer> hm, int sx1, int sy1, int sx2, int sy2){
+    private void putToHM(HashMap<String, Integer> hm, int dx1, int dy1, int dx2, int dy2,
+                                                      int sx1, int sy1, int sx2, int sy2){
+
         hm.put("sx1",sx1);
         hm.put("sy1",sy1);
         hm.put("sx2",sx2);
         hm.put("sy2",sy2);
+
+        hm.put("dx1",dx1);
+        hm.put("dy1",dy1);
+        hm.put("dx2",dx2);
+        hm.put("dy2",dy2);
     }
 
     private HashMap<String, Integer> getCoordinatesOnDirection(){
 
-        HashMap<String, Integer> hashMap = new HashMap<>(4);
-        putToHM(hashMap, 0, 0, 32, 32);
+        int sq = SIZE_QUADRANT;
+        int hs = sq / 2;
+
+        HashMap<String, Integer> hashMap = new HashMap<>(8);
+        putToHM(hashMap, x, y, x + sq, y + sq, 0, 0, 32, 32);
 
         if (direction == Direction.UP){
-            putToHM(hashMap, 0, 0, 32, 32);
+            putToHM(hashMap, x, y - hs, x + sq, y + sq - hs,  0, 0, 32, 32);
         }else if (direction == Direction.DOWN){
-            putToHM(hashMap, 64, 0, 96, 32);
+            putToHM(hashMap, x , y + hs , x + sq , y + sq + hs , 64, 0, 96, 32);
         }else if(direction == Direction.LEFT){
-            putToHM(hashMap, 32, 0, 64, 32);
+            putToHM(hashMap, x - hs, y , x + sq - hs , y + sq , 32, 0, 64, 32);
         }else if (direction == Direction.RIGHT){
-            putToHM(hashMap, 96, 0, 128, 32);
+            putToHM(hashMap, x + hs , y , x + sq + hs , y + sq , 96, 0, 128, 32);
         }
 
         return hashMap;
@@ -92,7 +98,8 @@ public class Bullet implements Drawable, Destroyable {
         if (!destroyed){
             if (image != null){
                 HashMap<String, Integer> hm = getCoordinatesOnDirection();
-                g.drawImage(image, getX(), getY(), getX()+40, getY()+40,
+                g.drawImage(image,
+                        hm.get("dx1"), hm.get("dy1"), hm.get("dx2"), hm.get("dy2"),
                         hm.get("sx1"), hm.get("sy1"), hm.get("sx2"), hm.get("sy2"),
                         new ImageObserver() {
                             @Override
@@ -117,8 +124,7 @@ public class Bullet implements Drawable, Destroyable {
 
         java.net.URL imageURL = Demo.class.getResource("images/bullet.png");
         if (imageURL != null){
-            imIcon = new ImageIcon(imageURL);
-            image = imIcon.getImage();
+            image = new ImageIcon(imageURL).getImage();
         } else {
             throw new IllegalStateException("Can't find bullet images.");
         }
