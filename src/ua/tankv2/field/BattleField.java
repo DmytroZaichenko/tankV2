@@ -24,6 +24,8 @@ public class BattleField implements Drawable {
     private int bfWidth;
     private int bfHeight;
     private ArrayList<Destroyable> arrayListEagle = new ArrayList<>();
+    private ArrayList<Destroyable> arrayListAggressor = new ArrayList<>();
+
 
     public BattleField(){
 
@@ -35,6 +37,10 @@ public class BattleField implements Drawable {
 
     public ArrayList<Destroyable> getArrayListEagle() {
         return arrayListEagle;
+    }
+
+    public ArrayList<Destroyable> getArrayListAggressor() {
+        return arrayListAggressor;
     }
 
     private void setBfWidth(int bfWidth) {

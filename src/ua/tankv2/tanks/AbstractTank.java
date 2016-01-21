@@ -27,6 +27,7 @@ public abstract class AbstractTank implements Tank {
     protected Direction direction;
 
 
+
     protected BattleField bf;
 
     private boolean destroyed;
@@ -40,7 +41,7 @@ public abstract class AbstractTank implements Tank {
     protected Image image;
 
     public AbstractTank(BattleField bf) {
-        this(bf,320 , 0, Direction.UP);
+        this(bf, 320 , 0, Direction.UP);
     }
 
     public AbstractTank(BattleField bf, int x, int y, Direction direction) {
@@ -60,25 +61,7 @@ public abstract class AbstractTank implements Tank {
     }
 
     public Bullet fire() {
-        int bulletX = -100;
-        int bulletY = -100;
-        if (direction == Direction.UP) {
-//            bulletX = x + 64;
-//            bulletY = y - 64;
-            bulletX = x;
-            bulletY = y;
-        } else if (direction == Direction.DOWN) {
-            bulletX = x + 25;
-            bulletY = y + 64;
-        } else if (direction == Direction.LEFT) {
-            bulletX = x - 64;
-            bulletY = y + 25;
-        } else if (direction == Direction.RIGHT) {
-            bulletX = x + 64;
-            bulletY = y + 25;
-        }
-        //return new Bullet(bulletX, bulletY, direction);
-        return new Bullet(x, y, direction);
+       return new Bullet(x, y, direction, this);
     }
 
     protected void setImages(String nameObj, String nameImage){

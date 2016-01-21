@@ -22,21 +22,25 @@ public class ActionField extends JPanel {
     private BT7 aggressor;
     private Bullet bullet;
     private Tiger tiger;
-
+    private List<Tank> listOfTank;
 
 
     public ActionField() throws  Exception {
 
         battleField = new BattleField();
 
-        defender  = new T34(battleField);
         aggressor   = new BT7(battleField,battleField.getAggressorLocation().get("x"),
                               battleField.getAggressorLocation().get("y"),Direction.DOWN);
 
         tiger  = new Tiger(battleField,battleField.getTigerLocation().get("x"),
                                        battleField.getTigerLocation().get("y"),
                                        Direction.DOWN, 2);
-        List<Tank> listOfTank = new ArrayList<Tank>() {
+
+        battleField.getArrayListAggressor().add(aggressor);
+
+        defender  = new T34(battleField);
+
+        listOfTank = new ArrayList<Tank>() {
             {
                 add(defender);
                 add(aggressor);
@@ -44,10 +48,9 @@ public class ActionField extends JPanel {
             }
         };
 
-        
         destroyObjUnderTank(listOfTank);
         
-        bullet = new Bullet(-100, -100, Direction.NONE);
+        bullet = new Bullet(-100, -100, Direction.NONE, null);
 
         JFrame frame = new JFrame("BATTLE FIELD, DAY 7");
         frame.setLocation(750, 150);
@@ -207,28 +210,31 @@ public class ActionField extends JPanel {
         Destroyable obf;
         if (y >= 0 && y < battleField.getDimentionY() && x >= 0 && x < battleField.getDimentionX()) {
             obf = battleField.scanQuadrant(y,x);
+
             if (!obf.isDestroyed() && !(obf instanceof Blank) && !(obf instanceof Water) && !(obf instanceof Rock)) {
                 battleField.destroyObject(y, x);
                 return true;
+
             }
 
-            if (!aggressor.isDestroyed() && checkInterception(battleField.getQuadrant(aggressor.getY(),aggressor.getX()),coordinates)){
-                aggressor.destroy();
+            if(obf instanceof Rock ) {
                 return true;
             }
 
-            if (!defender.isDestroyed() && checkInterception(battleField.getQuadrant(defender.getY(), defender.getX()),coordinates)){
-                defender.destroy();
-                return true;
+            for (Tank tank : listOfTank){
+                if (!tank.isDestroyed() && checkInterception(tank, coordinates)){
+                    tank.destroy();
+                    return true;
+                }
             }
-
         }
 
         return false;
     }
 
-    private boolean checkInterception(HashMap<String,Integer> obj, HashMap<String,Integer> quadrant){
+    private boolean checkInterception(Tank tank, HashMap<String,Integer> quadrant){
 
+        HashMap<String,Integer> obj = battleField.getQuadrant(tank.getX(), tank.getY());
         int oy = obj.get("y");
         int ox = obj.get("x");
 
@@ -236,7 +242,7 @@ public class ActionField extends JPanel {
         int qx = quadrant.get("x");
 
         if (oy >= 0 && oy < battleField.getDimentionY() && ox >= 0 && ox < battleField.getDimentionX()) {
-            if (oy == qy && ox == qx) {
+            if (oy == qy && ox == qx && bullet.getTank() != tank ) {
                 return true;
             }
         }

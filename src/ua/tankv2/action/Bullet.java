@@ -4,6 +4,7 @@ import ua.tankv2.Demo;
 import ua.tankv2.managment.Direction;
 import ua.tankv2.managment.Destroyable;
 import ua.tankv2.managment.Drawable;
+import ua.tankv2.tanks.AbstractTank;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,18 +17,24 @@ public class Bullet implements Drawable, Destroyable {
 
     private int x;
     private int y;
-
     private Direction direction;
+
+    private AbstractTank tank;
 
     private boolean destroyed;
     Image image;
 
-    public Bullet(int x, int y, Direction direction){
+    public Bullet(int x, int y, Direction direction, AbstractTank tank){
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.destroyed = false;
+        this.tank = tank;
         setImages();
+    }
+
+    public AbstractTank getTank() {
+        return tank;
     }
 
     public int getX() {
