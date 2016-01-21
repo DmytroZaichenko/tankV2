@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class BattleField implements Drawable {
 
@@ -23,9 +24,10 @@ public class BattleField implements Drawable {
     private SimpleBFObject[][] battleField;
     private int bfWidth;
     private int bfHeight;
+
     private ArrayList<Destroyable> arrayListEagle = new ArrayList<>();
     private ArrayList<Destroyable> arrayListAggressor = new ArrayList<>();
-
+    private ArrayList<Destroyable> arrayListOfTank = new ArrayList<>();
 
     public BattleField(){
 
@@ -33,6 +35,14 @@ public class BattleField implements Drawable {
         setBfHeight(SIZE_QUADRANT * battleField.length);
         setBfWidth(SIZE_QUADRANT * battleField.length);
 
+    }
+
+    public ArrayList<Destroyable> getArrayListOfTank() {
+        return arrayListOfTank;
+    }
+
+    public void setArrayListOfTank(ArrayList<Destroyable> arrayListOfTank) {
+        this.arrayListOfTank = arrayListOfTank;
     }
 
     public ArrayList<Destroyable> getArrayListEagle() {
@@ -220,6 +230,16 @@ public class BattleField implements Drawable {
             return true;
         }
     }
+
+//    private boolean isTank(int v, int h){
+//        for (Destroyable tank : arrayListOfTank){
+//            HashMap<String, Integer> coordinates = getQuadrant(tank.getX(), tank.getY());
+//            if (v == coordinates.get("y") && h == coordinates.get("x") ){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     public boolean isShooting(int x, int y, Direction direction){
 

@@ -22,7 +22,7 @@ public class ActionField extends JPanel {
     private BT7 aggressor;
     private Bullet bullet;
     private Tiger tiger;
-    private List<Tank> listOfTank;
+    private ArrayList<Destroyable> listOfTank;
 
 
     public ActionField() throws  Exception {
@@ -40,7 +40,7 @@ public class ActionField extends JPanel {
 
         defender  = new T34(battleField);
 
-        listOfTank = new ArrayList<Tank>() {
+        listOfTank = new ArrayList<Destroyable>() {
             {
                 add(defender);
                 add(aggressor);
@@ -48,6 +48,7 @@ public class ActionField extends JPanel {
             }
         };
 
+        battleField.setArrayListOfTank(listOfTank);
         destroyObjUnderTank(listOfTank);
         
         bullet = new Bullet(-100, -100, Direction.NONE, null);
@@ -62,10 +63,10 @@ public class ActionField extends JPanel {
 
     }
 
-    private void destroyObjUnderTank(List<Tank> listOfTank) {
+    private void destroyObjUnderTank(List<Destroyable> listOfTank) {
 
         for (int i = 0; i < listOfTank.size(); i++) {
-            Tank t = listOfTank.get(i);
+            Destroyable t = listOfTank.get(i);
             HashMap<String, Integer> hm = battleField.getQuadrant(t.getX(),t.getY());
             Destroyable obj = battleField.scanQuadrant(hm.get("y"), hm.get("x"));
             if (!(obj instanceof Blank) || !(obj.isDestroyed())) {
@@ -221,7 +222,7 @@ public class ActionField extends JPanel {
                 return true;
             }
 
-            for (Tank tank : listOfTank){
+            for (Destroyable tank : listOfTank){
                 if (!tank.isDestroyed() && checkInterception(tank, coordinates)){
                     tank.destroy();
                     return true;
@@ -232,7 +233,7 @@ public class ActionField extends JPanel {
         return false;
     }
 
-    private boolean checkInterception(Tank tank, HashMap<String,Integer> quadrant){
+    private boolean checkInterception(Destroyable tank, HashMap<String,Integer> quadrant){
 
         HashMap<String,Integer> obj = battleField.getQuadrant(tank.getX(), tank.getY());
         int oy = obj.get("y");
