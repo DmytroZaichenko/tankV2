@@ -14,7 +14,6 @@ public class T34 extends AbstractTank {
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
         setImages(this.getClass().getName(), "playertank.png");
-        //setActionForDestroyObject(bf.getArrayListAggressor());
     }
 
     public T34(BattleField bf, int x, int y, Direction direction) {
@@ -22,7 +21,6 @@ public class T34 extends AbstractTank {
         tankColor  = new Color(0, 255, 0);
         towerColor = new Color(255, 0, 0);
         setImages(this.getClass().getName(), "playertank.png");
-        //setActionForDestroyObject(bf.getArrayListEagle());
     }
 
     Object[] actions = {
@@ -32,6 +30,7 @@ public class T34 extends AbstractTank {
 //            Action.FIRE,
             Direction.LEFT,
             Action.MOVE,
+            Action.FIRE
 
     };
 

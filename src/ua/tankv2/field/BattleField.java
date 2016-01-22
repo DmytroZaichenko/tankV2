@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 public class BattleField implements Drawable {
 
@@ -225,21 +224,23 @@ public class BattleField implements Drawable {
 
         try {
             Destroyable obj = scanQuadrant(tmpY, tmpX);
-            return obj.isDestroyed() || obj instanceof Blank;
+            return (obj.isDestroyed() || obj instanceof Blank) && !(isTankInQuadrant(v,h));
         }catch (ArrayIndexOutOfBoundsException e){
             return true;
         }
     }
 
-//    private boolean isTank(int v, int h){
-//        for (Destroyable tank : arrayListOfTank){
-//            HashMap<String, Integer> coordinates = getQuadrant(tank.getX(), tank.getY());
-//            if (v == coordinates.get("y") && h == coordinates.get("x") ){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+
+    //is a tank in the coordinates
+    public boolean isTankInQuadrant(int v, int h){
+        for (Destroyable tank : arrayListOfTank){
+            HashMap<String, Integer> coordinates = getQuadrant(tank.getX(), tank.getY());
+            if (v == coordinates.get("y") && h == coordinates.get("x") ){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean isShooting(int x, int y, Direction direction){
 

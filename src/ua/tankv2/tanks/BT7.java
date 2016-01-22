@@ -26,7 +26,6 @@ public class BT7 extends AbstractTank {
         tankColor = new Color(255,0,0);
         towerColor = new Color(0,255,0);
         speed = 5;
-        setActionForDestroyObject(bf.getArrayListEagle());
         setImages(this.getClass().getName(), "redtank.png");
     }
 

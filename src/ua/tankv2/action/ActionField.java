@@ -48,8 +48,11 @@ public class ActionField extends JPanel {
             }
         };
 
-        battleField.setArrayListOfTank(listOfTank);
         destroyObjUnderTank(listOfTank);
+        battleField.setArrayListOfTank(listOfTank);
+
+        aggressor.setActionForDestroyObject(battleField.getArrayListEagle());
+        //defender.setActionForDestroyObject(battleField.getArrayListAggressor());
         
         bullet = new Bullet(-100, -100, Direction.NONE, null);
 
@@ -110,15 +113,14 @@ public class ActionField extends JPanel {
 
     public void runTheGame() throws Exception{
 
-        processAction(aggressor.setUp(), defender);
 
         while (true) {
-//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
-//                processAction(aggressor.setUp(), aggressor);
-//            }
             if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
-                processAction(defender.setUp(), defender);
+                processAction(aggressor.setUp(), aggressor);
             }
+//            if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
+//                processAction(defender.setUp(), defender);
+//            }
         }
     }
 

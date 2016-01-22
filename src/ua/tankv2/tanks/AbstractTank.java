@@ -163,7 +163,7 @@ public abstract class AbstractTank implements Tank {
 
     }
 
-    protected void setActionForDestroyObject(ArrayList<Destroyable> arrObject){
+    public void setActionForDestroyObject(ArrayList<Destroyable> arrObject){
 
 
         if (arrObject.size() == 0){
@@ -464,7 +464,7 @@ public abstract class AbstractTank implements Tank {
             ArrayList<Object> act = entry.getValue();
             step = hmStep.get(objDest);
 
-            if (objDest.isDestroyed() && act.size() == step){
+            if (objDest.isDestroyed() || act.size() == step || act.size() == 0){
                 continue;
             }
 
