@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class BattleField implements Drawable {
 
@@ -33,7 +34,7 @@ public class BattleField implements Drawable {
         fillBattleField();
         setBfHeight(SIZE_QUADRANT * battleField.length);
         setBfWidth(SIZE_QUADRANT * battleField.length);
-
+        setArrayListEagle();
     }
 
     public ArrayList<Destroyable> getArrayListOfTank() {
@@ -46,6 +47,10 @@ public class BattleField implements Drawable {
 
     public ArrayList<Destroyable> getArrayListEagle() {
         return arrayListEagle;
+    }
+
+    public void setArrayListEagle() {
+        this.arrayListEagle = fillArrayListOfEagle();
     }
 
     public ArrayList<Destroyable> getArrayListAggressor() {
@@ -105,7 +110,6 @@ public class BattleField implements Drawable {
                     obf = new Rock(y,x);
                 } else if (stateField.equals(EAGLE)) {
                     obf = new Eagle(y,x);
-                    arrayListEagle.add((Eagle)obf);
                 } else if (stateField.equals(BRICK)) {
                     obf = new Brick(y,x);
                 } else if (stateField.equals(WATER)) {
@@ -116,6 +120,20 @@ public class BattleField implements Drawable {
                 updateQuadrant(j, k, obf);
             }
         }
+    }
+
+    private ArrayList<Destroyable> fillArrayListOfEagle(){
+
+        ArrayList<Destroyable> al = new ArrayList<>();
+        for (int j = 0; j < getDimentionY(); j++) {
+            for (int k = 0; k < getDimentionX(); k++) {
+                Destroyable obj = scanQuadrant(j,k);
+                if (obj instanceof Eagle && !(obj.isDestroyed())){
+                    al.add(obj);
+                }
+            }
+        }
+        return al;
     }
 
     public Destroyable scanQuadrant(int v, int h){
@@ -224,7 +242,7 @@ public class BattleField implements Drawable {
 
         try {
             Destroyable obj = scanQuadrant(tmpY, tmpX);
-            return (obj.isDestroyed() || obj instanceof Blank) && !(isTankInQuadrant(v,h));
+            return (obj.isDestroyed() || obj instanceof Blank) && (getTankFromQuadrant(v,h) == null);
         }catch (ArrayIndexOutOfBoundsException e){
             return true;
         }
@@ -232,17 +250,17 @@ public class BattleField implements Drawable {
 
 
     //is a tank in the coordinates
-    public boolean isTankInQuadrant(int v, int h){
+    public Destroyable getTankFromQuadrant(int v, int h){
         for (Destroyable tank : arrayListOfTank){
             HashMap<String, Integer> coordinates = getQuadrant(tank.getX(), tank.getY());
             if (v == coordinates.get("y") && h == coordinates.get("x") ){
-                return true;
+                return tank;
             }
         }
-        return false;
+        return null;
     }
 
-    public boolean isShooting(int x, int y, Direction direction){
+    public boolean isToShoot(int x, int y, Direction direction){
 
         HashMap<String, Integer> coordinates = getQuadrant(x, y);
         int v = coordinates.get("y");
@@ -265,14 +283,16 @@ public class BattleField implements Drawable {
             Destroyable obj = scanQuadrant(tmpV, tmpH);
             boolean result;
 
-            if (obj instanceof Blank || obj instanceof Water){
+            Destroyable tank = getTankFromQuadrant(v,h);
+            if (tank != null){
+                result = true;
+            } else if (obj instanceof Blank || obj instanceof Water){
                 result =  false;
             }else if (obj.isDestroyed() ){
                 result =  false;
             }else{
                 result =  true;
             }
-
 
             return result;
 
@@ -281,7 +301,8 @@ public class BattleField implements Drawable {
         }
     }
 
-    public boolean isShooting(int x, int y, Direction direction, HashSet<Destroyable> listObj){
+    public boolean isToShoot(int x, int y, Direction direction, HashSet<Destroyable> listObj,
+                                                                ArrayList<Destroyable> listDObj){
 
         HashMap<String, Integer> coordinates = getQuadrant(x, y);
         int v = coordinates.get("y");
@@ -303,8 +324,11 @@ public class BattleField implements Drawable {
         try {
             Destroyable obj = scanQuadrant(tmpV, tmpH);
             boolean result;
-            
-            if (obj instanceof Blank || obj instanceof Water){
+            Destroyable tank = getTankFromQuadrant(v,h);
+            if (tank != null) {
+                obj = tank;
+                result = true;
+            }else if (obj instanceof Blank || obj instanceof Water){
                 result =  false;
             }else if (obj.isDestroyed() ){
                 result =  false;
@@ -316,6 +340,7 @@ public class BattleField implements Drawable {
 
             if (result) {
                 listObj.add(obj);
+                listDObj.add(0,obj);
             }
             
             return result;

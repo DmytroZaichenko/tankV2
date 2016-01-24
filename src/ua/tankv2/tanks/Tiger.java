@@ -35,6 +35,9 @@ public class Tiger extends AbstractTank {
         this.armor = armor;
     }
 
+    public int getArmor() {
+        return armor;
+    }
 
     @Override
     public void destroy() {

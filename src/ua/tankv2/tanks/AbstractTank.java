@@ -41,7 +41,7 @@ public abstract class AbstractTank implements Tank {
     protected Image image;
 
     public AbstractTank(BattleField bf) {
-        this(bf, 320 , 0, Direction.UP);
+        this(bf, 320 , 512, Direction.UP);
     }
 
     public AbstractTank(BattleField bf, int x, int y, Direction direction) {
@@ -101,8 +101,9 @@ public abstract class AbstractTank implements Tank {
 
 
     public void destroy(){
-        updateX(-100);
-        updateY(-100);
+        x = -100;
+        y = -100;
+        this.destroyed = true;
     }
 
     private void putToHM(HashMap<String, Integer> hm, int sx1, int sy1, int sx2, int sy2){
@@ -181,6 +182,7 @@ public abstract class AbstractTank implements Tank {
 
         HashSet<Destroyable> listBlock = new HashSet<>();
 
+
         for (Destroyable objDestroyed : arrObject ) {
 
 
@@ -222,9 +224,9 @@ public abstract class AbstractTank implements Tank {
                 if (yEagle != tmpYTank){
                     //add tmp direction in the list
                     listAction.add(tmpDirection);
-
-                    if (bf.isShooting(tmpXTank, tmpYTank, tmpDirection, listBlock)) {
-                        listAction.add(Action.FIRE);
+                    ArrayList<Destroyable>  listDObj = new ArrayList<>(1);
+                    if (bf.isToShoot(tmpXTank, tmpYTank,tmpDirection,listBlock, listDObj)){
+                        getCountToFire(listAction, listDObj);
                     }
                     listAction.add(Action.MOVE);
                     //add to track. need for the see where tank at the moment
@@ -272,9 +274,9 @@ public abstract class AbstractTank implements Tank {
                 if (xEagle != tmpXTank){
 
                     listAction.add(tmpDirection);
-
-                    if (bf.isShooting(tmpXTank, tmpYTank,tmpDirection,listBlock)){
-                        listAction.add(Action.FIRE);
+                    ArrayList<Destroyable>  listDObj = new ArrayList<>(1);
+                    if (bf.isToShoot(tmpXTank, tmpYTank,tmpDirection,listBlock, listDObj)){
+                        getCountToFire(listAction, listDObj);
                     }
                     listAction.add(Action.MOVE);
 
@@ -301,6 +303,23 @@ public abstract class AbstractTank implements Tank {
 
     }
 
+    private void getCountToFire(ArrayList<Object> listAction, ArrayList<Destroyable> listDObj) {
+
+        if (listDObj.size() == 0){
+            return;
+        }
+
+        Destroyable obj = listDObj.get(0);
+
+        if (obj instanceof Tiger){
+            for (int i = 0; i <= ((Tiger) obj).getArmor(); i ++){
+                listAction.add(Action.FIRE);
+            }
+        }else {
+            listAction.add(Action.FIRE);
+        }
+    }
+
     private LinkedList<Direction> getDirectionFromTrack(int y, int x, Map<Destroyable, LinkedList<Direction>> track){
 
         LinkedList<Direction> oldDirection = new LinkedList<>();
@@ -325,7 +344,7 @@ public abstract class AbstractTank implements Tank {
 
             if (!oldDirection.contains(d) && wasNotHere(y, x, d, track, countHere)) {
                 if (!canMove(x, y, d)) {
-                    if (bf.isShooting(x, y, d)) {
+                    if (bf.isToShoot(x, y, d)) {
                         listOfPermittedDirection.add(d);
                     }
                 } else {
@@ -464,7 +483,7 @@ public abstract class AbstractTank implements Tank {
             ArrayList<Object> act = entry.getValue();
             step = hmStep.get(objDest);
 
-            if (objDest.isDestroyed() || act.size() == step || act.size() == 0){
+            if ((objDest.isDestroyed() && act.size() == step) || act.size() == step || act.size() == 0){
                 continue;
             }
 

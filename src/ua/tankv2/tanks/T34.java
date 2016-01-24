@@ -28,9 +28,15 @@ public class T34 extends AbstractTank {
 //            Action.FIRE,
 //            Direction.DOWN,
 //            Action.FIRE,
-            Direction.LEFT,
+            Direction.UP,
+            Action.FIRE,
             Action.MOVE,
-            Action.FIRE
+            Direction.UP,
+            Action.FIRE,
+            Action.MOVE,
+            Direction.LEFT,
+            Action.MOVE
+                        //Action.FIRE
 
     };
 
@@ -44,6 +50,7 @@ public class T34 extends AbstractTank {
         }
         if (!(actions[step] instanceof Action)) {
             turn((Direction) actions[step++]);
+            return Action.NONE;
         }
         if (step >= actions.length) {
             step = 0;
