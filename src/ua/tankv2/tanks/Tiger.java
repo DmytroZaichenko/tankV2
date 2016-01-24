@@ -39,17 +39,17 @@ public class Tiger extends AbstractTank {
         return armor;
     }
 
-    @Override
-    public void destroy() {
-        if (armor > 0){
-            armor --;
-        }else {
-            super.destroy();
-        }
-    }
-
-    @Override
-    public Action setUp() {
-        return Action.FIRE;
-    }
+//    @Override
+//    public void destroy() {
+//        if (armor > 0){
+//            armor --;
+//        }else {
+//            super.destroy();
+//        }
+//    }
+//
+//    @Override
+//    public Action setUp() {
+//        return Action.FIRE;
+//    }
 }
